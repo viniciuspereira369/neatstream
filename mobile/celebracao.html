@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html class="dark" lang="pt-BR">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+  <title>NeatStream - Confirmação de Cancelamento</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet"/>
+
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            obsidian: {
+              DEFAULT: '#080C0A',
+              card: '#111714',
+              surface: '#161F1B',
+              border: 'rgba(255, 255, 255, 0.08)',
+            },
+            mint: {
+              DEFAULT: '#00E599',
+              light: '#34F5B2',
+              glow: 'rgba(0, 229, 153, 0.22)',
+              dark: '#05DF85'
+            }
+          },
+          fontFamily: {
+            headline: ["'Sora'", "sans-serif"],
+            sans: ["'Inter'", "sans-serif"],
+            mono: ["'IBM Plex Mono'", "monospace"],
+          }
+        },
+      },
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #080C0A;
+      color: #E2E8F0;
+      font-family: 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+
+    .ambient-glow {
+      position: fixed;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 460px;
+      height: 440px;
+      background: radial-gradient(circle, rgba(0, 229, 153, 0.12) 0%, rgba(5, 223, 133, 0.02) 50%, transparent 75%);
+      pointer-events-none;
+      z-index: 0;
+    }
+
+    .card-sheen {
+      position: relative;
+      background: #111714;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+  </style>
+</head>
+
+<body class="selection:bg-mint/30 relative flex flex-col justify-between min-h-screen">
+  <div class="ambient-glow"></div>
+
+  <!-- Header -->
+  <header class="relative z-20 px-5 py-4 flex items-center justify-between max-w-[390px] mx-auto w-full">
+    <div class="w-9"></div>
+    <div class="flex items-center gap-1.5">
+      <span class="w-2 h-2 rounded-full bg-mint"></span>
+      <span class="text-xs font-mono font-semibold tracking-wider uppercase text-gray-300">Cancelamento Concluído</span>
+    </div>
+    <button onclick="window.location.href='carteira_dark.html'" class="w-9 h-9 rounded-xl bg-[#111714] border border-white/10 text-gray-400 hover:text-white flex items-center justify-center transition-colors cursor-pointer">
+      <span class="material-symbols-outlined text-[18px]">close</span>
+    </button>
+  </header>
+
+  <!-- Main Canvas -->
+  <main class="max-w-[390px] mx-auto px-5 py-2 space-y-5 relative z-10 w-full flex-1">
+
+    <!-- Hero Confirmation -->
+    <div class="text-center space-y-3 pt-2">
+      <div class="w-16 h-16 mx-auto rounded-2xl bg-mint/10 border border-mint/30 flex items-center justify-center text-mint shadow-[0_0_25px_rgba(0,229,153,0.25)]">
+        <span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+      </div>
+
+      <div class="space-y-1">
+        <h1 class="text-xl font-bold text-white tracking-tight font-headline">Assinatura Disney+ Cancelada</h1>
+        <p class="text-xs text-gray-400">Sua assinatura foi cancelada. Não haverá novas cobranças no seu cartão.</p>
+      </div>
+
+      <!-- Projeção Anual de Economia -->
+      <div class="bg-[#111714] rounded-2xl p-5 border border-white/8 shadow-xl">
+        <span class="text-[11px] uppercase tracking-wider text-gray-400 font-medium">Sua Economia Estimada</span>
+        <div class="font-mono text-3xl font-bold text-mint tracking-tight mt-1 flex items-baseline justify-center gap-1.5">
+          <span>R$ 526,80</span>
+          <span class="text-xs font-sans font-medium text-gray-400">/ ano</span>
+        </div>
+        <p class="text-[11px] text-gray-400 mt-1">Menos R$ 43,90 na sua fatura todo mês</p>
+      </div>
+    </div>
+
+    <!-- Impacto no Gasto Mensal -->
+    <section class="card-sheen rounded-2xl p-5 shadow-xl space-y-3">
+      <div class="flex items-center justify-between">
+        <h2 class="text-xs font-bold text-white uppercase tracking-wider font-mono flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-mint text-base">analytics</span>
+          Seu Novo Gasto Mensal
+        </h2>
+        <span class="text-xs font-mono text-mint font-semibold">-R$ 43,90/mês</span>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <!-- Antes -->
+        <div class="bg-[#080C0A] rounded-xl p-3 border border-white/5 space-y-1">
+          <span class="text-[10px] text-gray-500 uppercase font-mono">Gasto Anterior</span>
+          <p class="font-mono text-sm font-bold text-gray-300">R$ 142,60<span class="text-[10px] text-gray-500 font-normal">/mês</span></p>
+          <div class="w-full h-1.5 bg-[#161F1B] rounded-full overflow-hidden">
+            <div class="h-full bg-gray-500 rounded-full" style="width: 79%;"></div>
+          </div>
+          <span class="text-[10px] text-gray-500 font-mono">4 assinaturas</span>
+        </div>
+
+        <!-- Depois -->
+        <div class="bg-[#080C0A] rounded-xl p-3 border border-mint/20 space-y-1">
+          <span class="text-[10px] text-mint uppercase font-mono">Novo Total</span>
+          <p class="font-mono text-sm font-bold text-mint">R$ 98,70<span class="text-[10px] text-gray-400 font-normal">/mês</span></p>
+          <div class="w-full h-1.5 bg-[#161F1B] rounded-full overflow-hidden">
+            <div class="h-full bg-mint rounded-full" style="width: 54%;"></div>
+          </div>
+          <span class="text-[10px] text-mint font-mono">3 assinaturas</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Acesso Garantido -->
+    <section class="card-sheen rounded-2xl p-4 space-y-2 border border-white/8">
+      <div class="flex items-center gap-2 text-xs font-bold text-white">
+        <span class="material-symbols-outlined text-mint text-base">event_available</span>
+        <span>Acesso Garantido</span>
+      </div>
+      <p class="text-xs text-gray-400 leading-relaxed">
+        Você ainda pode assistir ao Disney+ até <strong class="text-white">12 de Outubro de 2026</strong> sem custos adicionais. Nenhuma cobrança futura será realizada.
+      </p>
+    </section>
+
+  </main>
+
+  <!-- Actions -->
+  <footer class="relative z-20 px-5 py-4 max-w-[390px] mx-auto w-full space-y-2 pb-8">
+    <button onclick="window.location.href='carteira_dark.html'" class="w-full bg-mint hover:bg-mint-dark text-obsidian font-bold text-sm py-3.5 px-6 rounded-xl flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(0,229,153,0.3)] transition-all cursor-pointer">
+      <span class="material-symbols-outlined text-[18px]">subscriptions</span>
+      Ver Minhas Assinaturas
+    </button>
+    <button onclick="salvarComprovante(this)" class="w-full bg-[#111714] hover:bg-[#161F1B] border border-white/10 text-gray-300 hover:text-white font-medium text-xs py-3 px-6 rounded-xl flex items-center justify-center gap-2 transition-colors cursor-pointer">
+      <span class="material-symbols-outlined text-[16px]">download</span>
+      <span>Salvar Comprovante</span>
+    </button>
+  </footer>
+
+  <script>
+    // Simulação de resposta háptica de celebração (Mobile)
+    window.addEventListener('DOMContentLoaded', () => {
+      if ('vibrate' in navigator) {
+        try {
+          navigator.vibrate([20, 30, 20]);
+        } catch(e) {}
+      }
+    });
+
+    function salvarComprovante(btn) {
+      const span = btn.querySelector('span:not(.material-symbols-outlined)');
+      if (span) span.textContent = 'Comprovante Salvo ✓';
+      btn.classList.add('border-mint/40', 'text-mint');
+    }
+  </script>
+
+</body>
+</html>

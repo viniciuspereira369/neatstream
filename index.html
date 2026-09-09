@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NeatStream — Master Studio Hub & Avaliação Comparativa</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@500;600;700;800&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            obsidian: {
+              DEFAULT: '#080C0A',
+              card: '#111714',
+              surface: '#161F1B',
+              border: 'rgba(255, 255, 255, 0.08)',
+              hover: '#1B2621'
+            },
+            mint: {
+              DEFAULT: '#00E599',
+              light: '#34F5B2',
+              glow: 'rgba(0, 229, 153, 0.25)',
+              dim: '#0D3827',
+              dark: '#05DF85'
+            },
+            warning: {
+              DEFAULT: '#FF9838', // Warning disambiguado
+              dim: 'rgba(255, 152, 56, 0.15)'
+            },
+            gold: {
+              DEFAULT: '#F5B84C', // Gamificação
+              dim: 'rgba(245, 184, 76, 0.15)'
+            },
+            amber: {
+              DEFAULT: '#FF9838',
+              dim: 'rgba(255, 152, 56, 0.12)'
+            }
+          },
+          fontFamily: {
+            headline: ["'Sora'", "sans-serif"],
+            display: ["'Sora'", "sans-serif"],
+            sans: ["'Inter'", "sans-serif"],
+            mono: ["'IBM Plex Mono'", "monospace"],
+          }
+        }
+      }
+    }
+  </script>
+  
+  <style>
+    body {
+      background-color: #080C0A;
+      color: #E8EDF2;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
+    :focus-visible { outline: 2px solid #00E599; outline-offset: 2px; }
+    .font-mono { font-feature-settings: "tnum" 1, "zero" 1; }
+    
+    /* Presentation Backdrop Ambient Lighting (Inspired by References) */
+    .studio-glow {
+      position: fixed;
+      top: -150px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 900px;
+      height: 650px;
+      background: radial-gradient(circle, rgba(0, 229, 153, 0.12) 0%, rgba(5, 223, 133, 0.03) 50%, transparent 75%);
+      pointer-events-none;
+      z-index: 0;
+    }
+
+    /* Device Frame Simulator Styling */
+    .mobile-chassis {
+      width: 390px;
+      height: 844px;
+      background: #080C0A;
+      border-radius: 52px;
+      box-shadow: 
+        0 0 0 12px #151D19,
+        0 0 0 14px #233029,
+        0 25px 60px -15px rgba(0, 0, 0, 0.95),
+        0 0 50px rgba(0, 229, 153, 0.15);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .dynamic-island {
+      width: 120px;
+      height: 28px;
+      background: #000000;
+      border-radius: 20px;
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 60;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 10px;
+      border: 1px solid #161F1B;
+    }
+    
+    .dynamic-island-cam {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #081a28;
+      border: 1px solid #142838;
+    }
+    
+    .mobile-statusbar {
+      height: 44px;
+      padding: 10px 24px 0 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      font-weight: 600;
+      color: #E8EDF2;
+      z-index: 50;
+      background: transparent;
+      pointer-events: none;
+    }
+    
+    .desktop-chassis {
+      width: 100%;
+      height: 780px;
+      background: #111714;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.9), 0 0 35px rgba(0, 229, 153, 0.08);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .preview-iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: #080C0A;
+    }
+    
+    :root {
+      --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .card-sheen {
+      position: relative;
+      background: #111714;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      transition: all 0.3s var(--ease-spring);
+    }
+    .card-sheen:hover {
+      border-color: rgba(0, 229, 153, 0.3);
+    }
+
+    /* Spotlight Card Effect (Padrão Linear & Vercel) */
+    .spotlight-card {
+      position: relative;
+      background: #111714;
+      border-radius: 1.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      overflow: hidden;
+      transition: transform 0.28s var(--ease-spring), border-color 0.25s ease, box-shadow 0.28s ease;
+    }
+    .spotlight-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: radial-gradient(550px circle at var(--mouse-x, -999px) var(--mouse-y, -999px), rgba(0, 229, 153, 0.12), transparent 45%);
+      opacity: 0;
+      transition: opacity 300ms ease;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .spotlight-card:hover::before {
+      opacity: 1;
+    }
+    .spotlight-card:hover {
+      border-color: rgba(0, 229, 153, 0.35);
+      box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.7), 0 0 28px rgba(0, 229, 153, 0.08);
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #080C0A; }
+    ::-webkit-scrollbar-thumb { background: #161F1B; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #00E599; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-mint/30 selection:text-white relative">
+  <div class="studio-glow"></div>
+
+  <!-- Top Header Navigation -->
+  <header class="sticky top-0 z-50 bg-[#080C0A]/85 backdrop-blur-xl border-b border-white/5 px-6 py-4">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      <!-- Logo & Branding -->
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-mint-dark to-mint flex items-center justify-center text-obsidian font-black text-xl shadow-[0_0_20px_rgba(0,229,153,0.35)]">
+          N
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="font-bold text-lg text-white tracking-tight">NeatStream</h1>
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-mint/15 text-mint border border-mint/30">Refinamento 2026</span>
+          </div>
+          <p class="text-xs text-gray-400 font-mono">Inspirado em 7 Referências Visuais</p>
+        </div>
+      </div>
+
+      <!-- Main Navigation Tabs: Estúdio vs Comparativo -->
+      <div class="flex items-center gap-1.5 bg-[#111714] p-1.5 rounded-2xl border border-white/10">
+        <button id="tab-studio" onclick="switchMainTab('studio')" class="px-4 py-2 rounded-xl text-xs font-bold bg-mint text-obsidian shadow-[0_0_15px_rgba(0,229,153,0.3)] transition-all cursor-pointer flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-[16px]">play_circle</span>
+          <span>Estúdio Interativo</span>
+        </button>
+        <button id="tab-comparative" onclick="switchMainTab('comparative')" class="px-4 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-white transition-all cursor-pointer flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-[16px]">compare</span>
+          <span>Galeria Comparativa (Prints vs Referências)</span>
+        </button>
+      </div>
+
+      <!-- Actions -->
+      <div class="flex items-center gap-3">
+        <button onclick="toggleTokensModal()" class="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#111714] hover:bg-[#161F1B] border border-white/10 text-xs font-semibold text-white transition-colors cursor-pointer">
+          <span class="material-symbols-outlined text-[16px] text-mint">palette</span>
+          <span>Tokens</span>
+        </button>
+        <a href="DESIGN_SYSTEM.md" target="_blank" class="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-gradient-to-r from-mint to-mint-dark text-obsidian text-xs font-bold transition-all shadow-[0_0_15px_rgba(0,229,153,0.3)] cursor-pointer">
+          <span class="material-symbols-outlined text-[16px]">menu_book</span>
+          <span>Manual</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== VIEW 1: ESTÚDIO INTERATIVO ==================== -->
+  <main id="view-studio" class="flex-1 max-w-7xl w-full mx-auto px-6 py-8 space-y-8 relative z-10">
+
+    <!-- Top Overview Banner -->
+    <div class="bg-gradient-to-r from-[#111714] via-[#141C18] to-[#111714] border border-white/8 rounded-3xl p-6 relative overflow-hidden shadow-xl">
+      <div class="absolute right-0 top-0 bottom-0 w-1/3 bg-gradient-to-l from-mint/10 to-transparent pointer-events-none"></div>
+      <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div class="space-y-2 max-w-2xl">
+          <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-mint/10 text-mint text-xs font-mono font-semibold border border-mint/20">
+            <span class="material-symbols-outlined text-xs">auto_awesome</span>
+            Paleta Obsidian &amp; Electric Mint · Padrão 2026
+          </div>
+          <h2 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight">
+            Navegue pelo Ecossistema Interativo do NeatStream
+          </h2>
+          <p class="text-sm text-gray-400 leading-relaxed">
+            Experimente o app no simulador de smartphone com <strong>Floating Capsule Dock</strong>, visualização de consumo, conexão segura e confirmação de cancelamento.
+          </p>
+        </div>
+
+        <!-- Metric Counter Callout -->
+        <div class="bg-[#080C0A]/90 border border-white/10 rounded-2xl p-4 shrink-0 flex items-center gap-4">
+          <div class="w-12 h-12 rounded-xl bg-mint/10 border border-mint/30 flex items-center justify-center text-mint">
+            <span class="material-symbols-outlined text-2xl">savings</span>
+          </div>
+          <div>
+            <p class="font-mono text-xl font-bold text-mint">R$ 526,80 / ano</p>
+            <p class="text-xs text-gray-400">Economia calculada no Disney+</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Viewport Studio Controls & Chassis -->
+    <section class="space-y-4">
+      <!-- Toolbar -->
+      <div class="flex flex-wrap items-center justify-between gap-4 bg-[#111714] border border-white/8 rounded-2xl p-3 shadow-lg">
+        <!-- Device Mode Switcher -->
+        <div class="flex items-center gap-1.5 bg-[#080C0A] p-1 rounded-xl border border-white/5">
+          <button id="btn-mode-mobile" onclick="setDeviceMode('mobile')" class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold bg-mint text-obsidian shadow-sm transition-all cursor-pointer">
+            <span class="material-symbols-outlined text-sm">smartphone</span>
+            <span>Simulador Mobile</span>
+          </button>
+          <button id="btn-mode-desktop" onclick="setDeviceMode('desktop')" class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white transition-all cursor-pointer">
+            <span class="material-symbols-outlined text-sm">laptop_mac</span>
+            <span>Web Desktop</span>
+          </button>
+        </div>
+
+        <!-- Screen Selectors -->
+        <div id="screen-selector-container" class="flex flex-wrap items-center gap-1.5">
+          <!-- Populated by JS -->
+        </div>
+
+        <!-- Utility Actions -->
+        <div class="flex items-center gap-2">
+          <button onclick="reloadActiveFrame()" title="Recarregar tela" class="p-2 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 transition-colors cursor-pointer">
+            <span class="material-symbols-outlined text-sm">refresh</span>
+          </button>
+          <a id="btn-open-external" href="mobile/carteira_dark.html" target="_blank" title="Abrir em Nova Aba" class="flex items-center gap-1 px-3.5 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-xs text-gray-300 hover:text-white font-semibold transition-colors">
+            <span>Tela Cheia</span>
+            <span class="material-symbols-outlined text-xs">open_in_new</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Frame Display Area -->
+      <div class="min-h-[880px] bg-gradient-to-b from-[#0B0F0D] to-[#080C0A] border border-white/8 rounded-3xl p-6 md:p-10 flex flex-col items-center justify-center relative overflow-hidden shadow-inner">
+        
+        <!-- Mobile Simulator Chassis -->
+        <div id="mobile-container" class="mobile-chassis transition-all duration-300">
+          <div class="dynamic-island">
+            <div class="dynamic-island-cam"></div>
+          </div>
+          <div class="mobile-statusbar">
+            <span id="mobile-clock">20:45</span>
+            <div class="flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-[13px]">signal_cellular_4_bar</span>
+              <span class="material-symbols-outlined text-[13px]">wifi</span>
+              <span class="material-symbols-outlined text-[13px]">battery_full</span>
+            </div>
+          </div>
+          <div class="flex-1 w-full h-[calc(100%-44px)] relative overflow-hidden">
+            <iframe id="mobile-iframe" class="preview-iframe" src="mobile/carteira_dark.html"></iframe>
+          </div>
+        </div>
+
+        <!-- Desktop Simulator Chassis (Hidden by default) -->
+        <div id="desktop-container" class="desktop-chassis hidden transition-all duration-300">
+          <div class="h-10 bg-[#0B0F0D] border-b border-white/5 px-4 flex items-center justify-between select-none">
+            <div class="flex items-center gap-2">
+              <div class="w-3 h-3 rounded-full bg-[#FF5F56]"></div>
+              <div class="w-3 h-3 rounded-full bg-[#FFBD2E]"></div>
+              <div class="w-3 h-3 rounded-full bg-[#27C93F]"></div>
+            </div>
+            <div class="flex items-center gap-2 bg-[#111714] border border-white/5 px-4 py-1 rounded-full text-xs text-gray-400 font-mono w-1/2 justify-center">
+              <span class="material-symbols-outlined text-xs text-mint">lock</span>
+              <span id="desktop-url-display">https://neatstream.app/web/landing.html</span>
+            </div>
+            <div class="w-12"></div>
+          </div>
+          <div class="flex-1 w-full h-[calc(100%-40px)] relative">
+            <iframe id="desktop-iframe" class="preview-iframe" src="web/landing.html"></iframe>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- ==================== VIEW 2: GALERIA COMPARATIVA ==================== -->
+  <main id="view-comparative" class="hidden flex-1 max-w-7xl w-full mx-auto px-6 py-8 space-y-10 relative z-10">
+
+    <!-- Comparative Header -->
+    <div class="bg-gradient-to-r from-[#111714] via-[#141C18] to-[#111714] border border-white/8 rounded-3xl p-6 relative overflow-hidden shadow-xl">
+      <div class="space-y-2 max-w-3xl">
+        <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-mint/10 text-mint text-xs font-mono font-semibold border border-mint/20">
+          <span class="material-symbols-outlined text-xs">verified</span>
+          Auditoria &amp; Avaliação de Adequação Estética
+        </div>
+        <h2 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight">
+          Comparação Direta: Referências vs. Telas Produzidas
+        </h2>
+        <p class="text-sm text-gray-400 leading-relaxed">
+          Abaixo estão as 7 referências de inspiração que você compartilhou comparadas lado a lado com os <em>prints</em> reais gerados das nossas telas do NeatStream.
+        </p>
+      </div>
+    </div>
+
+    <!-- Comparative Grid -->
+    <div class="space-y-12">
+
+      <!-- PAR 1: Carteira & Econômetro vs. Ref 5 (Fintech Portfolio) & Ref 1 (Sports Dock) -->
+      <section class="spotlight-card rounded-3xl p-6 md:p-8 space-y-6">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/5 pb-4">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="px-2.5 py-0.5 rounded-full bg-mint/15 text-mint font-mono font-bold text-xs">Comparativo 1</span>
+              <h3 class="text-xl font-bold text-white">Carteira &amp; Econômetro vs. Referência Fintech 2026</h3>
+            </div>
+            <p class="text-xs text-gray-400 mt-1">Incorporação de: Gráfico de barras com destaque verde neon, barra de alocação segmentada e Floating Capsule Dock.</p>
+          </div>
+          <span class="px-3 py-1 rounded-full bg-mint/10 text-mint text-xs font-bold border border-mint/20 self-start md:self-auto">
+            100% Adequado ao Padrão
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+          <!-- Coluna Esquerda: Referência do Usuário -->
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-gray-400 uppercase tracking-wider font-mono">Sua Referência (Ref 5: Fintech Portfolio)</span>
+              <span class="text-[11px] text-gray-500 font-mono">uixalamin.co 2026</span>
+            </div>
+            <div class="rounded-2xl overflow-hidden border border-white/10 bg-[#080C0A] p-2 shadow-2xl">
+              <img src="references/ref5_fintech_portfolio.png" alt="Referência Fintech Portfolio" class="w-full h-auto rounded-xl object-contain"/>
+            </div>
+            <div class="text-xs text-gray-400 space-y-1 bg-[#080C0A] p-3 rounded-xl border border-white/5">
+              <p><strong class="text-white">Padrões Extraídos:</strong> Gráfico minimalista de 6 barras verticais com hero bar verde neon, seletor de períodos em pílulas, barra de alocação no topo e dock flutuante inferior.</p>
+            </div>
+          </div>
+
+          <!-- Coluna Direita: Print Real da Nossa Tela -->
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-mint uppercase tracking-wider font-mono">Nosso Print Real (NeatStream Carteira)</span>
+              <a href="mobile/carteira_dark.html" target="_blank" class="text-[11px] text-mint hover:underline font-mono">Abrir tela ↗</a>
+            </div>
+            <div class="rounded-2xl overflow-hidden border border-mint/30 bg-[#080C0A] p-2 shadow-[0_0_30px_rgba(0,229,153,0.15)]">
+              <img src="screenshots/mobile_carteira_dark.png" alt="Print NeatStream Carteira Dark" class="w-full h-auto rounded-xl object-contain"/>
+            </div>
+            <div class="text-xs text-gray-400 space-y-1 bg-[#080C0A] p-3 rounded-xl border border-white/5">
+              <p><strong class="text-mint">Como Implementamos:</strong> Fundo Obsidian `#080C0A`, gráfico de 6 meses de ociosidade com o mês atual destacado em neon `#00E599`, barra de streaming, e Floating Capsule Dock flutuante.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PAR 2: Descoberta "Hoje" vs. Ref 1 (Sports Gaming) & Ref 4 (Plant IoT) -->
+      <section class="spotlight-card rounded-3xl p-6 md:p-8 space-y-6">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/5 pb-4">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="px-2.5 py-0.5 rounded-full bg-mint/15 text-mint font-mono font-bold text-xs">Comparativo 2</span>
+              <h3 class="text-xl font-bold text-white">Descoberta "Hoje" vs. Referências de Gaming &amp; IoT</h3>
+            </div>
+            <p class="text-xs text-gray-400 mt-1">Incorporação de: Card cinematográfico com cantos `rounded-3xl`, iluminação traseira bioluminescente e badge de avaliação.</p>
+          </div>
+          <span class="px-3 py-1 rounded-full bg-mint/10 text-mint text-xs font-bold border border-mint/20 self-start md:self-auto">
+            100% Adequado ao Padrão
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+          <!-- Coluna Esquerda: Referências -->
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-gray-400 uppercase tracking-wider font-mono">Sua Referência (Ref 1 &amp; Ref 4)</span>
+              <span class="text-[11px] text-gray-500 font-mono">Gaming &amp; Nature Plant</span>
+            </div>
+            <div class="rounded-2xl overflow-hidden border border-white/10 bg-[#080C0A] p-2 shadow-2xl">
+              <img src="references/ref1_sports_app.png" alt="Referência App Esportes" class="w-full h-auto rounded-xl object-contain"/>
+            </div>
+            <div class="text-xs text-gray-400 space-y-1 bg-[#080C0A] p-3 rounded-xl border border-white/5">
+              <p><strong class="text-white">Padrões Extraídos:</strong> Fundo escuro com halo verde, badge de nota comunitária em pílula, botões com alto relevo tátil e dock flutuante.</p>
+            </div>
+          </div>
+
+          <!-- Coluna Direita: Print Real -->
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-mint uppercase tracking-wider font-mono">Nosso Print Real (NeatStream Hoje)</span>
+              <a href="mobile/hoje.html" target="_blank" class="text-[11px] text-mint hover:underline font-mono">Abrir tela ↗</a>
+            </div>
+            <div class="rounded-2xl overflow-hidden border border-mint/30 bg-[#080C0A] p-2 shadow-[0_0_30px_rgba(0,229,153,0.15)]">
+              <img src="screenshots/mobile_hoje.png" alt="Print NeatStream Hoje" class="w-full h-auto rounded-xl object-contain"/>
+            </div>
+            <div class="text-xs text-gray-400 space-y-1 bg-[#080C0A] p-3 rounded-xl border border-white/5">
+              <p><strong class="text-mint">Como Implementamos:</strong> Spotlight único de *O Urso* com badge `9.1 ★`, ambient glow difuso, 3 alternativas em bento cards e Floating Capsule Dock ativa.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PAR 3: Web Landing Page vs. Ref 2 (Mintro Web) & Ref 3 (Nytasco Bento) -->
+      <section class="spotlight-card rounded-3xl p-6 md:p-8 space-y-6">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/5 pb-4">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="px-2.5 py-0.5 rounded-full bg-mint/15 text-mint font-mono font-bold text-xs">Comparativo 3</span>
+              <h3 class="text-xl font-bold text-white">Web Landing Page vs. Referência Mintro &amp; Nytasco Bento</h3>
+            </div>
+            <p class="text-xs text-gray-400 mt-1">Incorporação de: Hero com iluminação esmeralda difusa, cartão virtual de controle em perspectiva e bento grid de valor.</p>
+          </div>
+          <span class="px-3 py-1 rounded-full bg-mint/10 text-mint text-xs font-bold border border-mint/20 self-start md:self-auto">
+            100% Adequado ao Padrão
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+          <!-- Coluna Esquerda: Referência Mintro -->
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-gray-400 uppercase tracking-wider font-mono">Sua Referência (Ref 2: Mintro Landing)</span>
+              <span class="text-[11px] text-gray-500 font-mono">Personal Money Manager</span>
+            </div>
+            <div class="rounded-2xl overflow-hidden border border-white/10 bg-[#080C0A] p-2 shadow-2xl">
+              <img src="references/ref2_mintro_web.png" alt="Referência Mintro Web" class="w-full h-auto rounded-xl object-contain"/>
+            </div>
+            <div class="text-xs text-gray-400 space-y-1 bg-[#080C0A] p-3 rounded-xl border border-white/5">
+              <p><strong class="text-white">Padrões Extraídos:</strong> Hero limpo com glow esmeralda central, cartão em gradiente flutuante com chip de cartão e tipografia de alto impacto.</p>
+            </div>
+          </div>
+
+          <!-- Coluna Direita: Print Real Landing -->
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-mint uppercase tracking-wider font-mono">Nosso Print Real (NeatStream Landing Page)</span>
+              <a href="web/landing.html" target="_blank" class="text-[11px] text-mint hover:underline font-mono">Abrir tela ↗</a>
+            </div>
+            <div class="rounded-2xl overflow-hidden border border-mint/30 bg-[#080C0A] p-2 shadow-[0_0_30px_rgba(0,229,153,0.15)]">
+              <img src="screenshots/web_landing.png" alt="Print NeatStream Landing Page" class="w-full h-auto rounded-xl object-contain"/>
+            </div>
+            <div class="text-xs text-gray-400 space-y-1 bg-[#080C0A] p-3 rounded-xl border border-white/5">
+              <p><strong class="text-mint">Como Implementamos:</strong> Cartão virtual "NeatStream Pass" em gradiente esmeralda fluido, indicador de Econômetro integrado e bento grid de 3 pilares inspirado na Nytasco.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PAR 4: Confirmação de Cancelamento e Economia -->
+      <section class="spotlight-card rounded-3xl p-6 md:p-8 space-y-6">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/5 pb-4">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="px-2.5 py-0.5 rounded-full bg-mint/15 text-mint font-mono font-bold text-xs">Comparativo 4</span>
+              <h3 class="text-xl font-bold text-white">Confirmação de Cancelamento e Economia</h3>
+            </div>
+            <p class="text-xs text-gray-400 mt-1">Processo de cancelamento simples, transparente e com visualização imediata da economia gerada.</p>
+          </div>
+          <span class="px-3 py-1 rounded-full bg-mint/10 text-mint text-xs font-bold border border-mint/20 self-start md:self-auto">
+            100% Adequado ao Padrão
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+          <!-- Coluna Esquerda: Print Real Cancelamento -->
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-mint uppercase tracking-wider font-mono">Print Real: Cancelamento Concluído</span>
+              <a href="mobile/celebracao.html" target="_blank" class="text-[11px] text-mint hover:underline font-mono">Abrir tela ↗</a>
+            </div>
+            <div class="rounded-2xl overflow-hidden border border-mint/30 bg-[#080C0A] p-2 shadow-[0_0_30px_rgba(0,229,153,0.15)]">
+              <img src="screenshots/mobile_celebracao.png" alt="Print NeatStream Cancelamento" class="w-full h-auto rounded-xl object-contain"/>
+            </div>
+          </div>
+
+          <!-- Coluna Direita: Detalhamento da Decisão de Design -->
+          <div class="space-y-4 bg-[#080C0A] p-6 rounded-2xl border border-white/8">
+            <h4 class="text-sm font-bold text-white flex items-center gap-2">
+              <span class="material-symbols-outlined text-mint">verified</span>
+              Decisões de Design Comerciais
+            </h4>
+            <ul class="text-xs text-gray-300 space-y-3">
+              <li class="flex items-start gap-2">
+                <span class="text-mint font-bold">1.</span>
+                <span><strong>Destaque da Economia Anual:</strong> Contador limpo de `R$ 526,80 / ano` em Electric Mint com alta legibilidade.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-mint font-bold">2.</span>
+                <span><strong>Impacto Imediato no Bolso:</strong> Visualização da redução do gasto mensal de R$ 142,60 para R$ 98,70.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-mint font-bold">3.</span>
+                <span><strong>Acesso Garantido:</strong> Informação clara sobre o período restante com acesso mantido até a renovação.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-mint font-bold">4.</span>
+                <span><strong>Zero Burocracia:</strong> Cancelamento direto em 1 clique sem formulários extensos.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- PAR 5: Catálogo & Descoberta Streaming vs. iNox Movie Streaming App (Ref 6) -->
+      <section class="spotlight-card rounded-3xl p-6 md:p-8 space-y-6">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/5 pb-4">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="px-2.5 py-0.5 rounded-full bg-mint/15 text-mint font-mono font-bold text-xs">Comparativo 5</span>
+              <h3 class="text-xl font-bold text-white">Catálogo &amp; Descoberta vs. iNox Streaming App</h3>
+            </div>
+            <p class="text-xs text-gray-400 mt-1">Incorporação de: Pílulas de categorias horizontais (Todos, Séries, Filmes, Em Alta), gradiente radial cinematográfico com paginação e showcase de pôsteres angulares no onboarding.</p>
+          </div>
+          <span class="px-3 py-1 rounded-full bg-mint/10 text-mint text-xs font-bold border border-mint/20 self-start md:self-auto">
+            100% Adequado ao Padrão
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+          <!-- Coluna Esquerda: Referência do Usuário (iNox) -->
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-gray-400 uppercase tracking-wider font-mono">Referência 6: iNox Movie Streaming</span>
+              <span class="text-[11px] text-gray-500 font-mono">Dribbble / Kretya</span>
+            </div>
+            <div class="rounded-2xl overflow-hidden border border-white/10 bg-[#080C0A] p-2">
+              <img src="references/ref6_inox_art.png" alt="Referência iNox" class="w-full h-auto rounded-xl object-contain"/>
+            </div>
+            <div class="text-xs text-gray-400 space-y-1 bg-[#080C0A] p-3 rounded-xl border border-white/5">
+              <p><strong class="text-white">Padrões Identificados:</strong> Grade de pôsteres com rotação 3D no onboarding, seletor de categorias em pílula, hero cinematográfico sem cortes e navegação em cápsula.</p>
+            </div>
+          </div>
+
+          <!-- Coluna Direita: Print Real NeatStream -->
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-mint uppercase tracking-wider font-mono">Print Real: Descoberta &amp; Onboarding</span>
+              <a href="mobile/hoje.html" target="_blank" class="text-[11px] text-mint hover:underline font-mono">Abrir tela ↗</a>
+            </div>
+            <div class="rounded-2xl overflow-hidden border border-mint/30 bg-[#080C0A] p-2 shadow-[0_0_30px_rgba(0,229,153,0.15)]">
+              <img src="screenshots/mobile_hoje.png" alt="Print NeatStream Descoberta Hoje" class="w-full h-auto rounded-xl object-contain"/>
+            </div>
+            <div class="text-xs text-gray-400 space-y-1 bg-[#080C0A] p-3 rounded-xl border border-white/5">
+              <p><strong class="text-mint">Como Implementamos:</strong> Pílulas de filtro de topo, hero imersivo com vinheta escura profunda, indicadores de paginação e pôsteres flutuantes no onboarding.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PAR 6: Recomendações Comunitárias & Onde Assistir vs. Social Movie App (Ref 7) -->
+      <section class="spotlight-card rounded-3xl p-6 md:p-8 space-y-6">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/5 pb-4">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="px-2.5 py-0.5 rounded-full bg-mint/15 text-mint font-mono font-bold text-xs">Comparativo 6</span>
+              <h3 class="text-xl font-bold text-white">Comunidade &amp; Onde Assistir vs. Social Movie App</h3>
+            </div>
+            <p class="text-xs text-gray-400 mt-1">Incorporação de: Floating Dock "Onde Assistir Agora" com redirecionamento direto, reações emocionais comunitárias (🔥 Intenso, ✨ Inspirador), prova social de amigos e Roleta de Escolha Rápida.</p>
+          </div>
+          <span class="px-3 py-1 rounded-full bg-mint/10 text-mint text-xs font-bold border border-mint/20 self-start md:self-auto">
+            100% Adequado ao Padrão
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+          <!-- Coluna Esquerda: Referência do Usuário (Social Movie) -->
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-gray-400 uppercase tracking-wider font-mono">Referência 7: Social Movie App</span>
+              <span class="text-[11px] text-gray-500 font-mono">Dribbble / Artspire</span>
+            </div>
+            <div class="rounded-2xl overflow-hidden border border-white/10 bg-[#080C0A] p-2">
+              <img src="references/ref7_social_movie_art.png" alt="Referência Social Movie" class="w-full h-auto rounded-xl object-contain"/>
+            </div>
+            <div class="text-xs text-gray-400 space-y-1 bg-[#080C0A] p-3 rounded-xl border border-white/5">
+              <p><strong class="text-white">Padrões Identificados:</strong> Dock flutuante "Watch Now On" com logos das plataformas, tags de reações emotivas com emojis, ranking comunitário e "Roulette" para decisão rápida.</p>
+            </div>
+          </div>
+
+          <!-- Coluna Direita: Print Real NeatStream -->
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-mint uppercase tracking-wider font-mono">Print Real: Dock Onde Assistir &amp; Roleta</span>
+              <a href="mobile/hoje.html" target="_blank" class="text-[11px] text-mint hover:underline font-mono">Abrir tela ↗</a>
+            </div>
+            <div class="rounded-2xl overflow-hidden border border-mint/30 bg-[#080C0A] p-2 shadow-[0_0_30px_rgba(0,229,153,0.15)]">
+              <img src="screenshots/mobile_hoje.png" alt="Print NeatStream Onde Assistir" class="w-full h-auto rounded-xl object-contain"/>
+            </div>
+            <div class="text-xs text-gray-400 space-y-1 bg-[#080C0A] p-3 rounded-xl border border-white/5">
+              <p><strong class="text-mint">Como Implementamos:</strong> Dock flutuante "Onde Assistir Agora" com logo da Disney+, reações emocionais (`🔥 Intenso`, `✨ Inspirador`), badge social ("14 amigos recomendam") e modal interativo da Roleta de Escolha Rápida.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Script de Controle do Hub -->
+  <script>
+    // Tab switching between Interactive Studio and Comparative Gallery
+    function switchMainTab(tab) {
+      const viewStudio = document.getElementById('view-studio');
+      const viewComparative = document.getElementById('view-comparative');
+      const tabStudio = document.getElementById('tab-studio');
+      const tabComparative = document.getElementById('tab-comparative');
+
+      if (tab === 'studio') {
+        viewStudio.classList.remove('hidden');
+        viewComparative.classList.add('hidden');
+        tabStudio.className = "px-4 py-2 rounded-xl text-xs font-bold bg-mint text-obsidian shadow-[0_0_15px_rgba(0,229,153,0.3)] transition-all cursor-pointer flex items-center gap-1.5";
+        tabComparative.className = "px-4 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-white transition-all cursor-pointer flex items-center gap-1.5";
+      } else {
+        viewStudio.classList.add('hidden');
+        viewComparative.classList.remove('hidden');
+        tabComparative.className = "px-4 py-2 rounded-xl text-xs font-bold bg-mint text-obsidian shadow-[0_0_15px_rgba(0,229,153,0.3)] transition-all cursor-pointer flex items-center gap-1.5";
+        tabStudio.className = "px-4 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-white transition-all cursor-pointer flex items-center gap-1.5";
+      }
+    }
+
+    // Screens configuration
+    const mobileScreens = [
+      { id: 'mobile_carteira_dark', label: 'Carteira (Dark)', url: 'mobile/carteira_dark.html' },
+      { id: 'mobile_hoje', label: 'Hoje (Descoberta)', url: 'mobile/hoje.html' },
+      { id: 'mobile_celebracao', label: 'Celebração Cancelamento', url: 'mobile/celebracao.html' },
+      { id: 'mobile_onboarding', label: 'Onboarding Seguro', url: 'mobile/onboarding.html' },
+      { id: 'mobile_carteira_light', label: 'Carteira (Light)', url: 'mobile/carteira_light.html' },
+    ];
+
+    const desktopScreens = [
+      { id: 'web_landing', label: 'Landing Page Hero', url: 'web/landing.html' },
+      { id: 'web_dashboard_dark', label: 'Dashboard Gestão', url: 'web/dashboard_dark.html' },
+      { id: 'web_dashboard_light', label: 'Dashboard (Light)', url: 'web/dashboard_light.html' },
+    ];
+
+    let currentMode = 'mobile';
+    let currentScreenUrl = 'mobile/carteira_dark.html';
+
+    function setDeviceMode(mode) {
+      currentMode = mode;
+      const btnMobile = document.getElementById('btn-mode-mobile');
+      const btnDesktop = document.getElementById('btn-mode-desktop');
+      const mobileContainer = document.getElementById('mobile-container');
+      const desktopContainer = document.getElementById('desktop-container');
+
+      if (mode === 'mobile') {
+        btnMobile.className = "flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold bg-mint text-obsidian shadow-sm transition-all cursor-pointer";
+        btnDesktop.className = "flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white transition-all cursor-pointer";
+        mobileContainer.classList.remove('hidden');
+        desktopContainer.classList.add('hidden');
+        loadScreenSelectors(mobileScreens);
+        loadScreen(mobileScreens[0].url);
+      } else {
+        btnDesktop.className = "flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold bg-mint text-obsidian shadow-sm transition-all cursor-pointer";
+        btnMobile.className = "flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white transition-all cursor-pointer";
+        mobileContainer.classList.add('hidden');
+        desktopContainer.classList.remove('hidden');
+        loadScreenSelectors(desktopScreens);
+        loadScreen(desktopScreens[0].url);
+      }
+    }
+
+    function loadScreenSelectors(screens) {
+      const container = document.getElementById('screen-selector-container');
+      container.innerHTML = '';
+      screens.forEach((screen, index) => {
+        const btn = document.createElement('button');
+        btn.textContent = screen.label;
+        btn.id = 'sel-' + screen.id;
+        btn.className = index === 0
+          ? "px-3 py-1.5 rounded-lg text-xs font-bold bg-white/10 text-mint border border-mint/30 transition-all cursor-pointer"
+          : "px-3 py-1.5 rounded-lg text-xs font-medium text-gray-400 hover:text-white hover:bg-white/5 transition-all cursor-pointer";
+        btn.onclick = () => {
+          document.querySelectorAll('#screen-selector-container button').forEach(b => {
+            b.className = "px-3 py-1.5 rounded-lg text-xs font-medium text-gray-400 hover:text-white hover:bg-white/5 transition-all cursor-pointer";
+          });
+          btn.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-white/10 text-mint border border-mint/30 transition-all cursor-pointer";
+          loadScreen(screen.url);
+        };
+        container.appendChild(btn);
+      });
+    }
+
+    function loadScreen(url) {
+      currentScreenUrl = url;
+      document.getElementById('btn-open-external').href = url;
+      if (currentMode === 'mobile') {
+        document.getElementById('mobile-iframe').src = url;
+      } else {
+        document.getElementById('desktop-iframe').src = url;
+        document.getElementById('desktop-url-display').textContent = 'https://neatstream.app/' + url;
+      }
+    }
+
+    function reloadActiveFrame() {
+      if (currentMode === 'mobile') {
+        document.getElementById('mobile-iframe').src = currentScreenUrl;
+      } else {
+        document.getElementById('desktop-iframe').src = currentScreenUrl;
+      }
+    }
+
+    // Modal Tokens
+    function toggleTokensModal() {
+      alert("Design Tokens NeatStream v2.0.0 (DTCG Standard):\n• Fundo Obsidian: #080C0A (Surface: #111714)\n• Acento Primário: Electric Mint (#00E599)\n• Warning Disambiguado: #FF9838 (ícone triângulo + alerta)\n• Gamificação Gold: #F5B84C (borda dupla + troféu/estrela)\n• Tipografia: Sora (Display) / Inter (UI/Body) / IBM Plex Mono (tnum)\n• Estados: Ativo, Pausado, Ocioso/Cancelado\n• Acessibilidade: Contraste WCAG AA/AAA auditado par a par.");
+    }
+
+    // Initialize
+    loadScreenSelectors(mobileScreens);
+
+    // Live clock in mobile status bar
+    function updateClock() {
+      const now = new Date();
+      const h = String(now.getHours()).padStart(2, '0');
+      const m = String(now.getMinutes()).padStart(2, '0');
+      document.getElementById('mobile-clock').textContent = h + ':' + m;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // Spotlight cursor tracking
+    document.querySelectorAll('.spotlight-card').forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        card.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
+        card.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html class="dark" lang="pt-BR">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+  <title>NeatStream - Descobrir &amp; Streaming</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet"/>
+
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            obsidian: {
+              DEFAULT: '#080C0A',
+              card: '#111714',
+              surface: '#151E19',
+              border: 'rgba(255, 255, 255, 0.08)',
+            },
+            mint: {
+              DEFAULT: '#00E599',
+              light: '#34F5B2',
+              glow: 'rgba(0, 229, 153, 0.25)',
+              dim: '#0D3827',
+              dark: '#05DF85'
+            },
+            warning: {
+              DEFAULT: '#FF9838',
+              dim: 'rgba(255, 152, 56, 0.15)'
+            },
+            gold: {
+              DEFAULT: '#F5B84C',
+              dim: 'rgba(245, 184, 76, 0.15)'
+            }
+          },
+          fontFamily: {
+            headline: ["'Sora'", "sans-serif"],
+            sans: ["'Inter'", "sans-serif"],
+            mono: ["'IBM Plex Mono'", "monospace"],
+          }
+        },
+      },
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #080C0A;
+      color: #E2E8F0;
+      font-family: 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    :focus-visible {
+      outline: 2px solid #00E599;
+      outline-offset: 2px;
+    }
+
+    .ambient-glow {
+      position: fixed;
+      top: -120px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 540px;
+      height: 480px;
+      background: radial-gradient(circle, rgba(0, 229, 153, 0.16) 0%, rgba(5, 223, 133, 0.03) 55%, transparent 75%);
+      pointer-events-none;
+      z-index: 0;
+    }
+
+    :root {
+      --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .card-sheen {
+      position: relative;
+      background: #111714;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      transition: all 0.28s var(--ease-spring);
+    }
+    .card-sheen:hover {
+      border-color: rgba(0, 229, 153, 0.35);
+    }
+
+    .spring-interactive {
+      transition: transform 0.28s var(--ease-spring), box-shadow 0.28s var(--ease-spring), background-color 0.2s ease, border-color 0.2s ease;
+    }
+    .spring-interactive:active {
+      transform: scale(0.96);
+    }
+
+    .dock-glass {
+      background: rgba(14, 20, 17, 0.92);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8), 0 0 24px rgba(0, 229, 153, 0.1);
+    }
+
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+
+<body class="selection:bg-mint/30 relative">
+  <div class="ambient-glow"></div>
+
+  <!-- Top App Bar (Padrão iNox: Logo + Saudação + Avatar + Econômetro) -->
+  <header class="sticky top-0 z-40 bg-[#080C0A]/95 backdrop-blur-md border-b border-white/5 px-4 py-3">
+    <div class="max-w-[390px] mx-auto flex items-center justify-between">
+      <div class="flex items-center gap-2.5">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-mint/20 to-mint/5 border border-mint/40 flex items-center justify-center text-mint font-bold text-sm shadow-[0_0_12px_rgba(0,229,153,0.2)]">
+          <span class="material-symbols-outlined text-xl">play_arrow</span>
+        </div>
+        <div>
+          <span class="text-[10px] font-mono text-gray-400 block leading-tight">HUB DE STREAMING</span>
+          <h1 class="text-base font-extrabold text-white tracking-tight font-headline">Neat<span class="text-mint">Stream</span></h1>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <!-- Econômetro Quick Pill -->
+        <a href="carteira_dark.html" title="Abrir Carteira &amp; Econômetro" class="flex items-center gap-1.5 bg-[#111714] border border-white/10 hover:border-mint/40 px-2.5 py-1.5 rounded-full transition-all">
+          <span class="w-2 h-2 rounded-full bg-mint animate-pulse"></span>
+          <span class="font-mono text-xs font-bold text-white">R$ 142<span class="text-gray-400 text-[10px]">/180</span></span>
+        </a>
+
+        <!-- Monograma Minimalista -->
+        <div class="w-8 h-8 rounded-full bg-[#16201B] border border-mint/30 flex items-center justify-center text-mint font-bold text-xs font-mono">
+          LS
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-[390px] mx-auto px-4 pt-2 pb-44 space-y-6 relative z-10">
+
+    <!-- Category Filter Pills (Inspirado no iNox: All, Shows, Movies, Sport) -->
+    <div class="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
+      <button class="bg-mint text-obsidian font-bold text-xs px-4 py-2 rounded-full shrink-0 shadow-[0_0_14px_rgba(0,229,153,0.35)] transition-all">
+        Todos
+      </button>
+      <button class="bg-[#111714] border border-white/10 hover:border-mint/30 text-gray-300 text-xs px-3.5 py-2 rounded-full shrink-0 transition-colors">
+        Séries
+      </button>
+      <button class="bg-[#111714] border border-white/10 hover:border-mint/30 text-gray-300 text-xs px-3.5 py-2 rounded-full shrink-0 transition-colors">
+        Filmes
+      </button>
+      <button class="bg-[#111714] border border-white/10 hover:border-mint/30 text-gray-300 text-xs px-3.5 py-2 rounded-full shrink-0 transition-colors">
+        Em Alta
+      </button>
+      <button class="bg-[#111714] border border-white/10 hover:border-mint/30 text-gray-300 text-xs px-3.5 py-2 rounded-full shrink-0 transition-colors">
+        Mais Votados
+      </button>
+    </div>
+
+    <!-- CINEMATIC HERO SPOTLIGHT (Inspirado no iNox: Transição Radial, Título Grande e Botão Pill) -->
+    <section class="relative rounded-3xl overflow-hidden border border-white/10 shadow-2xl group">
+      <!-- Imagem de Fundo em Altíssima Definição -->
+      <div class="relative w-full h-[400px]">
+        <img alt="O Urso Temporada 3" class="w-full h-full object-cover group-hover:scale-103 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_nb4K_I0kGPsJ6b9WHM1r1SU4fEC-Ps76IV6PzMxaXvd3X_QJzmUfrxh7WpZ0kcWuyubElE89s2-Zv9RdjluKBsJmS1kVa-YKRzzOOToBt3ogTG9G5Ih4_EKGeiCZiDdhBuTVyc5ltjfcPgyLl-1A5kq3FLCxkXwhLQGIMO9sWBCk3mGOYu_RgxSdE2LE_Ccx5nXOf5SCKFBSAEiminzovPV8RNN4qRAMnGohsh-f19XwST9iDrtMVIvm4XbxaFHfZDuy4NSo9-Y"/>
+
+        <!-- Gradientes Cinematográficos Suaves -->
+        <div class="absolute inset-0 bg-gradient-to-t from-[#080C0A] via-[#080C0A]/60 to-transparent"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-transparent"></div>
+
+        <!-- Top Badges -->
+        <div class="absolute top-3.5 left-3.5 right-3.5 flex items-center justify-between z-20">
+          <span class="bg-[#080C0A]/85 backdrop-blur-md border border-white/15 text-white text-[11px] font-medium px-3 py-1 rounded-full flex items-center gap-1.5 shadow-md">
+            <span class="w-1.5 h-1.5 rounded-full bg-mint animate-ping"></span>
+            Destaque da Semana
+          </span>
+          <button class="w-8 h-8 rounded-full bg-[#080C0A]/80 backdrop-blur-md border border-white/15 text-gray-300 hover:text-white flex items-center justify-center transition-colors" title="Salvar título">
+            <span class="material-symbols-outlined text-[18px]">bookmark_border</span>
+          </button>
+        </div>
+
+        <!-- Bottom Hero Information (Limpo, Elegante, Estilo iNox) -->
+        <div class="absolute bottom-0 left-0 right-0 p-5 space-y-3.5 z-20">
+          <!-- Reações Emocionais e Nota Comunitária (Padrão Social Movie) -->
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-1.5">
+              <span class="bg-black/60 backdrop-blur-md border border-white/10 text-[11px] px-2.5 py-1 rounded-full text-white">🔥 Intenso</span>
+              <span class="bg-black/60 backdrop-blur-md border border-white/10 text-[11px] px-2.5 py-1 rounded-full text-white">✨ Aclamado</span>
+            </div>
+            <div class="bg-black/80 backdrop-blur-md border border-mint/40 px-2.5 py-1 rounded-full flex items-center gap-1.5 shadow-[0_0_12px_rgba(0,229,153,0.25)]">
+              <span class="material-symbols-outlined text-mint text-sm">star</span>
+              <span class="font-mono text-xs font-bold text-mint">9,1</span>
+              <span class="text-[10px] text-gray-400 font-mono">/10</span>
+            </div>
+          </div>
+
+          <div>
+            <h2 class="text-2xl font-extrabold text-white tracking-tight font-headline leading-tight">O Urso (The Bear)</h2>
+            <p class="text-xs text-gray-300 mt-1">Temporada 3 · Drama · 35 min por ep. · Disney+</p>
+          </div>
+
+          <!-- PlatformAvailabilityRow (4 Estados - Estado 1: Incluído na Assinatura) -->
+          <div class="flex items-center justify-between bg-black/60 backdrop-blur-md border border-white/10 px-3 py-2 rounded-xl text-xs">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-mint animate-pulse"></span>
+              <span class="text-white font-medium">Incluído no seu plano Disney+</span>
+            </div>
+            <span class="text-[10px] font-mono text-mint bg-mint/15 border border-mint/20 px-2 py-0.5 rounded-full font-bold">ATIVO</span>
+          </div>
+
+          <!-- Direct Watch CTA + Strategic Watchlist CTA + Roulette -->
+          <div class="flex items-center gap-2 pt-1">
+            <a href="https://www.disneyplus.com" target="_blank" rel="noopener noreferrer" class="flex-1 bg-gradient-to-r from-mint to-mint-dark text-obsidian font-bold text-xs py-3 px-3 rounded-full flex items-center justify-center gap-1.5 shadow-[0_0_20px_rgba(0,229,153,0.4)] hover:brightness-110 active:scale-98 transition-all">
+              <span class="material-symbols-outlined text-[18px]">play_arrow</span>
+              <span>Assistir</span>
+            </a>
+            <button id="btn-watchlist-hero" onclick="toggleWatchlist(this, 'O Urso')" class="flex-1 bg-[#111714]/90 border border-white/15 hover:border-mint/50 text-white font-semibold text-xs py-3 px-3 rounded-full flex items-center justify-center gap-1.5 transition-all active:scale-98" title="Adicionar à Watchlist">
+              <span class="material-symbols-outlined text-[17px] text-mint">bookmark_add</span>
+              <span>Quero Assistir</span>
+            </button>
+            <button onclick="openRouletteModal()" class="w-10 h-10 rounded-full bg-[#111714]/90 backdrop-blur-md border border-white/15 text-mint hover:text-white flex items-center justify-center hover:bg-mint/20 transition-all shrink-0" title="Roleta Rápida">
+              <span class="material-symbols-outlined text-lg">casino</span>
+            </button>
+          </div>
+
+          <!-- Pagination Dots (iNox) -->
+          <div class="flex items-center justify-center gap-1.5 pt-1">
+            <span class="w-5 h-1.5 rounded-full bg-mint"></span>
+            <span class="w-1.5 h-1.5 rounded-full bg-white/20"></span>
+            <span class="w-1.5 h-1.5 rounded-full bg-white/20"></span>
+            <span class="w-1.5 h-1.5 rounded-full bg-white/20"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ONDE ASSISTIR SEUS STREAMINGS (Inspirado no Social Movie App "Watch Now On") -->
+    <section class="space-y-3">
+      <div class="flex items-center justify-between px-1">
+        <div>
+          <h3 class="text-sm font-bold text-white tracking-tight font-headline">Onde Assistir Agora</h3>
+          <p class="text-[11px] text-gray-400">Acesse diretamente seus serviços conectados</p>
+        </div>
+        <span class="text-[10px] font-mono text-mint bg-mint/10 border border-mint/20 px-2 py-0.5 rounded-full font-bold">4 ATIVOS</span>
+      </div>
+
+      <!-- Grid de Plataformas com Redirecionamento Direto -->
+      <div class="grid grid-cols-2 gap-2.5">
+        <!-- Disney+ -->
+        <a href="https://www.disneyplus.com" target="_blank" rel="noopener noreferrer" class="bg-[#0A121A] border border-[#1E3A5F]/50 hover:border-mint/50 p-3 rounded-2xl flex items-center justify-between transition-all group">
+          <div>
+            <span class="text-xs font-bold text-blue-300 font-headline block">Disney+</span>
+            <span class="text-[10px] text-gray-400 font-mono">1 título sugerido</span>
+          </div>
+          <span class="w-7 h-7 rounded-xl bg-blue-500/10 text-blue-400 group-hover:bg-mint group-hover:text-obsidian flex items-center justify-center transition-all">
+            <span class="material-symbols-outlined text-sm">open_in_new</span>
+          </span>
+        </a>
+
+        <!-- Netflix -->
+        <a href="https://www.netflix.com" target="_blank" rel="noopener noreferrer" class="bg-[#140A0D] border border-[#4D151D]/50 hover:border-mint/50 p-3 rounded-2xl flex items-center justify-between transition-all group">
+          <div>
+            <span class="text-xs font-bold text-red-400 font-headline block">Netflix</span>
+            <span class="text-[10px] text-gray-400 font-mono">Plano Ativo</span>
+          </div>
+          <span class="w-7 h-7 rounded-xl bg-red-500/10 text-red-400 group-hover:bg-mint group-hover:text-obsidian flex items-center justify-center transition-all">
+            <span class="material-symbols-outlined text-sm">open_in_new</span>
+          </span>
+        </a>
+
+        <!-- Max -->
+        <a href="https://www.max.com" target="_blank" rel="noopener noreferrer" class="bg-[#0F0A1A] border border-[#3C1F6E]/50 hover:border-mint/50 p-3 rounded-2xl flex items-center justify-between transition-all group">
+          <div>
+            <span class="text-xs font-bold text-purple-300 font-headline block">Max</span>
+            <span class="text-[10px] text-gray-400 font-mono">Duna: Parte 2</span>
+          </div>
+          <span class="w-7 h-7 rounded-xl bg-purple-500/10 text-purple-300 group-hover:bg-mint group-hover:text-obsidian flex items-center justify-center transition-all">
+            <span class="material-symbols-outlined text-sm">open_in_new</span>
+          </span>
+        </a>
+
+        <!-- Apple TV+ -->
+        <a href="https://tv.apple.com" target="_blank" rel="noopener noreferrer" class="bg-[#0F141A] border border-[#2B3545]/50 hover:border-mint/50 p-3 rounded-2xl flex items-center justify-between transition-all group">
+          <div>
+            <span class="text-xs font-bold text-gray-200 font-headline block">Apple TV+</span>
+            <span class="text-[10px] text-gray-400 font-mono">Ruptura</span>
+          </div>
+          <span class="w-7 h-7 rounded-xl bg-white/10 text-gray-300 group-hover:bg-mint group-hover:text-obsidian flex items-center justify-center transition-all">
+            <span class="material-symbols-outlined text-sm">open_in_new</span>
+          </span>
+        </a>
+      </div>
+    </section>
+
+    <!-- CARROSSEL HORIZONTAL "PARA VOCÊ" (Inspirado no iNox: Pôsteres Verticais 2:3 em Linha) -->
+    <section class="space-y-3">
+      <div class="flex items-center justify-between px-1">
+        <div>
+          <h3 class="text-sm font-bold text-white tracking-tight font-headline">Para Você</h3>
+          <p class="text-[11px] text-gray-400">Recomendados com base na comunidade</p>
+        </div>
+        <div class="flex items-center gap-1 text-xs">
+          <button class="px-2.5 py-1 rounded-full bg-mint/15 text-mint font-bold text-[11px]">Mais Votados</button>
+          <button class="px-2.5 py-1 rounded-full text-gray-400 hover:text-white text-[11px]">Recentes</button>
+        </div>
+      </div>
+
+      <!-- Carrossel de Pôsteres Elegantes -->
+      <div class="flex gap-3 overflow-x-auto no-scrollbar -mx-4 px-4 pb-2">
+        <!-- 1. Ruptura -->
+        <div class="w-[145px] shrink-0 space-y-2 group cursor-pointer">
+          <div class="w-full h-[205px] rounded-2xl overflow-hidden border border-white/10 group-hover:border-mint/40 relative shadow-xl transition-all">
+            <img alt="Ruptura" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCcde23RErkePudSrtAJauDreKp3AwWdtq1c5LbKiRi6qXvJKbeO47LaTTDpDTCPC0K-xB-IIzAEtNdaqNjqTz8R7LBwd2WScNEBZYJxrVk5g5Njk5nDFqozHR2u4TwCQ30cQJFJzIzEgpjHb5FOQUXWfnLH7bdRD33hUlCCHlYZgG08CN8k9O8z5dgfPsOwLIeJD5kcdJzsEzz-UP1MM5GnRCRBdu_umqAbTKIV02UljX0_j4s5w625JmUV5_VEzoEADwIXLjrW30"/>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+            <span class="absolute top-2 left-2 bg-black/85 backdrop-blur-md border border-mint/40 font-mono text-[10px] text-mint px-1.5 py-0.5 rounded-md font-bold">8,9</span>
+            <span class="absolute bottom-2 left-2 text-[10px] bg-white/15 backdrop-blur-md text-white px-2 py-0.5 rounded-full font-medium">Apple TV+</span>
+          </div>
+          <div>
+            <h4 class="font-bold text-xs text-white truncate font-headline group-hover:text-mint transition-colors">Ruptura (Severance)</h4>
+            <p class="text-[10px] text-gray-400 truncate">Suspense · Ficção</p>
+          </div>
+        </div>
+
+        <!-- 2. Duna 2 -->
+        <div class="w-[145px] shrink-0 space-y-2 group cursor-pointer">
+          <div class="w-full h-[205px] rounded-2xl overflow-hidden border border-white/10 group-hover:border-mint/40 relative shadow-xl transition-all">
+            <img alt="Duna 2" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4lIyXiPK33nE14IK-ZkkgRXDdam1m6KPeGbVhnF1tdRdEisLejSdq1Z8WpfMGIUTPPvrAeq2WIW9uCL0x6liXtiyXEJwvj08oeHNjVwCO9f8unQu1m-X-6p2igFkRR9DCaZTWKfSEacaWkEXSjsRr-xcspx1bOeVSX6jK2r1b_cR8hUSHSaruP0LXWpp9IzpYwf4v4NSbhvXovzGWridAz3XykT0eF1lHDGbA-gHUdWAYi7d1M--IqogkGAp70VbnUmC-Yr_AwvQ"/>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+            <span class="absolute top-2 left-2 bg-black/85 backdrop-blur-md border border-mint/40 font-mono text-[10px] text-mint px-1.5 py-0.5 rounded-md font-bold">8,9</span>
+            <span class="absolute bottom-2 left-2 text-[10px] bg-white/15 backdrop-blur-md text-white px-2 py-0.5 rounded-full font-medium">Max</span>
+          </div>
+          <div>
+            <h4 class="font-bold text-xs text-white truncate font-headline group-hover:text-mint transition-colors">Duna: Parte 2</h4>
+            <p class="text-[10px] text-gray-400 truncate">Ficção · Cinema</p>
+          </div>
+        </div>
+
+        <!-- 3. Anatomia de uma Queda -->
+        <div class="w-[145px] shrink-0 space-y-2 group cursor-pointer">
+          <div class="w-full h-[205px] rounded-2xl overflow-hidden border border-white/10 group-hover:border-mint/40 relative shadow-xl transition-all">
+            <img alt="Anatomia de uma Queda" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCqWwB20_BWq0ykv8kYNL5pFuniTR0Ioczn44OlzTjCfQedSBRKnfxZGetCJ_uD4dyxe2SqHHRVT9yUSy5gf-4TGQ3CfIrBna9DlskFu6z0zifN-lHTcE5QTzyr5K0atKGnE_KK8PGM3lCmcasITUkwdonPc_12Chgp4QfaLH9dkZ66sbUPD0xvCYpqFf6dBmj8Utqes3WQW-r7_rR-6dBUH2ZLSC4NmsFBzXpdbs4VSGBqEoIKzCB0ZNqOvZxIRB1501AdhLPGSaY"/>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+            <span class="absolute top-2 left-2 bg-black/85 backdrop-blur-md border border-mint/40 font-mono text-[10px] text-mint px-1.5 py-0.5 rounded-md font-bold">8,7</span>
+            <span class="absolute bottom-2 left-2 text-[10px] bg-white/15 backdrop-blur-md text-white px-2 py-0.5 rounded-full font-medium">Prime Video</span>
+          </div>
+          <div>
+            <h4 class="font-bold text-xs text-white truncate font-headline group-hover:text-mint transition-colors">Anatomia de uma Queda</h4>
+            <p class="text-[10px] text-gray-400 truncate">Drama de Tribunal</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BANNER ROLETA RÁPIDA (Social Movie Ref 7: "Let the movie wheel decide") -->
+    <div onclick="openRouletteModal()" class="cursor-pointer bg-gradient-to-r from-[#111714] via-[#14261D] to-[#111714] border border-mint/30 hover:border-mint p-4 rounded-3xl flex items-center justify-between gap-4 shadow-xl transition-all group">
+      <div class="flex items-center gap-3.5">
+        <div class="w-12 h-12 rounded-2xl bg-mint/15 border border-mint/30 flex items-center justify-center text-mint group-hover:scale-108 transition-transform">
+          <span class="material-symbols-outlined text-2xl">casino</span>
+        </div>
+        <div>
+          <span class="text-[9px] bg-mint/20 text-mint px-2 py-0.5 rounded font-mono font-bold uppercase">Decisão em 1 Toque</span>
+          <h3 class="text-sm font-bold text-white font-headline mt-0.5">Roleta de Escolha Rápida</h3>
+          <p class="text-xs text-gray-400 mt-0.5">Cansado de navegar? O NeatStream sorteia para você.</p>
+        </div>
+      </div>
+      <button class="bg-mint text-obsidian font-bold text-xs px-3.5 py-2 rounded-xl shrink-0 shadow-[0_0_12px_rgba(0,229,153,0.3)] group-hover:bg-mint-dark transition-all">
+        Girar
+      </button>
+    </div>
+
+  </main>
+
+  <!-- MODAL: ROLETA DE ESCOLHA RÁPIDA (Ref 7 - Screen 3: ✕ Pular | ▶ Assistir | 🔖 Salvar) -->
+  <div id="rouletteModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-xl flex items-center justify-center p-4 hidden">
+    <div class="bg-[#111714] border border-mint/35 rounded-3xl p-6 max-w-[340px] w-full space-y-4 text-center shadow-[0_0_50px_rgba(0,229,153,0.2)] relative">
+      <button onclick="closeRouletteModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/10 text-gray-300 hover:text-white flex items-center justify-center">
+        <span class="material-symbols-outlined text-sm">close</span>
+      </button>
+
+      <div class="w-12 h-12 rounded-2xl bg-mint/20 border border-mint/40 text-mint mx-auto flex items-center justify-center">
+        <span class="material-symbols-outlined text-2xl">casino</span>
+      </div>
+
+      <div>
+        <span class="text-[10px] font-mono text-mint font-bold uppercase tracking-wider">Roleta do NeatStream</span>
+        <h3 class="text-lg font-bold text-white font-headline mt-0.5">Sua Próxima Escolha</h3>
+        <p class="text-xs text-gray-400 mt-1">A comunidade escolheu este título para resolver sua dúvida:</p>
+      </div>
+
+      <!-- Card Sorteado -->
+      <div class="bg-[#080C0A] border border-white/10 rounded-2xl p-3 flex items-center gap-3 text-left">
+        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCcde23RErkePudSrtAJauDreKp3AwWdtq1c5LbKiRi6qXvJKbeO47LaTTDpDTCPC0K-xB-IIzAEtNdaqNjqTz8R7LBwd2WScNEBZYJxrVk5g5Njk5nDFqozHR2u4TwCQ30cQJFJzIzEgpjHb5FOQUXWfnLH7bdRD33hUlCCHlYZgG08CN8k9O8z5dgfPsOwLIeJD5kcdJzsEzz-UP1MM5GnRCRBdu_umqAbTKIV02UljX0_j4s5w625JmUV5_VEzoEADwIXLjrW30" alt="Ruptura" class="w-14 h-18 rounded-xl object-cover shrink-0"/>
+        <div>
+          <span class="text-[9px] bg-mint/15 text-mint font-mono font-bold px-1.5 py-0.5 rounded">NOTA 8,9</span>
+          <h4 class="text-sm font-bold text-white font-headline mt-1">Ruptura (Severance)</h4>
+          <p class="text-[11px] text-gray-400">Apple TV+ · Suspense</p>
+        </div>
+      </div>
+
+      <!-- Decision Buttons (✕ Passar | ▶ Assistir | 🔖 Salvar) -->
+      <div class="grid grid-cols-3 gap-2 pt-2">
+        <button onclick="closeRouletteModal()" class="py-2.5 rounded-xl bg-white/5 border border-white/10 text-gray-300 hover:text-white text-xs font-semibold flex items-center justify-center gap-1">
+          <span class="material-symbols-outlined text-sm text-red-400">close</span>
+          Pular
+        </button>
+        <button onclick="window.open('https://tv.apple.com', '_blank')" class="py-2.5 rounded-xl bg-mint text-obsidian text-xs font-bold flex items-center justify-center gap-1 shadow-[0_0_12px_rgba(0,229,153,0.3)]">
+          <span class="material-symbols-outlined text-sm">play_arrow</span>
+          Assistir
+        </button>
+        <button onclick="closeRouletteModal()" class="py-2.5 rounded-xl bg-white/5 border border-white/10 text-gray-300 hover:text-white text-xs font-semibold flex items-center justify-center gap-1">
+          <span class="material-symbols-outlined text-sm text-mint">bookmark</span>
+          Salvar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Capsule Dock -->
+  <div class="fixed bottom-4 left-0 right-0 z-50 px-4 pointer-events-none">
+    <nav class="dock-glass max-w-[360px] mx-auto rounded-full py-2 px-3 flex items-center justify-between pointer-events-auto">
+      <button class="bg-mint text-obsidian font-bold text-xs px-4 py-2 rounded-full flex items-center gap-1.5 shadow-[0_0_16px_rgba(0,229,153,0.35)] cursor-pointer">
+        <span class="material-symbols-outlined text-[17px]">dashboard</span>
+        <span>Hoje</span>
+      </button>
+
+      <button onclick="openRouletteModal()" class="flex items-center justify-center w-10 h-10 rounded-full text-gray-400 hover:text-white transition-all cursor-pointer" title="Roleta Rápida">
+        <span class="material-symbols-outlined text-[20px]">casino</span>
+      </button>
+
+      <button onclick="window.location.href='carteira_dark.html'" class="flex items-center justify-center w-10 h-10 rounded-full text-gray-400 hover:text-white transition-all cursor-pointer" title="Carteira &amp; Econômetro">
+        <span class="material-symbols-outlined text-[20px]">account_balance_wallet</span>
+      </button>
+
+      <button class="flex items-center justify-center w-10 h-10 rounded-full text-gray-400 hover:text-white transition-all cursor-pointer" title="Comunidade">
+        <span class="material-symbols-outlined text-[20px]">forum</span>
+      </button>
+
+      <button class="flex items-center justify-center w-10 h-10 rounded-full text-gray-400 hover:text-white transition-all cursor-pointer" title="Ajustes">
+        <span class="material-symbols-outlined text-[20px]">settings</span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- Toast / AlertCenter (Auto-dismiss com horários calmos) -->
+  <div id="neat-toast" class="fixed top-5 left-1/2 -translate-x-1/2 z-50 transition-all duration-300 transform opacity-0 -translate-y-4 pointer-events-none max-w-[350px] w-full px-4">
+    <div class="bg-[#111714] border border-mint/40 text-white px-4 py-3 rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,0.8)] flex items-center gap-3">
+      <span class="w-8 h-8 rounded-xl bg-mint/20 text-mint flex items-center justify-center shrink-0">
+        <span class="material-symbols-outlined text-[18px]">bookmark_added</span>
+      </span>
+      <p id="neat-toast-msg" class="text-xs text-gray-200 leading-snug">Adicionado à sua Watchlist!</p>
+    </div>
+  </div>
+
+  <script>
+    function triggerHaptic(pattern = [15]) {
+      if (typeof navigator !== 'undefined' && navigator.vibrate) {
+        try { navigator.vibrate(pattern); } catch (e) {}
+      }
+    }
+
+    function openRouletteModal() {
+      triggerHaptic([25, 40, 25]);
+      document.getElementById('rouletteModal').classList.remove('hidden');
+    }
+    function closeRouletteModal() {
+      triggerHaptic([12]);
+      document.getElementById('rouletteModal').classList.add('hidden');
+    }
+
+    function toggleWatchlist(btn, title) {
+      const icon = btn.querySelector('.material-symbols-outlined');
+      const text = btn.querySelector('span:not(.material-symbols-outlined)');
+      const isSaved = btn.getAttribute('data-saved') === 'true';
+      if (!isSaved) {
+        triggerHaptic([20, 30, 20]);
+        btn.setAttribute('data-saved', 'true');
+        btn.classList.add('border-mint', 'bg-mint/15');
+        if (icon) icon.textContent = 'bookmark_added';
+        if (text) text.textContent = 'Na Watchlist';
+        showToast(`"${title}" adicionado à Watchlist! O NeatStream usará isso para calcular quais assinaturas manter.`);
+      } else {
+        triggerHaptic([15]);
+        btn.setAttribute('data-saved', 'false');
+        btn.classList.remove('border-mint', 'bg-mint/15');
+        if (icon) icon.textContent = 'bookmark_add';
+        if (text) text.textContent = 'Quero Assistir';
+        showToast(`"${title}" removido da sua Watchlist.`);
+      }
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('neat-toast');
+      const toastMsg = document.getElementById('neat-toast-msg');
+      toastMsg.textContent = msg;
+      toast.classList.remove('opacity-0', '-translate-y-4', 'pointer-events-none');
+      setTimeout(() => {
+        toast.classList.add('opacity-0', '-translate-y-4', 'pointer-events-none');
+      }, 3500);
+    }
+  </script>
+
+</body>
+</html>

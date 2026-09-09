@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Carteira &amp; Econômetro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Sora:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        bg: {
+                            ink: '#FAFBFC',
+                            surface: '#FFFFFF',
+                            raised: '#FFFFFF'
+                        },
+                        border: {
+                            subtle: '#E2E8F0',
+                            strong: '#CBD5E1'
+                        },
+                        text: {
+                            primary: '#0E1116',
+                            secondary: '#64748B',
+                        },
+                        accent: {
+                            mint: '#0E7C5B',
+                            mintGraphic: '#16A37A',
+                            lavender: '#4F46E5',
+                            gold: '#A16207',
+                        },
+                        semantic: {
+                            danger: '#DC2626',
+                            warning: '#B45309',
+                        }
+                    },
+                    fontFamily: {
+                        headline: ["Sora", "sans-serif"],
+                        display: ["Sora", "sans-serif"],
+                        body: ["Inter", "sans-serif"],
+                        label: ["Inter", "sans-serif"],
+                        sans: ["Inter", "sans-serif"],
+                        mono: ["IBM Plex Mono", "monospace"],
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #FAFBFC;
+            color: #0E1116;
+            -webkit-font-smoothing: antialiased;
+        }
+        .gauge-circle {
+            stroke-dasharray: 283;
+            stroke-dashoffset: 60; /* ~79% progress (283 * (1 - 0.79)) */
+            transition: stroke-dashoffset 1s ease-in-out;
+        }
+        /* Custom scrollbar for webview */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #E2E8F0;
+            border-radius: 4px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="font-body text-text-primary bg-bg-ink min-h-screen pb-24 selection:bg-accent-mint/30">
+<!-- Top App Bar -->
+<header class="docked full-width top-0 bg-[#FAFBFC] border-b border-[#E2E8F0] flat no shadows flex justify-between items-center w-full px-6 py-4 sticky z-40">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-slate-100 border border-emerald-600/30 flex items-center justify-center text-emerald-700 font-bold text-sm tracking-wider">
+  LS
+</div>
+<div class="flex flex-col">
+<h1 class="font-headline text-2xl font-bold text-[#0E1116]">Carteira &amp; Econômetro</h1>
+<p class="font-label text-sm text-[#64748B]">4 assinaturas ativas monitoradas</p>
+</div>
+</div>
+<div class="flex items-center gap-1">
+<a href="carteira_dark.html" title="Alternar para Tema Escuro" class="text-text-secondary hover:text-accent-mint p-2 rounded-full hover:bg-bg-surface transition-colors">
+<span class="material-symbols-outlined text-[20px]">dark_mode</span>
+</a>
+<button class="text-[#64748B] hover:opacity-80 transition-opacity active:scale-95 duration-150 p-2 rounded-full hover:bg-bg-surface">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">monitoring</span>
+</button>
+</div>
+</header>
+<main class="px-4 py-6 space-y-8 max-w-[390px] mx-auto md:max-w-md">
+<!-- Econômetro Hero Card -->
+<section class="bg-bg-surface border border-border-subtle rounded-2xl p-6 relative overflow-hidden shadow-sm">
+<!-- Decorative background blur -->
+<div class="absolute -top-10 -right-10 w-32 h-32 bg-accent-mint/10 rounded-full blur-3xl pointer-events-none"></div>
+<div class="flex flex-col items-center mb-6">
+<div class="relative w-48 h-48 flex items-center justify-center">
+<svg class="w-full h-full transform -rotate-90" viewbox="0 0 100 100">
+<!-- Background Circle -->
+<circle cx="50" cy="50" fill="none" r="45" stroke="#E2E8F0" stroke-width="6"></circle>
+<!-- Progress Circle -->
+<circle class="gauge-circle drop-shadow-[0_0_8px_rgba(22,163,122,0.3)]" cx="50" cy="50" fill="none" r="45" stroke="#16A37A" stroke-linecap="round" stroke-width="6"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+<span class="font-mono text-3xl font-bold text-text-primary tracking-tight">R$ 142,60</span>
+<span class="font-label text-xs text-text-secondary mt-1">de R$ 180,00 teto</span>
+</div>
+</div>
+<div class="mt-4 flex items-center gap-2 bg-accent-mint/10 px-4 py-2 rounded-full border border-accent-mint/20">
+<span class="material-symbols-outlined text-accent-mint text-sm" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="font-label text-sm font-medium text-accent-mint">Dentro do Limite · Margem R$ 37,40</span>
+</div>
+</div>
+<div class="bg-bg-ink rounded-xl p-4 border border-border-subtle flex items-start gap-3">
+<span class="material-symbols-outlined text-semantic-warning mt-0.5">lightbulb</span>
+<div>
+<h4 class="font-headline text-sm font-semibold text-text-primary mb-1">Economia potencial: R$ 43,90/mês</h4>
+<p class="font-label text-xs text-text-secondary">eliminando 1 serviço ocioso</p>
+</div>
+</div>
+</section>
+<!-- Subscriptions Section -->
+<section class="space-y-4">
+<div class="flex items-center justify-between px-1">
+<h2 class="font-headline text-lg font-bold text-text-primary">Suas Assinaturas <span class="text-text-secondary font-normal">(4)</span></h2>
+<button class="flex items-center gap-1.5 text-xs font-label text-text-secondary hover:text-text-primary transition-colors bg-bg-surface px-3 py-1.5 rounded-full border border-border-subtle shadow-sm">
+<span class="material-symbols-outlined text-[16px]">filter_list</span>
+                    Por ociosidade
+                </button>
+</div>
+<div class="space-y-4">
+<!-- Card 1: Disney+ (Warning) -->
+<article class="bg-bg-surface border border-semantic-warning/30 rounded-xl p-4 relative overflow-hidden group shadow-sm">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-semantic-warning"></div>
+<div class="flex justify-between items-start mb-4 pl-2">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-bg-ink border border-border-subtle flex items-center justify-center p-2">
+<img alt="Disney+" class="w-full h-full object-contain filter invert" data-alt="The Disney+ logo icon on a dark background. It features the classic curved Disney signature logo with the prominent plus sign, rendered in a clean, solid color suitable for a dark mode interface, avoiding bright distracting colors. It is centered in a slightly rounded square container." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAkpdTR0zGhgFhxihyEJ4KdDmC_jwplf3iA2gRhUq1fFngC-QXmk0X6zfqlbKSkq4Ohl5ElJmctzzgGj3lWTDMf98MYlKoRtb_xbH8Vu6yiTSayttCs9o5T788naGy40gQGLfweV4S_QD1C4SWJxIOknUYdE2X-xvnVtM_A_MRp0loQj-o5eXKr_qoCWHiBeAjgk0MRYlrqDaki3FbaDkiHXWMHYFCDw_FRZo-Sl2VWygGLuFq9n57JwE4B5gCcyGMv1x8R7BDB7tw"/>
+</div>
+<div>
+<h3 class="font-headline font-semibold text-base text-text-primary">Disney+ Premium</h3>
+<p class="font-mono text-sm text-text-secondary">R$ 43,90/mês</p>
+</div>
+</div>
+</div>
+<div class="pl-2 space-y-3">
+<div class="flex items-center justify-between text-xs font-label">
+<span class="text-text-secondary">0 horas assistidas</span>
+</div>
+<div class="w-full h-1.5 bg-[#E2E8F0] rounded-full overflow-hidden">
+<div class="h-full bg-semantic-warning w-[2%] rounded-full"></div>
+</div>
+<div class="flex items-center gap-2 bg-semantic-warning/10 text-semantic-warning px-3 py-1.5 rounded-md w-fit border border-semantic-warning/20">
+<span class="material-symbols-outlined text-[14px]">warning</span>
+<span class="text-xs font-medium">Ociosa há 38 dias</span>
+</div>
+<div class="flex items-center justify-between mt-4 pt-4 border-t border-border-subtle">
+<div class="flex flex-col">
+<span class="text-xs text-text-secondary font-label mb-0.5">Custo por hora:</span>
+<span class="font-mono text-sm text-semantic-danger font-semibold">R$ ∞</span>
+</div>
+<button onclick="window.location.href='celebracao.html'" class="bg-[#0E7C5B] hover:bg-[#0A6046] text-white font-label text-xs font-semibold px-4 py-2 rounded-lg transition-colors flex items-center gap-1.5 cursor-pointer shadow-sm">
+<span class="material-symbols-outlined text-[16px]">cancel</span>
+                                Cancelar Assistido
+                            </button>
+</div>
+</div>
+</article>
+<!-- Card 2: Netflix (Healthy) -->
+<article class="bg-bg-surface border border-border-subtle rounded-xl p-4 shadow-sm">
+<div class="flex justify-between items-start mb-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-bg-ink border border-border-subtle flex items-center justify-center p-2">
+<img alt="Netflix" class="w-full h-full object-contain" data-alt="The Netflix 'N' logo icon on a dark background. It features the bold, red ribbon-like 'N' centered in a dark square container with subtle rounded corners. The design is minimal and recognizable, fitting seamlessly into a premium dark-themed UI." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBlzHm-1hYLYFB7WXwLodtEznDXz2tJxeZgSG5_vXq6egDYidLOtGdGb1Po_xrcgsYHT0HhrJl4ug9a5lo0enPBQUhysRy_VwQRuXDOAHIa2kmvbY439RB1umadX65xFj6Un0axeu9QFgIu5ziAWooYP_ZXakQFgUhLj0WBDYAeOvL8qrf2U-sbqOsIY39Fco1ZsXqdQcf8AtyUbkUEoVQVB_vfn-M36JYp_5s_O7EDaFqw-6XycvpO8WsRKEXgRV7EPcNg4g8GOcI"/>
+</div>
+<div>
+<h3 class="font-headline font-semibold text-base text-text-primary">Netflix Padrão</h3>
+<p class="font-mono text-sm text-text-secondary">R$ 55,90/mês</p>
+</div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex items-center justify-between text-xs font-label">
+<span class="text-text-primary">42h assistidas</span>
+</div>
+<div class="w-full h-1.5 bg-[#E2E8F0] rounded-full overflow-hidden">
+<div class="h-full bg-accent-mint w-[85%] rounded-full"></div>
+</div>
+<div class="flex items-center justify-between mt-3">
+<div class="flex flex-col">
+<span class="text-xs text-text-secondary font-label">Custo por hora:</span>
+<div class="flex items-baseline gap-2">
+<span class="font-mono text-sm text-text-primary">R$ 1,33/h</span>
+<span class="text-xs text-accent-mint font-medium bg-accent-mint/10 px-2 py-0.5 rounded border border-accent-mint/20">(Excelente uso)</span>
+</div>
+</div>
+</div>
+</div>
+</article>
+<!-- Card 3: Max (Good) -->
+<article class="bg-bg-surface border border-border-subtle rounded-xl p-4 shadow-sm">
+<div class="flex justify-between items-start mb-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-bg-ink border border-border-subtle flex items-center justify-center p-2 text-text-primary font-headline font-bold text-sm">
+                                Max
+                            </div>
+<div>
+<h3 class="font-headline font-semibold text-base text-text-primary">Max</h3>
+<p class="font-mono text-sm text-text-secondary">R$ 34,90/mês</p>
+</div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex items-center justify-between text-xs font-label">
+<span class="text-text-primary">18h assistidas</span>
+</div>
+<div class="w-full h-1.5 bg-[#E2E8F0] rounded-full overflow-hidden">
+<div class="h-full bg-accent-lavender w-[45%] rounded-full"></div>
+</div>
+<div class="flex items-center justify-between mt-3">
+<div class="flex flex-col">
+<span class="text-xs text-text-secondary font-label">Custo por hora:</span>
+<div class="flex items-baseline gap-2">
+<span class="font-mono text-sm text-text-primary">R$ 1,94/h</span>
+<span class="text-xs text-accent-lavender font-medium">(Bom uso)</span>
+</div>
+</div>
+</div>
+</div>
+</article>
+<!-- Card 4: Apple TV+ (Pausada Temporariamente) -->
+<article class="bg-bg-surface border border-dashed border-border-subtle rounded-xl p-4 shadow-sm bg-slate-50/50">
+<div class="flex justify-between items-start mb-3">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-bg-ink border border-border-subtle flex items-center justify-center p-2 text-text-secondary">
+<span class="material-symbols-outlined text-[20px]">tv</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<h3 class="font-headline font-semibold text-base text-text-primary">Apple TV+</h3>
+<span class="inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200">
+<span class="material-symbols-outlined text-[13px]">pause_circle</span>
+Pausada
+</span>
+</div>
+<p class="font-mono text-sm text-text-secondary">R$ 21,90/mês · Pausa até 18/Out</p>
+</div>
+</div>
+<button onclick="this.textContent='Ativa ✓'; this.disabled=true; this.className='bg-emerald-50 text-emerald-700 text-xs px-3 py-1.5 rounded-lg border border-emerald-300 font-semibold';" class="bg-emerald-50 hover:bg-emerald-100 text-[#0E7C5B] border border-emerald-300 font-label text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors cursor-pointer shadow-sm">
+Reativar
+</button>
+</div>
+<div class="text-xs text-text-secondary pt-1">
+Economia temporária garantida sem cancelamento de perfil.
+</div>
+</article>
+</div>
+</section>
+</main>
+<!-- Bottom Nav Bar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pt-3 pb-6 bg-[#FFFFFF]/90 backdrop-blur-md z-50 rounded-t-xl border-t border-[#E2E8F0] shadow-2xl md:hidden">
+<button onclick="window.location.href='hoje.html'" class="flex flex-col items-center justify-center text-[#64748B] hover:text-[#16A37A] transition-colors group cursor-pointer">
+<span class="material-symbols-outlined mb-1 group-hover:scale-110 transition-transform">calendar_today</span>
+<span class="font-label text-[10px] uppercase tracking-widest font-medium">Hoje</span>
+</button>
+<button class="flex flex-col items-center justify-center text-[#64748B] hover:text-[#16A37A] transition-colors group">
+<span class="material-symbols-outlined mb-1 group-hover:scale-110 transition-transform">search</span>
+<span class="font-label text-[10px] uppercase tracking-widest font-medium">Busca</span>
+</button>
+<!-- Active Tab -->
+<button class="flex flex-col items-center justify-center text-[#16A37A] scale-110 transition-transform">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">account_balance_wallet</span>
+<span class="font-label text-[10px] uppercase tracking-widest font-medium">Carteira</span>
+</button>
+<button class="flex flex-col items-center justify-center text-[#64748B] hover:text-[#16A37A] transition-colors group">
+<span class="material-symbols-outlined mb-1 group-hover:scale-110 transition-transform">groups</span>
+<span class="font-label text-[10px] uppercase tracking-widest font-medium">Comunidade</span>
+</button>
+<button class="flex flex-col items-center justify-center text-[#64748B] hover:text-[#16A37A] transition-colors group">
+<span class="material-symbols-outlined mb-1 group-hover:scale-110 transition-transform">person</span>
+<span class="font-label text-[10px] uppercase tracking-widest font-medium">Perfil</span>
+</button>
+</nav>
+<!-- Haptic Feedback Simulation Script (Visual only for web demo) -->
+<script>
+        document.querySelectorAll('nav button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Visual scale down to simulate press
+                this.style.transform = 'scale(0.9)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                    // In a real app, you would trigger navigator.vibrate(50) here
+                }, 100);
+            });
+        });
+    </script>
+</body></html>
