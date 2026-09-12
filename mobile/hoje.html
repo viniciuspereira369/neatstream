@@ -3,503 +3,806 @@
 <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
-  <title>NeatStream - Descobrir &amp; Streaming</title>
-  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet"/>
-
-  <script id="tailwind-config">
+  <title>NeatStream Mobile — Feed Cinema (Estilo Letterboxd)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet">
+  
+  <script>
     tailwind.config = {
-      darkMode: "class",
+      darkMode: 'class',
       theme: {
         extend: {
           colors: {
-            obsidian: {
-              DEFAULT: '#080C0A',
-              card: '#111714',
-              surface: '#151E19',
-              border: 'rgba(255, 255, 255, 0.08)',
-            },
-            mint: {
-              DEFAULT: '#00E599',
-              light: '#34F5B2',
-              glow: 'rgba(0, 229, 153, 0.25)',
-              dim: '#0D3827',
-              dark: '#05DF85'
-            },
-            warning: {
-              DEFAULT: '#FF9838',
-              dim: 'rgba(255, 152, 56, 0.15)'
-            },
-            gold: {
-              DEFAULT: '#F5B84C',
-              dim: 'rgba(245, 184, 76, 0.15)'
-            }
+            obsidian: '#080C0A',
+            'obsidian-card': '#111714',
+            mint: '#00E599',
+            'mint-dark': '#00B377',
+            gold: '#F5B84C',
+            warning: '#FF9838',
+            lavender: '#8B9BFF',
           },
           fontFamily: {
-            headline: ["'Sora'", "sans-serif"],
-            sans: ["'Inter'", "sans-serif"],
-            mono: ["'IBM Plex Mono'", "monospace"],
+            sans: ["'Plus Jakarta Sans'", "sans-serif"],
+            display: ["'Plus Jakarta Sans'", "sans-serif"],
+            headline: ["'Plus Jakarta Sans'", "sans-serif"],
+            mono: ["'Plus Jakarta Sans'", "sans-serif"],
+            editorial: ["'Plus Jakarta Sans'", "sans-serif"],
+            serif: ["'Plus Jakarta Sans'", "sans-serif"],
           }
-        },
-      },
+        }
+      }
     }
   </script>
 
   <style>
     body {
       background-color: #080C0A;
-      color: #E2E8F0;
-      font-family: 'Inter', sans-serif;
+      color: #FAFBFC;
+      font-family: 'Plus Jakarta Sans', sans-serif;
       -webkit-font-smoothing: antialiased;
-      min-height: 100vh;
       overflow-x: hidden;
+      user-select: none;
     }
-
-    :focus-visible {
-      outline: 2px solid #00E599;
-      outline-offset: 2px;
-    }
-
-    .ambient-glow {
-      position: fixed;
-      top: -120px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 540px;
-      height: 480px;
-      background: radial-gradient(circle, rgba(0, 229, 153, 0.16) 0%, rgba(5, 223, 133, 0.03) 55%, transparent 75%);
-      pointer-events-none;
-      z-index: 0;
-    }
-
-    :root {
-      --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .card-sheen {
+    .poster-card {
       position: relative;
-      background: #111714;
+      border-radius: 1.25rem;
+      overflow: hidden;
+      aspect-ratio: 2 / 3;
       border: 1px solid rgba(255, 255, 255, 0.08);
-      transition: all 0.28s var(--ease-spring);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease;
+      cursor: pointer;
     }
-    .card-sheen:hover {
-      border-color: rgba(0, 229, 153, 0.35);
-    }
-
-    .spring-interactive {
-      transition: transform 0.28s var(--ease-spring), box-shadow 0.28s var(--ease-spring), background-color 0.2s ease, border-color 0.2s ease;
-    }
-    .spring-interactive:active {
+    .poster-card:active {
       transform: scale(0.96);
     }
-
-    .dock-glass {
-      background: rgba(14, 20, 17, 0.92);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8), 0 0 24px rgba(0, 229, 153, 0.1);
+    .poster-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
     }
-
+    .poster-card:hover img {
+      transform: scale(1.05);
+    }
+    .dock-glass {
+      background: rgba(17, 23, 20, 0.88);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 229, 153, 0.1);
+    }
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .font-mono { font-family: 'Plus Jakarta Sans', sans-serif; font-feature-settings: 'tnum' 1, 'zero' 1; font-variant-numeric: tabular-nums; }
+
+    /* ====== MOBILE BOTTOM SHEET "ONDE ASSISTIR" ====== */
+    #mobileWatchSheetOverlay {
+      position: fixed; inset: 0; z-index: 100;
+      background: rgba(4, 6, 5, 0.7);
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    #mobileWatchSheetOverlay.active { opacity: 1; pointer-events: auto; }
+    #mobileWatchSheetCard {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 101;
+      max-height: 88vh;
+      background: #111714;
+      border-top-left-radius: 1.75rem; border-top-right-radius: 1.75rem;
+      border-top: 1px solid rgba(255,255,255,0.12);
+      overflow-y: auto;
+      box-shadow: 0 -20px 60px rgba(0,0,0,0.8);
+      transform: translateY(100%);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    #mobileWatchSheetOverlay.active + #mobileWatchSheetCard,
+    #mobileWatchSheetCard.active { transform: translateY(0); }
+    .sheet-drag-pill {
+      width: 36px; height: 4px; border-radius: 2px;
+      background: rgba(255,255,255,0.25); margin: 10px auto 0;
+    }
+    .sheet-backdrop-wrap { position: relative; width: 100%; aspect-ratio: 16/9; overflow: hidden; }
+    .sheet-backdrop-wrap img, .sheet-backdrop-wrap video { width: 100%; height: 100%; object-fit: cover; }
+    .sheet-backdrop-gradient {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, #111714 0%, rgba(17,23,20,0.65) 45%, transparent 100%);
+      pointer-events: none;
+    }
+    .sheet-sub-included { background: rgba(0,229,153,0.1); border: 1px solid rgba(0,229,153,0.3); border-radius: 1rem; padding: 10px 14px; }
+    .sheet-sub-required { background: rgba(255,152,56,0.1); border: 1px solid rgba(255,152,56,0.3); border-radius: 1rem; padding: 10px 14px; }
+
+    /* ====== CLASSIND OFICIAL BRASILEIRO (DJCTQ) ====== */
+    .classind-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      border-radius: 4px;
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      font-weight: 800;
+      font-size: 10px;
+      line-height: 1;
+      text-align: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+      user-select: none;
+      flex-shrink: 0;
+      letter-spacing: -0.02em;
+    }
+    .classind-l  { background-color: #0C9443; color: #FFFFFF; }
+    .classind-10 { background-color: #0074BD; color: #FFFFFF; }
+    .classind-12 { background-color: #F7C922; color: #111111; }
+    .classind-14 { background-color: #F26724; color: #FFFFFF; }
+    .classind-16 { background-color: #E52320; color: #FFFFFF; }
+    .classind-18 { background-color: #1A1A1A; color: #FFFFFF; border: 1px solid rgba(255,255,255,0.25); }
+
+    /* ====== BRAND LOGO PILLS ====== */
+    .brand-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 8px;
+      border-radius: 9999px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 9px;
+      line-height: 1;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 3px 8px rgba(0,0,0,0.5);
+      user-select: none;
+      transition: all 0.2s ease;
+    }
+    .brand-pill svg { height: 10px; width: auto; flex-shrink: 0; }
+    .brand-pill-max { background: rgba(0, 43, 231, 0.35); border: 1px solid rgba(96, 165, 250, 0.5); color: #DBEAFE; }
+    .brand-pill-disney { background: rgba(17, 60, 150, 0.45); border: 1px solid rgba(96, 165, 250, 0.55); color: #BFDBFE; }
+    .brand-pill-netflix { background: rgba(229, 9, 20, 0.3); border: 1px solid rgba(239, 68, 68, 0.55); color: #FEE2E2; }
+    .brand-pill-prime { background: rgba(0, 168, 225, 0.3); border: 1px solid rgba(14, 165, 233, 0.55); color: #E0F2FE; }
+    .brand-pill-apple { background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.3); color: #F9FAFB; }
+
+    /* ====== BRAND APP TILES (SQUIRCLES) ====== */
+    .brand-app-tile {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 5px;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      flex-shrink: 0;
+      user-select: none;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
+      overflow: hidden;
+      position: relative;
+    }
+    .brand-app-tile img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .brand-app-tile:hover, .brand-app-tile:active {
+      transform: scale(1.08);
+      box-shadow: 0 5px 12px rgba(0, 0, 0, 0.7);
+    }
+    .brand-app-tile-max {
+      background: #0022B8;
+      border-color: rgba(96, 165, 250, 0.4);
+    }
+    .brand-app-tile-disney {
+      background: #030B26;
+      border-color: rgba(96, 165, 250, 0.45);
+    }
+    .brand-app-tile-netflix {
+      background: #000000;
+      border-color: rgba(229, 9, 20, 0.4);
+    }
+    .brand-app-tile-prime {
+      background: #00A8E1;
+      border-color: rgba(0, 168, 225, 0.4);
+    }
+    .brand-app-tile-apple {
+      background: #000000;
+      border-color: rgba(255, 255, 255, 0.25);
+    }
   </style>
 </head>
+<body class="selection:bg-mint/30 pb-28">
 
-<body class="selection:bg-mint/30 relative">
-  <div class="ambient-glow"></div>
-
-  <!-- Top App Bar (Padrão iNox: Logo + Saudação + Avatar + Econômetro) -->
-  <header class="sticky top-0 z-40 bg-[#080C0A]/95 backdrop-blur-md border-b border-white/5 px-4 py-3">
-    <div class="max-w-[390px] mx-auto flex items-center justify-between">
-      <div class="flex items-center gap-2.5">
-        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-mint/20 to-mint/5 border border-mint/40 flex items-center justify-center text-mint font-bold text-sm shadow-[0_0_12px_rgba(0,229,153,0.2)]">
-          <span class="material-symbols-outlined text-xl">play_arrow</span>
-        </div>
-        <div>
-          <span class="text-[10px] font-mono text-gray-400 block leading-tight">HUB DE STREAMING</span>
-          <h1 class="text-base font-extrabold text-white tracking-tight font-headline">Neat<span class="text-mint">Stream</span></h1>
-        </div>
+  <!-- Minimalist Mobile Top Bar -->
+  <header class="sticky top-0 z-40 bg-[#080C0A]/90 backdrop-blur-xl border-b border-white/8 px-4 py-3.5 flex items-center justify-between">
+    <div class="flex items-center gap-2.5">
+      <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-mint-dark to-mint flex items-center justify-center text-obsidian font-display font-black text-xs shadow-[0_0_12px_rgba(0,229,153,0.3)]">
+        NS
       </div>
-
-      <div class="flex items-center gap-2">
-        <!-- Econômetro Quick Pill -->
-        <a href="carteira_dark.html" title="Abrir Carteira &amp; Econômetro" class="flex items-center gap-1.5 bg-[#111714] border border-white/10 hover:border-mint/40 px-2.5 py-1.5 rounded-full transition-all">
-          <span class="w-2 h-2 rounded-full bg-mint animate-pulse"></span>
-          <span class="font-mono text-xs font-bold text-white">R$ 142<span class="text-gray-400 text-[10px]">/180</span></span>
-        </a>
-
-        <!-- Monograma Minimalista -->
-        <div class="w-8 h-8 rounded-full bg-[#16201B] border border-mint/30 flex items-center justify-center text-mint font-bold text-xs font-mono">
-          LS
-        </div>
+      <div>
+        <span class="text-sm font-bold font-display tracking-tight text-white">Neat<span class="text-mint">Stream</span></span>
+        <span class="text-[9px] font-mono text-gray-400 block -mt-0.5">Cinema Feed</span>
       </div>
+    </div>
+
+    <!-- Quick Pill Action -->
+    <div class="flex items-center gap-2">
+      <a href="carteira_dark.html" class="px-2.5 py-1 rounded-full bg-mint/15 border border-mint/30 text-mint font-mono text-[11px] font-bold flex items-center gap-1.5">
+        <span class="w-1.5 h-1.5 rounded-full bg-mint animate-pulse"></span>
+        <span>R$ 142,60</span>
+      </a>
+      <a href="../web/dashboard_dark.html" title="Versão Web" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 text-gray-300 hover:text-white flex items-center justify-center text-xs">
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      </a>
     </div>
   </header>
 
-  <!-- Main Content -->
-  <main class="max-w-[390px] mx-auto px-4 pt-2 pb-44 space-y-6 relative z-10">
+  <!-- Main Feed Area -->
+  <main class="max-w-[440px] mx-auto px-4 pt-3 space-y-6">
 
-    <!-- Category Filter Pills (Inspirado no iNox: All, Shows, Movies, Sport) -->
-    <div class="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
-      <button class="bg-mint text-obsidian font-bold text-xs px-4 py-2 rounded-full shrink-0 shadow-[0_0_14px_rgba(0,229,153,0.35)] transition-all">
-        Todos
-      </button>
-      <button class="bg-[#111714] border border-white/10 hover:border-mint/30 text-gray-300 text-xs px-3.5 py-2 rounded-full shrink-0 transition-colors">
-        Séries
-      </button>
-      <button class="bg-[#111714] border border-white/10 hover:border-mint/30 text-gray-300 text-xs px-3.5 py-2 rounded-full shrink-0 transition-colors">
-        Filmes
-      </button>
-      <button class="bg-[#111714] border border-white/10 hover:border-mint/30 text-gray-300 text-xs px-3.5 py-2 rounded-full shrink-0 transition-colors">
-        Em Alta
-      </button>
-      <button class="bg-[#111714] border border-white/10 hover:border-mint/30 text-gray-300 text-xs px-3.5 py-2 rounded-full shrink-0 transition-colors">
-        Mais Votados
-      </button>
-    </div>
+    <!-- 1. FULL-WIDTH CINEMATIC HERO SPOTLIGHT COM VÍDEO TEASER -->
+    <section class="relative rounded-3xl overflow-hidden aspect-[4/5] border border-white/10 shadow-2xl group bg-black">
+      <!-- Live Video Teaser Element with Backdrop Poster Fallback -->
+      <video id="mobileHeroVideo" autoplay muted loop playsinline poster="../assets/backdrops/the_bear_backdrop.jpg" class="absolute inset-0 w-full h-full object-cover opacity-85 group-hover:scale-103 transition-transform duration-500">
+        <source src="../assets/videos/the_bear_teaser.mp4" type="video/mp4">
+      </video>
+      
+      <!-- Vignette Gradients -->
+      <div class="absolute inset-0 bg-gradient-to-t from-black via-black/35 to-transparent pointer-events-none"></div>
+      <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-transparent pointer-events-none"></div>
 
-    <!-- CINEMATIC HERO SPOTLIGHT (Inspirado no iNox: Transição Radial, Título Grande e Botão Pill) -->
-    <section class="relative rounded-3xl overflow-hidden border border-white/10 shadow-2xl group">
-      <!-- Imagem de Fundo em Altíssima Definição -->
-      <div class="relative w-full h-[400px]">
-        <img alt="O Urso Temporada 3" class="w-full h-full object-cover group-hover:scale-103 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_nb4K_I0kGPsJ6b9WHM1r1SU4fEC-Ps76IV6PzMxaXvd3X_QJzmUfrxh7WpZ0kcWuyubElE89s2-Zv9RdjluKBsJmS1kVa-YKRzzOOToBt3ogTG9G5Ih4_EKGeiCZiDdhBuTVyc5ltjfcPgyLl-1A5kq3FLCxkXwhLQGIMO9sWBCk3mGOYu_RgxSdE2LE_Ccx5nXOf5SCKFBSAEiminzovPV8RNN4qRAMnGohsh-f19XwST9iDrtMVIvm4XbxaFHfZDuy4NSo9-Y"/>
+      <!-- Top Micro Badges & Media Controls -->
+      <div class="absolute top-3.5 left-3.5 right-3.5 flex items-center justify-between z-20">
+        <span class="px-2.5 py-1 rounded-full bg-black/70 backdrop-blur-md border border-white/20 text-white text-[10px] font-mono font-bold flex items-center gap-1.5">
+          <span class="w-1.5 h-1.5 rounded-full bg-mint animate-pulse"></span>
+          TEASER 4K
+        </span>
+        <div class="flex items-center gap-1.5">
+          <button onclick="toggleMobileHeroAudio()" id="mobileSoundBtn" title="Ativar/Desativar Som" class="w-8 h-8 rounded-full bg-black/70 backdrop-blur-md border border-white/20 text-white flex items-center justify-center text-xs active:scale-90 transition-all">
+            <svg id="mobileSoundMuted" class="w-3.5 h-3.5 text-white/80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"/></svg>
+            <svg id="mobileSoundActive" class="w-3.5 h-3.5 text-mint hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
+          </button>
+          <span class="classind-badge classind-16" title="Classificação 16 anos">16</span>
+          <div class="brand-app-tile brand-app-tile-disney" title="Disponível no Disney+">
+            <img src="../assets/logos/disney.png" alt="Disney+" class="w-full h-full object-cover">
+          </div>
+        </div>
+      </div>
 
-        <!-- Gradientes Cinematográficos Suaves -->
-        <div class="absolute inset-0 bg-gradient-to-t from-[#080C0A] via-[#080C0A]/60 to-transparent"></div>
-        <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-transparent"></div>
-
-        <!-- Top Badges -->
-        <div class="absolute top-3.5 left-3.5 right-3.5 flex items-center justify-between z-20">
-          <span class="bg-[#080C0A]/85 backdrop-blur-md border border-white/15 text-white text-[11px] font-medium px-3 py-1 rounded-full flex items-center gap-1.5 shadow-md">
-            <span class="w-1.5 h-1.5 rounded-full bg-mint animate-ping"></span>
-            Destaque da Semana
+      <!-- Bottom Card Metadata -->
+      <div class="absolute bottom-0 left-0 right-0 p-4 space-y-2 z-20">
+        <div class="flex items-center gap-2">
+          <span class="px-2 py-0.5 rounded text-[9px] font-mono bg-mint/20 text-mint border border-mint/30 font-bold flex items-center gap-1">
+            <svg class="w-3 h-3 fill-mint" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            9.1
           </span>
-          <button class="w-8 h-8 rounded-full bg-[#080C0A]/80 backdrop-blur-md border border-white/15 text-gray-300 hover:text-white flex items-center justify-center transition-colors" title="Salvar título">
-            <span class="material-symbols-outlined text-[18px]">bookmark_border</span>
+          <span class="text-[11px] font-mono text-gray-300">Episódio 4 de 10 &middot; 32 min</span>
+        </div>
+        <h2 class="text-2xl font-black font-display text-white tracking-tight leading-tight">O Urso (The Bear)</h2>
+        <div class="flex items-center gap-2 pt-1">
+          <button onclick="openMobileWatchSheet('the_bear')" class="flex-1 py-2.5 rounded-full bg-mint text-obsidian font-display font-bold text-xs flex items-center justify-center gap-1.5 shadow-[0_0_20px_rgba(0,229,153,0.4)] hover:brightness-110 active:scale-95 transition-all">
+            <span>Assistir Agora</span>
+            <span>▶</span>
+          </button>
+          <button onclick="toggleWatchlistMobile(this, 'O Urso')" class="w-10 h-10 rounded-full bg-white/15 backdrop-blur-md border border-white/20 text-white flex items-center justify-center text-xs active:scale-95 transition-all">
+            ✓
           </button>
         </div>
-
-        <!-- Bottom Hero Information (Limpo, Elegante, Estilo iNox) -->
-        <div class="absolute bottom-0 left-0 right-0 p-5 space-y-3.5 z-20">
-          <!-- Reações Emocionais e Nota Comunitária (Padrão Social Movie) -->
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-1.5">
-              <span class="bg-black/60 backdrop-blur-md border border-white/10 text-[11px] px-2.5 py-1 rounded-full text-white">🔥 Intenso</span>
-              <span class="bg-black/60 backdrop-blur-md border border-white/10 text-[11px] px-2.5 py-1 rounded-full text-white">✨ Aclamado</span>
-            </div>
-            <div class="bg-black/80 backdrop-blur-md border border-mint/40 px-2.5 py-1 rounded-full flex items-center gap-1.5 shadow-[0_0_12px_rgba(0,229,153,0.25)]">
-              <span class="material-symbols-outlined text-mint text-sm">star</span>
-              <span class="font-mono text-xs font-bold text-mint">9,1</span>
-              <span class="text-[10px] text-gray-400 font-mono">/10</span>
-            </div>
-          </div>
-
-          <div>
-            <h2 class="text-2xl font-extrabold text-white tracking-tight font-headline leading-tight">O Urso (The Bear)</h2>
-            <p class="text-xs text-gray-300 mt-1">Temporada 3 · Drama · 35 min por ep. · Disney+</p>
-          </div>
-
-          <!-- PlatformAvailabilityRow (4 Estados - Estado 1: Incluído na Assinatura) -->
-          <div class="flex items-center justify-between bg-black/60 backdrop-blur-md border border-white/10 px-3 py-2 rounded-xl text-xs">
-            <div class="flex items-center gap-2">
-              <span class="w-2 h-2 rounded-full bg-mint animate-pulse"></span>
-              <span class="text-white font-medium">Incluído no seu plano Disney+</span>
-            </div>
-            <span class="text-[10px] font-mono text-mint bg-mint/15 border border-mint/20 px-2 py-0.5 rounded-full font-bold">ATIVO</span>
-          </div>
-
-          <!-- Direct Watch CTA + Strategic Watchlist CTA + Roulette -->
-          <div class="flex items-center gap-2 pt-1">
-            <a href="https://www.disneyplus.com" target="_blank" rel="noopener noreferrer" class="flex-1 bg-gradient-to-r from-mint to-mint-dark text-obsidian font-bold text-xs py-3 px-3 rounded-full flex items-center justify-center gap-1.5 shadow-[0_0_20px_rgba(0,229,153,0.4)] hover:brightness-110 active:scale-98 transition-all">
-              <span class="material-symbols-outlined text-[18px]">play_arrow</span>
-              <span>Assistir</span>
-            </a>
-            <button id="btn-watchlist-hero" onclick="toggleWatchlist(this, 'O Urso')" class="flex-1 bg-[#111714]/90 border border-white/15 hover:border-mint/50 text-white font-semibold text-xs py-3 px-3 rounded-full flex items-center justify-center gap-1.5 transition-all active:scale-98" title="Adicionar à Watchlist">
-              <span class="material-symbols-outlined text-[17px] text-mint">bookmark_add</span>
-              <span>Quero Assistir</span>
-            </button>
-            <button onclick="openRouletteModal()" class="w-10 h-10 rounded-full bg-[#111714]/90 backdrop-blur-md border border-white/15 text-mint hover:text-white flex items-center justify-center hover:bg-mint/20 transition-all shrink-0" title="Roleta Rápida">
-              <span class="material-symbols-outlined text-lg">casino</span>
-            </button>
-          </div>
-
-          <!-- Pagination Dots (iNox) -->
-          <div class="flex items-center justify-center gap-1.5 pt-1">
-            <span class="w-5 h-1.5 rounded-full bg-mint"></span>
-            <span class="w-1.5 h-1.5 rounded-full bg-white/20"></span>
-            <span class="w-1.5 h-1.5 rounded-full bg-white/20"></span>
-            <span class="w-1.5 h-1.5 rounded-full bg-white/20"></span>
-          </div>
-        </div>
       </div>
     </section>
 
-    <!-- ONDE ASSISTIR SEUS STREAMINGS (Inspirado no Social Movie App "Watch Now On") -->
-    <section class="space-y-3">
-      <div class="flex items-center justify-between px-1">
-        <div>
-          <h3 class="text-sm font-bold text-white tracking-tight font-headline">Onde Assistir Agora</h3>
-          <p class="text-[11px] text-gray-400">Acesse diretamente seus serviços conectados</p>
-        </div>
-        <span class="text-[10px] font-mono text-mint bg-mint/10 border border-mint/20 px-2 py-0.5 rounded-full font-bold">4 ATIVOS</span>
-      </div>
-
-      <!-- Grid de Plataformas com Redirecionamento Direto -->
-      <div class="grid grid-cols-2 gap-2.5">
-        <!-- Disney+ -->
-        <a href="https://www.disneyplus.com" target="_blank" rel="noopener noreferrer" class="bg-[#0A121A] border border-[#1E3A5F]/50 hover:border-mint/50 p-3 rounded-2xl flex items-center justify-between transition-all group">
-          <div>
-            <span class="text-xs font-bold text-blue-300 font-headline block">Disney+</span>
-            <span class="text-[10px] text-gray-400 font-mono">1 título sugerido</span>
-          </div>
-          <span class="w-7 h-7 rounded-xl bg-blue-500/10 text-blue-400 group-hover:bg-mint group-hover:text-obsidian flex items-center justify-center transition-all">
-            <span class="material-symbols-outlined text-sm">open_in_new</span>
-          </span>
-        </a>
-
-        <!-- Netflix -->
-        <a href="https://www.netflix.com" target="_blank" rel="noopener noreferrer" class="bg-[#140A0D] border border-[#4D151D]/50 hover:border-mint/50 p-3 rounded-2xl flex items-center justify-between transition-all group">
-          <div>
-            <span class="text-xs font-bold text-red-400 font-headline block">Netflix</span>
-            <span class="text-[10px] text-gray-400 font-mono">Plano Ativo</span>
-          </div>
-          <span class="w-7 h-7 rounded-xl bg-red-500/10 text-red-400 group-hover:bg-mint group-hover:text-obsidian flex items-center justify-center transition-all">
-            <span class="material-symbols-outlined text-sm">open_in_new</span>
-          </span>
-        </a>
-
-        <!-- Max -->
-        <a href="https://www.max.com" target="_blank" rel="noopener noreferrer" class="bg-[#0F0A1A] border border-[#3C1F6E]/50 hover:border-mint/50 p-3 rounded-2xl flex items-center justify-between transition-all group">
-          <div>
-            <span class="text-xs font-bold text-purple-300 font-headline block">Max</span>
-            <span class="text-[10px] text-gray-400 font-mono">Duna: Parte 2</span>
-          </div>
-          <span class="w-7 h-7 rounded-xl bg-purple-500/10 text-purple-300 group-hover:bg-mint group-hover:text-obsidian flex items-center justify-center transition-all">
-            <span class="material-symbols-outlined text-sm">open_in_new</span>
-          </span>
-        </a>
-
-        <!-- Apple TV+ -->
-        <a href="https://tv.apple.com" target="_blank" rel="noopener noreferrer" class="bg-[#0F141A] border border-[#2B3545]/50 hover:border-mint/50 p-3 rounded-2xl flex items-center justify-between transition-all group">
-          <div>
-            <span class="text-xs font-bold text-gray-200 font-headline block">Apple TV+</span>
-            <span class="text-[10px] text-gray-400 font-mono">Ruptura</span>
-          </div>
-          <span class="w-7 h-7 rounded-xl bg-white/10 text-gray-300 group-hover:bg-mint group-hover:text-obsidian flex items-center justify-center transition-all">
-            <span class="material-symbols-outlined text-sm">open_in_new</span>
-          </span>
-        </a>
-      </div>
-    </section>
-
-    <!-- CARROSSEL HORIZONTAL "PARA VOCÊ" (Inspirado no iNox: Pôsteres Verticais 2:3 em Linha) -->
-    <section class="space-y-3">
-      <div class="flex items-center justify-between px-1">
-        <div>
-          <h3 class="text-sm font-bold text-white tracking-tight font-headline">Para Você</h3>
-          <p class="text-[11px] text-gray-400">Recomendados com base na comunidade</p>
-        </div>
-        <div class="flex items-center gap-1 text-xs">
-          <button class="px-2.5 py-1 rounded-full bg-mint/15 text-mint font-bold text-[11px]">Mais Votados</button>
-          <button class="px-2.5 py-1 rounded-full text-gray-400 hover:text-white text-[11px]">Recentes</button>
-        </div>
-      </div>
-
-      <!-- Carrossel de Pôsteres Elegantes -->
-      <div class="flex gap-3 overflow-x-auto no-scrollbar -mx-4 px-4 pb-2">
-        <!-- 1. Ruptura -->
-        <div class="w-[145px] shrink-0 space-y-2 group cursor-pointer">
-          <div class="w-full h-[205px] rounded-2xl overflow-hidden border border-white/10 group-hover:border-mint/40 relative shadow-xl transition-all">
-            <img alt="Ruptura" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCcde23RErkePudSrtAJauDreKp3AwWdtq1c5LbKiRi6qXvJKbeO47LaTTDpDTCPC0K-xB-IIzAEtNdaqNjqTz8R7LBwd2WScNEBZYJxrVk5g5Njk5nDFqozHR2u4TwCQ30cQJFJzIzEgpjHb5FOQUXWfnLH7bdRD33hUlCCHlYZgG08CN8k9O8z5dgfPsOwLIeJD5kcdJzsEzz-UP1MM5GnRCRBdu_umqAbTKIV02UljX0_j4s5w625JmUV5_VEzoEADwIXLjrW30"/>
-            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
-            <span class="absolute top-2 left-2 bg-black/85 backdrop-blur-md border border-mint/40 font-mono text-[10px] text-mint px-1.5 py-0.5 rounded-md font-bold">8,9</span>
-            <span class="absolute bottom-2 left-2 text-[10px] bg-white/15 backdrop-blur-md text-white px-2 py-0.5 rounded-full font-medium">Apple TV+</span>
-          </div>
-          <div>
-            <h4 class="font-bold text-xs text-white truncate font-headline group-hover:text-mint transition-colors">Ruptura (Severance)</h4>
-            <p class="text-[10px] text-gray-400 truncate">Suspense · Ficção</p>
-          </div>
-        </div>
-
-        <!-- 2. Duna 2 -->
-        <div class="w-[145px] shrink-0 space-y-2 group cursor-pointer">
-          <div class="w-full h-[205px] rounded-2xl overflow-hidden border border-white/10 group-hover:border-mint/40 relative shadow-xl transition-all">
-            <img alt="Duna 2" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4lIyXiPK33nE14IK-ZkkgRXDdam1m6KPeGbVhnF1tdRdEisLejSdq1Z8WpfMGIUTPPvrAeq2WIW9uCL0x6liXtiyXEJwvj08oeHNjVwCO9f8unQu1m-X-6p2igFkRR9DCaZTWKfSEacaWkEXSjsRr-xcspx1bOeVSX6jK2r1b_cR8hUSHSaruP0LXWpp9IzpYwf4v4NSbhvXovzGWridAz3XykT0eF1lHDGbA-gHUdWAYi7d1M--IqogkGAp70VbnUmC-Yr_AwvQ"/>
-            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
-            <span class="absolute top-2 left-2 bg-black/85 backdrop-blur-md border border-mint/40 font-mono text-[10px] text-mint px-1.5 py-0.5 rounded-md font-bold">8,9</span>
-            <span class="absolute bottom-2 left-2 text-[10px] bg-white/15 backdrop-blur-md text-white px-2 py-0.5 rounded-full font-medium">Max</span>
-          </div>
-          <div>
-            <h4 class="font-bold text-xs text-white truncate font-headline group-hover:text-mint transition-colors">Duna: Parte 2</h4>
-            <p class="text-[10px] text-gray-400 truncate">Ficção · Cinema</p>
-          </div>
-        </div>
-
-        <!-- 3. Anatomia de uma Queda -->
-        <div class="w-[145px] shrink-0 space-y-2 group cursor-pointer">
-          <div class="w-full h-[205px] rounded-2xl overflow-hidden border border-white/10 group-hover:border-mint/40 relative shadow-xl transition-all">
-            <img alt="Anatomia de uma Queda" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCqWwB20_BWq0ykv8kYNL5pFuniTR0Ioczn44OlzTjCfQedSBRKnfxZGetCJ_uD4dyxe2SqHHRVT9yUSy5gf-4TGQ3CfIrBna9DlskFu6z0zifN-lHTcE5QTzyr5K0atKGnE_KK8PGM3lCmcasITUkwdonPc_12Chgp4QfaLH9dkZ66sbUPD0xvCYpqFf6dBmj8Utqes3WQW-r7_rR-6dBUH2ZLSC4NmsFBzXpdbs4VSGBqEoIKzCB0ZNqOvZxIRB1501AdhLPGSaY"/>
-            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
-            <span class="absolute top-2 left-2 bg-black/85 backdrop-blur-md border border-mint/40 font-mono text-[10px] text-mint px-1.5 py-0.5 rounded-md font-bold">8,7</span>
-            <span class="absolute bottom-2 left-2 text-[10px] bg-white/15 backdrop-blur-md text-white px-2 py-0.5 rounded-full font-medium">Prime Video</span>
-          </div>
-          <div>
-            <h4 class="font-bold text-xs text-white truncate font-headline group-hover:text-mint transition-colors">Anatomia de uma Queda</h4>
-            <p class="text-[10px] text-gray-400 truncate">Drama de Tribunal</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- BANNER ROLETA RÁPIDA (Social Movie Ref 7: "Let the movie wheel decide") -->
-    <div onclick="openRouletteModal()" class="cursor-pointer bg-gradient-to-r from-[#111714] via-[#14261D] to-[#111714] border border-mint/30 hover:border-mint p-4 rounded-3xl flex items-center justify-between gap-4 shadow-xl transition-all group">
-      <div class="flex items-center gap-3.5">
-        <div class="w-12 h-12 rounded-2xl bg-mint/15 border border-mint/30 flex items-center justify-center text-mint group-hover:scale-108 transition-transform">
-          <span class="material-symbols-outlined text-2xl">casino</span>
-        </div>
-        <div>
-          <span class="text-[9px] bg-mint/20 text-mint px-2 py-0.5 rounded font-mono font-bold uppercase">Decisão em 1 Toque</span>
-          <h3 class="text-sm font-bold text-white font-headline mt-0.5">Roleta de Escolha Rápida</h3>
-          <p class="text-xs text-gray-400 mt-0.5">Cansado de navegar? O NeatStream sorteia para você.</p>
-        </div>
-      </div>
-      <button class="bg-mint text-obsidian font-bold text-xs px-3.5 py-2 rounded-xl shrink-0 shadow-[0_0_12px_rgba(0,229,153,0.3)] group-hover:bg-mint-dark transition-all">
-        Girar
+    <!-- 2. QUICK MOOD CHIPS -->
+    <div class="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
+      <button class="px-3.5 py-1.5 rounded-full bg-mint text-obsidian font-bold text-xs shrink-0 shadow-sm flex items-center gap-1.5">
+        <svg class="w-3.5 h-3.5 fill-obsidian stroke-obsidian" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 3.5z"/></svg>
+        <span>Intenso</span>
+      </button>
+      <button class="px-3.5 py-1.5 rounded-full bg-[#111714] border border-white/10 hover:border-white/30 text-gray-300 text-xs shrink-0 flex items-center gap-1.5">
+        <svg class="w-3.5 h-3.5 text-amber-300 fill-amber-300/20 stroke-current" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+        <span>Aclamado</span>
+      </button>
+      <button class="px-3.5 py-1.5 rounded-full bg-[#111714] border border-white/10 hover:border-white/30 text-gray-300 text-xs shrink-0 flex items-center gap-1.5">
+        <svg class="w-3.5 h-3.5 text-yellow-400 fill-yellow-400/20 stroke-current" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        <span>30 min</span>
+      </button>
+      <button class="px-3.5 py-1.5 rounded-full bg-[#111714] border border-white/10 hover:border-white/30 text-gray-300 text-xs shrink-0 flex items-center gap-1.5">
+        <svg class="w-3.5 h-3.5 text-red-400 stroke-current" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="7" x2="7" y2="7"/><line x1="2" y1="17" x2="7" y2="17"/><line x1="17" y1="17" x2="22" y2="17"/><line x1="17" y1="7" x2="22" y2="7"/></svg>
+        <span>Filme</span>
+      </button>
+      <button class="px-3.5 py-1.5 rounded-full bg-[#111714] border border-white/10 hover:border-white/30 text-gray-300 text-xs shrink-0 flex items-center gap-1.5">
+        <svg class="w-3.5 h-3.5 text-purple-400 fill-purple-400/20 stroke-current" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/><path d="M12 5v13"/></svg>
+        <span>Psicológico</span>
       </button>
     </div>
+
+    <!-- 3. GRADE IMERSIVA ESTILO LETTERBOXD (2 COLUNAS DE PÔSTERES PUROS) -->
+    <section class="space-y-3">
+      <div class="flex items-center justify-between px-1">
+        <span class="text-xs font-mono text-gray-400 uppercase tracking-wider font-semibold">Em Alta na Sua Rede</span>
+        <span class="text-[10px] font-mono text-mint font-bold">14 Títulos Pagos</span>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3.5">
+        <!-- Poster 1: Duna 2 -->
+        <div onclick="openMobileWatchSheet('dune2')" class="poster-card">
+          <img src="../assets/posters/dune2.jpg" alt="Duna 2">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent"></div>
+          <div class="brand-app-tile brand-app-tile-max absolute top-2 right-2 z-10" title="Disponível no Max">
+            <img src="../assets/logos/max.png" alt="Max" class="w-full h-full object-cover">
+          </div>
+          <span class="classind-badge classind-14 absolute bottom-2.5 right-2 z-10" title="14 anos">14</span>
+          <div class="absolute bottom-2.5 left-2.5 right-9">
+            <div class="flex items-center gap-1 text-[10px] font-mono text-gold mb-0.5">
+              <svg class="w-3 h-3 fill-gold" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <span class="font-bold">8.8</span>
+            </div>
+            <h4 class="text-xs font-bold text-white truncate font-display">Duna: Parte 2</h4>
+            <span class="text-[9px] font-mono text-gray-400 truncate block">Incluso no seu plano</span>
+          </div>
+        </div>
+
+        <!-- Poster 2: Ruptura -->
+        <div onclick="openMobileWatchSheet('severance')" class="poster-card">
+          <img src="../assets/posters/severance.jpg" alt="Ruptura">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent"></div>
+          <div class="brand-app-tile brand-app-tile-apple absolute top-2 right-2 z-10" title="Disponível no Apple TV+">
+            <img src="../assets/logos/apple.png" alt="Apple TV+" class="w-full h-full object-cover">
+          </div>
+          <span class="classind-badge classind-14 absolute bottom-2.5 right-2 z-10" title="14 anos">14</span>
+          <div class="absolute bottom-2.5 left-2.5 right-9">
+            <div class="flex items-center gap-1 text-[10px] font-mono text-gold mb-0.5">
+              <svg class="w-3 h-3 fill-gold" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <span class="font-bold">8.7</span>
+            </div>
+            <h4 class="text-xs font-bold text-white truncate font-display">Ruptura</h4>
+            <span class="text-[9px] font-mono text-gray-400 truncate block">T1 &middot; 9 eps</span>
+          </div>
+        </div>
+
+        <!-- Poster 3: Xógum -->
+        <div onclick="openMobileWatchSheet('shogun')" class="poster-card">
+          <img src="../assets/posters/shogun.jpg" alt="Shogun">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent"></div>
+          <div class="brand-app-tile brand-app-tile-disney absolute top-2 right-2 z-10" title="Disponível no Disney+">
+            <img src="../assets/logos/disney.png" alt="Disney+" class="w-full h-full object-cover">
+          </div>
+          <span class="classind-badge classind-16 absolute bottom-2.5 right-2 z-10" title="16 anos">16</span>
+          <div class="absolute bottom-2.5 left-2.5 right-9">
+            <div class="flex items-center gap-1 text-[10px] font-mono text-gold mb-0.5">
+              <svg class="w-3 h-3 fill-gold" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <span class="font-bold">8.9</span>
+            </div>
+            <h4 class="text-xs font-bold text-white truncate font-display">Xógum</h4>
+            <span class="text-[9px] font-mono text-gray-400 truncate block">Épico Histórico</span>
+          </div>
+        </div>
+
+        <!-- Poster 4: Oppenheimer -->
+        <div onclick="openMobileWatchSheet('oppenheimer')" class="poster-card">
+          <img src="../assets/posters/oppenheimer.jpg" alt="Oppenheimer">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent"></div>
+          <div class="brand-app-tile brand-app-tile-prime absolute top-2 right-2 z-10" title="Disponível no Prime Video">
+            <img src="../assets/logos/prime.png" alt="Prime Video" class="w-full h-full object-cover">
+          </div>
+          <span class="classind-badge classind-14 absolute bottom-2.5 right-2 z-10" title="14 anos">14</span>
+          <div class="absolute bottom-2.5 left-2.5 right-9">
+            <div class="flex items-center gap-1 text-[10px] font-mono text-gold mb-0.5">
+              <svg class="w-3 h-3 fill-gold" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <span class="font-bold">8.9</span>
+            </div>
+            <h4 class="text-xs font-bold text-white truncate font-display">Oppenheimer</h4>
+            <span class="text-[9px] font-mono text-gray-400 truncate block">Filme 3h</span>
+          </div>
+        </div>
+
+        <!-- Poster 5: Arcane -->
+        <div onclick="openMobileWatchSheet('arcane')" class="poster-card">
+          <img src="../assets/posters/arcane.jpg" alt="Arcane">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent"></div>
+          <div class="brand-app-tile brand-app-tile-netflix absolute top-2 right-2 z-10" title="Disponível na Netflix">
+            <img src="../assets/logos/netflix.png" alt="Netflix" class="w-full h-full object-cover">
+          </div>
+          <span class="classind-badge classind-14 absolute bottom-2.5 right-2 z-10" title="14 anos">14</span>
+          <div class="absolute bottom-2.5 left-2.5 right-9">
+            <div class="flex items-center gap-1 text-[10px] font-mono text-gold mb-0.5">
+              <svg class="w-3 h-3 fill-gold" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <span class="font-bold">9.0</span>
+            </div>
+            <h4 class="text-xs font-bold text-white truncate font-display">Arcane T2</h4>
+            <span class="text-[9px] font-mono text-gray-400 truncate block">Animação Imersiva</span>
+          </div>
+        </div>
+
+        <!-- Poster 6: Succession -->
+        <div onclick="openMobileWatchSheet('succession')" class="poster-card">
+          <img src="../assets/posters/succession.jpg" alt="Succession">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent"></div>
+          <div class="brand-app-tile brand-app-tile-max absolute top-2 right-2 z-10" title="Disponível no Max">
+            <img src="../assets/logos/max.png" alt="Max" class="w-full h-full object-cover">
+          </div>
+          <span class="classind-badge classind-16 absolute bottom-2.5 right-2 z-10" title="16 anos">16</span>
+          <div class="absolute bottom-2.5 left-2.5 right-9">
+            <div class="flex items-center gap-1 text-[10px] font-mono text-gold mb-0.5">
+              <svg class="w-3 h-3 fill-gold" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <span class="font-bold">8.9</span>
+            </div>
+            <h4 class="text-xs font-bold text-white truncate font-display">Succession</h4>
+          </div>
+        </div>
+      </div>
+    </section>
 
   </main>
 
-  <!-- MODAL: ROLETA DE ESCOLHA RÁPIDA (Ref 7 - Screen 3: ✕ Pular | ▶ Assistir | 🔖 Salvar) -->
-  <div id="rouletteModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-xl flex items-center justify-center p-4 hidden">
-    <div class="bg-[#111714] border border-mint/35 rounded-3xl p-6 max-w-[340px] w-full space-y-4 text-center shadow-[0_0_50px_rgba(0,229,153,0.2)] relative">
-      <button onclick="closeRouletteModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/10 text-gray-300 hover:text-white flex items-center justify-center">
-        <span class="material-symbols-outlined text-sm">close</span>
+  <!-- Floating Mobile Dock Glass -->
+  <div class="fixed bottom-4 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-[390px] z-50">
+    <nav class="dock-glass rounded-2xl p-2 flex items-center justify-around text-xs">
+      <a href="hoje.html" class="flex flex-col items-center gap-1 text-mint font-bold px-3 py-1">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+          <line x1="8" y1="21" x2="16" y2="21"></line>
+          <line x1="12" y1="17" x2="12" y2="21"></line>
+        </svg>
+        <span class="text-[10px]">Cinema</span>
+      </a>
+
+      <a href="carteira_dark.html" class="flex flex-col items-center gap-1 text-gray-400 hover:text-white px-3 py-1 transition-colors">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+          <line x1="2" y1="10" x2="22" y2="10"></line>
+        </svg>
+        <span class="text-[10px]">Carteira</span>
+      </a>
+
+      <a href="../web/dashboard_dark.html" class="flex flex-col items-center gap-1 text-gray-400 hover:text-white px-3 py-1 transition-colors">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polygon points="10 8 16 12 10 16 10 8"></polygon>
+        </svg>
+        <span class="text-[10px]">Web</span>
+      </a>
+    </nav>
+  </div>
+
+  <!-- ====== BOTTOM SHEET "ONDE ASSISTIR" ====== -->
+  <div id="mobileWatchSheetOverlay" onclick="if(event.target===this)closeMobileWatchSheet()"></div>
+  <div id="mobileWatchSheetCard">
+    <div class="sheet-drag-pill"></div>
+    <!-- Backdrop -->
+    <div class="sheet-backdrop-wrap mt-2">
+      <img id="sheetBackdrop" src="" alt="Backdrop">
+      <video id="sheetTrailerVideo" class="hidden" muted loop playsinline></video>
+      <div class="sheet-backdrop-gradient"></div>
+      <button id="sheetPlayTrailerBtn" onclick="playSheetTrailer()" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 w-14 h-14 rounded-full bg-mint/85 backdrop-blur-sm border-2 border-white/30 text-obsidian flex items-center justify-center shadow-[0_0_25px_rgba(0,229,153,0.5)] active:scale-90 transition-all" title="Reproduzir Trailer">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
       </button>
-
-      <div class="w-12 h-12 rounded-2xl bg-mint/20 border border-mint/40 text-mint mx-auto flex items-center justify-center">
-        <span class="material-symbols-outlined text-2xl">casino</span>
+      <div class="absolute bottom-3 left-4 z-10 flex items-center gap-2">
+        <span id="sheetResolutionBadge" class="px-2 py-0.5 rounded-full text-[9px] font-mono bg-black/70 backdrop-blur-md text-white border border-white/20 font-bold"></span>
+        <span id="sheetClassBadge"></span>
       </div>
+    </div>
 
+    <!-- Content -->
+    <div class="px-5 pb-6 space-y-4">
       <div>
-        <span class="text-[10px] font-mono text-mint font-bold uppercase tracking-wider">Roleta do NeatStream</span>
-        <h3 class="text-lg font-bold text-white font-headline mt-0.5">Sua Próxima Escolha</h3>
-        <p class="text-xs text-gray-400 mt-1">A comunidade escolheu este título para resolver sua dúvida:</p>
-      </div>
-
-      <!-- Card Sorteado -->
-      <div class="bg-[#080C0A] border border-white/10 rounded-2xl p-3 flex items-center gap-3 text-left">
-        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCcde23RErkePudSrtAJauDreKp3AwWdtq1c5LbKiRi6qXvJKbeO47LaTTDpDTCPC0K-xB-IIzAEtNdaqNjqTz8R7LBwd2WScNEBZYJxrVk5g5Njk5nDFqozHR2u4TwCQ30cQJFJzIzEgpjHb5FOQUXWfnLH7bdRD33hUlCCHlYZgG08CN8k9O8z5dgfPsOwLIeJD5kcdJzsEzz-UP1MM5GnRCRBdu_umqAbTKIV02UljX0_j4s5w625JmUV5_VEzoEADwIXLjrW30" alt="Ruptura" class="w-14 h-18 rounded-xl object-cover shrink-0"/>
-        <div>
-          <span class="text-[9px] bg-mint/15 text-mint font-mono font-bold px-1.5 py-0.5 rounded">NOTA 8,9</span>
-          <h4 class="text-sm font-bold text-white font-headline mt-1">Ruptura (Severance)</h4>
-          <p class="text-[11px] text-gray-400">Apple TV+ · Suspense</p>
+        <div class="flex items-center gap-2 mb-1.5">
+          <div id="sheetProviderBadge" class="flex items-center gap-1.5"></div>
+          <span id="sheetTypeBadge" class="px-2 py-0.5 rounded text-[9px] font-mono bg-white/10 text-gray-300 border border-white/10"></span>
         </div>
+        <h2 id="sheetTitle" class="text-xl font-extrabold tracking-tight font-display text-white leading-tight"></h2>
+        <p id="sheetOriginalTitle" class="text-[10px] font-mono text-gray-400 mt-0.5"></p>
       </div>
 
-      <!-- Decision Buttons (✕ Passar | ▶ Assistir | 🔖 Salvar) -->
-      <div class="grid grid-cols-3 gap-2 pt-2">
-        <button onclick="closeRouletteModal()" class="py-2.5 rounded-xl bg-white/5 border border-white/10 text-gray-300 hover:text-white text-xs font-semibold flex items-center justify-center gap-1">
-          <span class="material-symbols-outlined text-sm text-red-400">close</span>
-          Pular
-        </button>
-        <button onclick="window.open('https://tv.apple.com', '_blank')" class="py-2.5 rounded-xl bg-mint text-obsidian text-xs font-bold flex items-center justify-center gap-1 shadow-[0_0_12px_rgba(0,229,153,0.3)]">
-          <span class="material-symbols-outlined text-sm">play_arrow</span>
-          Assistir
-        </button>
-        <button onclick="closeRouletteModal()" class="py-2.5 rounded-xl bg-white/5 border border-white/10 text-gray-300 hover:text-white text-xs font-semibold flex items-center justify-center gap-1">
-          <span class="material-symbols-outlined text-sm text-mint">bookmark</span>
-          Salvar
-        </button>
+      <div class="flex flex-wrap items-center gap-2 text-[10px] font-mono">
+        <span class="flex items-center gap-1 px-2 py-0.5 rounded-lg bg-gold/15 text-gold border border-gold/30 font-bold">
+          <svg class="w-3 h-3 fill-gold" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <span id="sheetRatingVal"></span>
+        </span>
+        <span id="sheetCriticScore" class="text-gray-300"></span>
+        <span class="text-gray-500">·</span>
+        <span id="sheetDuration" class="text-gray-300"></span>
+        <span class="text-gray-500">·</span>
+        <span id="sheetGenre" class="text-gray-300"></span>
+      </div>
+
+      <p id="sheetSynopsis" class="text-xs text-gray-300 leading-relaxed"></p>
+
+      <div id="sheetSubStatus"></div>
+
+      <!-- Ações -->
+      <div class="space-y-2.5 pt-1">
+        <a id="sheetWatchBtn" href="#" target="_blank" rel="noopener" class="w-full py-3.5 rounded-2xl bg-gradient-to-r from-mint to-mint-dark text-obsidian font-display font-bold text-sm flex items-center justify-center gap-2.5 shadow-[0_0_25px_rgba(0,229,153,0.4)] active:scale-[0.97] transition-all no-underline">
+          <span id="sheetWatchLogo" class="inline-flex items-center"></span>
+          <span id="sheetWatchBtnText">Assistir Agora</span>
+        </a>
+        <div class="flex gap-2.5">
+          <button id="sheetTrailerBtn" onclick="playSheetTrailer()" class="flex-1 py-3 rounded-2xl bg-white/10 text-white text-xs font-semibold flex items-center justify-center gap-2 active:scale-95 transition-all border border-white/10">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            Trailer
+          </button>
+          <button id="sheetWatchlistBtn" onclick="toggleSheetWatchlist()" class="flex-1 py-3 rounded-2xl bg-white/10 text-white text-xs font-mono flex items-center justify-center gap-2 active:scale-95 transition-all border border-white/10">
+            + Minha Fila
+          </button>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- Floating Capsule Dock -->
-  <div class="fixed bottom-4 left-0 right-0 z-50 px-4 pointer-events-none">
-    <nav class="dock-glass max-w-[360px] mx-auto rounded-full py-2 px-3 flex items-center justify-between pointer-events-auto">
-      <button class="bg-mint text-obsidian font-bold text-xs px-4 py-2 rounded-full flex items-center gap-1.5 shadow-[0_0_16px_rgba(0,229,153,0.35)] cursor-pointer">
-        <span class="material-symbols-outlined text-[17px]">dashboard</span>
-        <span>Hoje</span>
-      </button>
-
-      <button onclick="openRouletteModal()" class="flex items-center justify-center w-10 h-10 rounded-full text-gray-400 hover:text-white transition-all cursor-pointer" title="Roleta Rápida">
-        <span class="material-symbols-outlined text-[20px]">casino</span>
-      </button>
-
-      <button onclick="window.location.href='carteira_dark.html'" class="flex items-center justify-center w-10 h-10 rounded-full text-gray-400 hover:text-white transition-all cursor-pointer" title="Carteira &amp; Econômetro">
-        <span class="material-symbols-outlined text-[20px]">account_balance_wallet</span>
-      </button>
-
-      <button class="flex items-center justify-center w-10 h-10 rounded-full text-gray-400 hover:text-white transition-all cursor-pointer" title="Comunidade">
-        <span class="material-symbols-outlined text-[20px]">forum</span>
-      </button>
-
-      <button class="flex items-center justify-center w-10 h-10 rounded-full text-gray-400 hover:text-white transition-all cursor-pointer" title="Ajustes">
-        <span class="material-symbols-outlined text-[20px]">settings</span>
-      </button>
-    </nav>
-  </div>
-
-  <!-- Toast / AlertCenter (Auto-dismiss com horários calmos) -->
-  <div id="neat-toast" class="fixed top-5 left-1/2 -translate-x-1/2 z-50 transition-all duration-300 transform opacity-0 -translate-y-4 pointer-events-none max-w-[350px] w-full px-4">
-    <div class="bg-[#111714] border border-mint/40 text-white px-4 py-3 rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,0.8)] flex items-center gap-3">
-      <span class="w-8 h-8 rounded-xl bg-mint/20 text-mint flex items-center justify-center shrink-0">
-        <span class="material-symbols-outlined text-[18px]">bookmark_added</span>
-      </span>
-      <p id="neat-toast-msg" class="text-xs text-gray-200 leading-snug">Adicionado à sua Watchlist!</p>
+  <!-- Toast -->
+  <div id="toastNotification" class="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+    <div class="bg-[#111714] border border-mint text-white px-4 py-2.5 rounded-full shadow-2xl text-xs font-mono flex items-center gap-2">
+      <span class="w-2 h-2 rounded-full bg-mint animate-pulse"></span>
+      <span id="toastMessage">Ação realizada</span>
     </div>
   </div>
 
   <script>
-    function triggerHaptic(pattern = [15]) {
-      if (typeof navigator !== 'undefined' && navigator.vibrate) {
-        try { navigator.vibrate(pattern); } catch (e) {}
+    // ====== REPOSITÓRIO CENTRAL DE LOGOS SVG OFICIAIS ======
+    const BRAND_SVGS = {
+      max: `<svg class="brand-svg-max h-3 w-auto" viewBox="0 0 100 24" fill="currentColor"><path d="M4 20V4h6.5l5.5 12 5.5-12H28v16h-4.8V9.5l-5 10.5h-3.4l-5-10.5V20H4zm34.5-14c5.5 0 9.8 4.3 9.8 9.8s-4.3 9.8-9.8 9.8c-3.5 0-6.5-1.8-8.2-4.5V20h-4.8V4h4.8v6.2c1.7-2.7 4.7-4.2 8.2-4.2zm-2.2 15c2.9 0 5.2-2.3 5.2-5.2s-2.3-5.2-5.2-5.2-5.2 2.3-5.2 5.2 2.3 5.2 5.2 5.2zm27.2-5.2l8-9.8h-6.2l-4.8 6-4.8-6h-6.2l8 9.8-8.5 10.2h6.2l5.3-6.4 5.3 6.4h6.2l-8.5-10.2z"/></svg>`,
+      disney: `<svg class="brand-svg-disney h-3 w-auto" viewBox="0 0 110 32" fill="currentColor"><path d="M22.5 27.2c-5 0-8.5-3-8.5-7.7 0-5.8 5.5-9.9 13.2-9.9 1.4 0 2.8.2 4 .4-.4-5.5-3.5-8-9.2-8-3.4 0-6.7.9-9.1 2.5l-1.6-4c2.8-1.9 7.4-3 12.2-3 9.2 0 14.9 4.6 14.9 14.5v15.9h-5.2v-3.2c-2.1 2.5-5 3.7-8 3.7zm7.3-12.8c-1.1-.2-2.3-.3-3.6-.3-4.4 0-7.3 2.1-7.3 5.1 0 2.3 1.8 3.9 4.4 3.9 2.8 0 5.1-1.6 6-3.9v-4.8h.5zm21-14.5c-2.3 0-4.1-1.8-4.1-4.1 0-2.3 1.8-4.1 4.1-4.1s4.1 1.8 4.1 4.1c0 2.3-1.8 4.1-4.1 4.1zm-3.9 26.6V10.2h7.8v16.3h-7.8zm16.5-8.5c2.3 1.6 5 2.5 7.6 2.5 2 0 3.2-.7 3.2-1.8 0-1.1-1.1-1.6-3.9-2.5-4.8-1.6-7.4-3.2-7.4-6.7 0-4.1 3.4-6.7 8.3-6.7 3 0 5.9.9 7.8 2.3l-2 4.6c-1.8-1.1-3.9-1.8-5.9-1.8-2 0-3 .7-3 1.8 0 1.1 1.1 1.6 3.9 2.5 5 1.6 7.4 3.6 7.4 6.7 0 4.3-3.4 7-8.9 7-3.4 0-6.7-1.1-9-2.8l1.7-5.1h.2zm31.3-2h-4.4v-5.9h4.4v-4.2h5v4.2h4.4v4.7h-4.4v8c0 1.6.7 2.3 2.1 2.3.7 0 1.4-.2 2-.4l.7 4.4c-1.2.5-2.8.7-4.4.7-3.7 0-5.3-1.6-5.3-4.8v-5.2zm24.5-2.7V13.2h-3.9v-3h3.9V6.3h5v3.9h3.9v3h-3.9v9.4c0 1.4.7 2.1 2.1 2.1.5 0 1.2-.2 1.8-.4l.5 3c-.9.4-2.1.5-3.4.5-3.2 0-6-1.4-6-5.1zm-8.3-13.1h-2.8c-3.2-5.5-9.1-9.1-16-9.1-10.3 0-18.7 8-19.2 18.1h3c.5-8.4 7.8-15.3 16.5-15.3 5.7 0 10.8 2.8 13.7 7.3h4.8z"/></svg>`,
+      netflix: `<svg class="brand-svg-netflix h-3 w-auto" viewBox="0 0 24 32" fill="none"><path d="M0 0h5.5v32H0z" fill="#B81D24"/><path d="M18.5 0H24v32h-5.5z" fill="#B81D24"/><path d="M0 0l18.5 32H24L5.5 0z" fill="#E50914"/></svg>`,
+      prime: `<svg class="brand-svg-prime h-3 w-auto" viewBox="0 0 95 24" fill="currentColor"><path d="M4.5 19V6.2h4.8v1.9c1.1-1.4 2.7-2.3 4.6-2.3 3.7 0 6.4 2.8 6.4 6.7s-2.7 6.7-6.4 6.7c-1.8 0-3.4-.7-4.5-2v6.5H4.5V19zm8.9-8c-2 0-3.7 1.5-3.7 3.7s1.7 3.7 3.7 3.7 3.7-1.5 3.7-3.7-1.7-3.7-3.7-3.7zm12.7 8V6.2h4.6v2.1c1-1.5 2.4-2.3 4.1-2.3.5 0 .8 0 1.2.1v4.6c-.5-.1-1-.1-1.5-.1-2.2 0-3.9 1.5-3.9 4v4.5h-4.5zm13 0V6.2h4.8V19h-4.8zm2.4-15c-1.6 0-2.8-1.2-2.8-2.8 0-1.5 1.2-2.8 2.8-2.8s2.8 1.3 2.8 2.8c0 1.6-1.2 2.8-2.8 2.8zm6.5 15V6.2h4.6v1.9c1.1-1.4 2.7-2.3 4.5-2.3 2 0 3.5.9 4.2 2.5 1.2-1.5 2.8-2.5 4.8-2.5 3.2 0 5.3 2.1 5.3 5.7v7.1h-4.7v-6.2c0-1.5-.8-2.4-2.2-2.4s-2.5.9-2.5 2.6v6h-4.7v-6.2c0-1.5-.8-2.4-2.2-2.4s-2.5.9-2.5 2.6v6H48zm29.2-6.5c.1-3.7 2.8-6.3 6.5-6.3 3.9 0 6.4 2.7 6.4 6.7v.8h-8.3c.2 1.7 1.7 2.7 3.4 2.7 1.3 0 2.5-.6 3.1-1.5l3.3 1.9c-1.3 2-3.7 3.2-6.5 3.2-4 0-6.8-2.7-6.8-6.7zm8.3-1.5c-.2-1.4-1.4-2.4-2.7-2.4-1.4 0-2.5 1-2.7 2.4h5.4zm-60 10.1c9.3 4.1 21.9 5.4 32.5 1.6 1.1-.4 1.9.5 1.4 1.3-1.6 2.6-4.8 4.1-8.7 5.1-10.4 2.4-21.7.4-29.6-5.2-.8-.6-.2-1.5.8-1.6l3.6-.5zm28.8-.1c.8-1.1 2.8-.7 4.1-.2.5.2.5.7.1 1-1.7 1.4-3.9 1.9-5.3 1.8-.5 0-.7-.4-.5-.8.5-.6 1.1-1.2 1.6-1.8z" fill="#00A8E1"/></svg>`,
+      apple: `<svg class="brand-svg-apple h-3 w-auto" viewBox="0 0 85 24" fill="currentColor"><path d="M10.4 11.7c0-3.1 2.5-4.7 2.6-4.8-1.4-2.1-3.7-2.4-4.5-2.5-1.9-.2-3.7 1.2-4.6 1.2-.9 0-2.5-1.1-4-1.1-2.1 0-4 1.2-5.1 3.1-2.2 3.8-.6 9.4 1.5 12.6 1.1 1.5 2.2 3.2 3.9 3.1 1.5-.1 2.2-1.1 4-1.1 1.9 0 2.4 1.1 4 1.1 1.7 0 2.8-1.5 3.9-3.1 1.2-1.8 1.7-3.5 1.8-3.6-.1 0-3.2-1.2-3.2-4.9zM8.2 3c.8-1.1 1.4-2.5 1.3-3.9-1.2.1-2.7.8-3.5 1.9-.7.8-1.4 2.4-1.3 3.7 1.4.1 2.7-.7 3.5-1.7zm13.6 17.1h-3V8.7h3v2.1h.1c.6-1.5 2.1-2.5 4-2.5h1.3v3h-1.7c-2.2 0-3.8 1.3-3.8 3.7v5.1zm14.5 0h-4.3l-4.5-11.4h3.4l3.5 8.1h.1l3.5-8.1h3.4l-4.7 11.4zm15.4-4.5h-3v-5.2h3V7.2h3.3v2.8h3v3.2h-3v5.3c0 1.1.5 1.5 1.4 1.5.5 0 1-.1 1.3-.2l.5 3c-.8.4-1.9.5-3 .5-2.5 0-4-1.1-4-3.2v-3.6zm16.3-1.8v-3.7h-2.6v-2h2.6V6.1h3.3v2.6h2.6v2h-2.6v6.2c0 1 .5 1.4 1.4 1.4.4 0 .8-.1 1.2-.2l.4 2c-.6.3-1.4.4-2.3.4-2.1 0-4-1-4-3.4z"/></svg>`
+    };
+
+    function getBrandAppTileHtml(providerKey, customClass = '') {
+      const p = String(providerKey || '').toLowerCase();
+      const names = { max: 'Max', disney: 'Disney+', netflix: 'Netflix', prime: 'Prime Video', apple: 'Apple TV+' };
+      const name = names[p] || providerKey;
+      return `<div class="brand-app-tile brand-app-tile-${p} overflow-hidden ${customClass}" title="Disponível no ${name}">
+        <img src="../assets/logos/${p}.png" alt="${name}" class="w-full h-full object-cover" loading="lazy" onerror="this.style.display='none'">
+      </div>`;
+    }
+
+    function getBrandPillHtml(providerKey, customClass = '') {
+      const p = String(providerKey || '').toLowerCase();
+      const svg = BRAND_SVGS[p] || '';
+      const names = { max: 'Max', disney: 'Disney+', netflix: 'Netflix', prime: 'Prime Video', apple: 'Apple TV+' };
+      const name = names[p] || providerKey;
+      return `<div class="brand-pill brand-pill-${p} ${customClass}">${svg}<span>${name}</span></div>`;
+    }
+
+    function getClassIndBadgeHtml(ratingStr, customClass = '') {
+      const clean = String(ratingStr || '').replace('+', '').trim().toUpperCase();
+      const code = clean === 'L' || clean === 'LIVRE' ? 'l' : clean;
+      const display = clean === 'l' ? 'L' : clean;
+      const titleMap = {
+        'l': 'Classificação Livre',
+        '10': 'Não recomendado para menores de 10 anos',
+        '12': 'Não recomendado para menores de 12 anos',
+        '14': 'Não recomendado para menores de 14 anos',
+        '16': 'Não recomendado para menores de 16 anos',
+        '18': 'Não recomendado para menores de 18 anos'
+      };
+      const title = titleMap[code] || `Classificação ${display}`;
+      return `<span class="classind-badge classind-${code} ${customClass}" title="${title}">${display}</span>`;
+    }
+
+    // ====== CATÁLOGO DE TÍTULOS (MOBILE) ======
+    const TITLES_CATALOG = {
+      dune2: {
+        title: 'Duna: Parte 2', originalTitle: 'Dune: Part Two (2024)', type: 'Filme',
+        duration: '2h 46m', rating: '8.8', criticScore: 'Metacritic 79', genre: 'Ficção Científica · Épico',
+        synopsis: 'Paul Atreides se une a Chani e aos Fremen numa jornada épica de vingança e destino. Experiência cinematográfica imersiva.',
+        resolution: '4K UHD · Dolby Atmos', classification: '14',
+        provider: { key: 'max', name: 'Max' },
+        watchUrl: 'https://play.max.com/movie/dune-part-two',
+        subscriptionStatus: 'included', subscriptionNote: 'Incluso no seu Max — R$ 39,90/mês',
+        backdrop: '../assets/backdrops/dune2_backdrop.jpg', videoTeaser: '../assets/videos/dune2_teaser.mp4'
+      },
+      the_bear: {
+        title: 'O Urso (The Bear)', originalTitle: 'The Bear — T3 (2024)', type: 'Série',
+        duration: 'T3 · 10 eps · ~32 min', rating: '9.1', criticScore: 'Metacritic 92', genre: 'Drama · Culinária',
+        synopsis: 'Carmy transforma o restaurante da família em alta gastronomia, enfrentando trauma e obsessão pela perfeição.',
+        resolution: '4K HDR · Dolby Vision', classification: '16',
+        provider: { key: 'disney', name: 'Disney+' },
+        watchUrl: 'https://www.disneyplus.com/series/the-bear',
+        subscriptionStatus: 'included', subscriptionNote: 'Incluso no Disney+ — R$ 43,90/mês',
+        backdrop: '../assets/backdrops/the_bear_backdrop.jpg', videoTeaser: '../assets/videos/the_bear_teaser.mp4'
+      },
+      severance: {
+        title: 'Ruptura (Severance)', originalTitle: 'Severance — T1 (2022)', type: 'Série',
+        duration: 'T1 · 9 eps · ~50 min', rating: '8.7', criticScore: 'Metacritic 83', genre: 'Suspense · Ficção Científica',
+        synopsis: 'Funcionários de uma corporação separam cirurgicamente suas memórias de trabalho e pessoais. Mas a parede entre os dois mundos está rachando.',
+        resolution: '4K HDR · Dolby Vision', classification: '14',
+        provider: { key: 'apple', name: 'Apple TV+' },
+        watchUrl: 'https://tv.apple.com/show/severance',
+        subscriptionStatus: 'included', subscriptionNote: 'Incluso no Apple TV+ — R$ 21,90/mês',
+        backdrop: '../assets/backdrops/severance_backdrop.jpg', videoTeaser: null
+      },
+      shogun: {
+        title: 'Xógum: Saga do Japão', originalTitle: 'Shōgun (2024)', type: 'Série',
+        duration: '10 eps · ~60 min', rating: '8.9', criticScore: 'Metacritic 84', genre: 'Épico · Histórico',
+        synopsis: 'No Japão feudal de 1600, um náufrago inglês navega a teia política de senhores da guerra e samurais numa guerra civil iminente.',
+        resolution: '4K UHD · Atmos', classification: '16',
+        provider: { key: 'disney', name: 'Disney+' },
+        watchUrl: 'https://www.disneyplus.com/series/shogun',
+        subscriptionStatus: 'included', subscriptionNote: 'Incluso no Disney+ — R$ 43,90/mês',
+        backdrop: '../assets/backdrops/shogun_backdrop.jpg', videoTeaser: null
+      },
+      oppenheimer: {
+        title: 'Oppenheimer', originalTitle: 'Oppenheimer (2023)', type: 'Filme',
+        duration: '3h 00m', rating: '8.9', criticScore: 'Metacritic 88', genre: 'Drama Histórico',
+        synopsis: 'A história de J. Robert Oppenheimer e o desenvolvimento da bomba atômica. Um épico biográfico de Christopher Nolan.',
+        resolution: '4K IMAX · Dolby Atmos', classification: '14',
+        provider: { key: 'prime', name: 'Prime Video' },
+        watchUrl: 'https://www.primevideo.com/detail/Oppenheimer',
+        subscriptionStatus: 'required', subscriptionNote: 'Aluguel no Prime Video — R$ 14,90',
+        backdrop: '../assets/backdrops/oppenheimer_backdrop.jpg', videoTeaser: null
+      },
+      arcane: {
+        title: 'Arcane T2', originalTitle: 'Arcane — T2 (2024)', type: 'Série',
+        duration: 'T2 · 9 eps · ~40 min', rating: '9.0', criticScore: 'Metacritic 85', genre: 'Animação · Fantasia',
+        synopsis: 'Duas irmãs lutam em lados opostos de uma guerra entre Piltover e Zaun. Animação revolucionária do universo League of Legends.',
+        resolution: '4K HDR10+', classification: '14',
+        provider: { key: 'netflix', name: 'Netflix' },
+        watchUrl: 'https://www.netflix.com/title/arcane',
+        subscriptionStatus: 'included', subscriptionNote: 'Incluso no Netflix 4K — R$ 55,90/mês',
+        backdrop: '../assets/backdrops/arcane_backdrop.jpg', videoTeaser: null
+      },
+      succession: {
+        title: 'Succession', originalTitle: 'Succession — Completa (2018–2023)', type: 'Série',
+        duration: '4 Temporadas · 39 eps', rating: '8.9', criticScore: 'Metacritic 92', genre: 'Drama · Poder',
+        synopsis: 'A família Roy luta pelo controle de um império de mídia enquanto o patriarca envelhece. Sátira sobre poder e disfunção.',
+        resolution: '4K HDR · Atmos', classification: '16',
+        provider: { key: 'max', name: 'Max' },
+        watchUrl: 'https://play.max.com/show/succession',
+        subscriptionStatus: 'included', subscriptionNote: 'Incluso no Max — R$ 39,90/mês',
+        backdrop: '../assets/backdrops/succession_backdrop.jpg', videoTeaser: null
       }
-    }
+    };
 
-    function openRouletteModal() {
-      triggerHaptic([25, 40, 25]);
-      document.getElementById('rouletteModal').classList.remove('hidden');
-    }
-    function closeRouletteModal() {
-      triggerHaptic([12]);
-      document.getElementById('rouletteModal').classList.add('hidden');
-    }
+    // ====== FUNÇÕES DA BOTTOM SHEET ======
+    let currentSheetTitle = null;
 
-    function toggleWatchlist(btn, title) {
-      const icon = btn.querySelector('.material-symbols-outlined');
-      const text = btn.querySelector('span:not(.material-symbols-outlined)');
-      const isSaved = btn.getAttribute('data-saved') === 'true';
-      if (!isSaved) {
-        triggerHaptic([20, 30, 20]);
-        btn.setAttribute('data-saved', 'true');
-        btn.classList.add('border-mint', 'bg-mint/15');
-        if (icon) icon.textContent = 'bookmark_added';
-        if (text) text.textContent = 'Na Watchlist';
-        showToast(`"${title}" adicionado à Watchlist! O NeatStream usará isso para calcular quais assinaturas manter.`);
+    function openMobileWatchSheet(titleId) {
+      const t = TITLES_CATALOG[titleId];
+      if (!t) { showToast('Título não encontrado'); return; }
+      currentSheetTitle = titleId;
+
+      const backdrop = document.getElementById('sheetBackdrop');
+      const trailer = document.getElementById('sheetTrailerVideo');
+      const playBtn = document.getElementById('sheetPlayTrailerBtn');
+      backdrop.src = t.backdrop;
+      backdrop.classList.remove('hidden');
+      trailer.classList.add('hidden');
+      trailer.pause();
+      trailer.removeAttribute('src');
+      playBtn.classList.toggle('hidden', !t.videoTeaser);
+
+      document.getElementById('sheetResolutionBadge').textContent = t.resolution;
+      document.getElementById('sheetClassBadge').innerHTML = getClassIndBadgeHtml(t.classification);
+
+      document.getElementById('sheetProviderBadge').innerHTML = getBrandAppTileHtml(t.provider.key) + '<span class="text-xs font-bold text-white tracking-wide">' + t.provider.name + '</span>';
+
+      document.getElementById('sheetTypeBadge').textContent = t.type;
+      document.getElementById('sheetTitle').textContent = t.title;
+      document.getElementById('sheetOriginalTitle').textContent = t.originalTitle;
+      document.getElementById('sheetRatingVal').textContent = String(t.rating).replace('★', '').trim();
+      document.getElementById('sheetCriticScore').textContent = t.criticScore;
+      document.getElementById('sheetDuration').textContent = t.duration;
+      document.getElementById('sheetGenre').textContent = t.genre;
+      document.getElementById('sheetSynopsis').textContent = t.synopsis;
+
+      const subEl = document.getElementById('sheetSubStatus');
+      if (t.subscriptionStatus === 'included') {
+        subEl.innerHTML = '<div class="sheet-sub-included flex items-center gap-2.5"><span class="text-mint text-base">✓</span><div><span class="text-[10px] font-bold text-mint block">Incluso na sua Assinatura Ativa</span><span class="text-[10px] font-mono text-gray-300">' + t.subscriptionNote + '</span></div></div>';
       } else {
-        triggerHaptic([15]);
-        btn.setAttribute('data-saved', 'false');
-        btn.classList.remove('border-mint', 'bg-mint/15');
-        if (icon) icon.textContent = 'bookmark_add';
-        if (text) text.textContent = 'Quero Assistir';
-        showToast(`"${title}" removido da sua Watchlist.`);
+        subEl.innerHTML = '<div class="sheet-sub-required flex items-center gap-2.5"><span class="text-warning text-base">⚠</span><div><span class="text-[10px] font-bold text-warning block">Requer Assinatura ou Aluguel</span><span class="text-[10px] font-mono text-gray-300">' + t.subscriptionNote + '</span></div></div>';
+      }
+
+      const watchBtn = document.getElementById('sheetWatchBtn');
+      const watchLogo = document.getElementById('sheetWatchLogo');
+      watchLogo.innerHTML = `<img src="../assets/logos/${t.provider.key}.png" alt="${t.provider.name}" class="w-5 h-5 rounded-[4px] object-cover mr-1.5 inline-block shadow-sm">`;
+      document.getElementById('sheetWatchBtnText').textContent = 'Assistir no ' + t.provider.name;
+      watchBtn.href = t.watchUrl;
+
+      document.getElementById('sheetTrailerBtn').classList.toggle('hidden', !t.videoTeaser);
+
+      const wlBtn = document.getElementById('sheetWatchlistBtn');
+      wlBtn.textContent = '+ Minha Fila';
+      wlBtn.classList.remove('bg-mint/20', 'border-mint', 'text-mint');
+
+      document.getElementById('mobileWatchSheetOverlay').classList.add('active');
+      document.getElementById('mobileWatchSheetCard').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeMobileWatchSheet() {
+      const trailer = document.getElementById('sheetTrailerVideo');
+      trailer.pause();
+      trailer.removeAttribute('src');
+      document.getElementById('mobileWatchSheetOverlay').classList.remove('active');
+      document.getElementById('mobileWatchSheetCard').classList.remove('active');
+      document.body.style.overflow = '';
+      currentSheetTitle = null;
+    }
+
+    function playSheetTrailer() {
+      if (!currentSheetTitle) return;
+      const t = TITLES_CATALOG[currentSheetTitle];
+      if (!t || !t.videoTeaser) { showToast('Trailer não disponível'); return; }
+      const backdrop = document.getElementById('sheetBackdrop');
+      const trailer = document.getElementById('sheetTrailerVideo');
+      const playBtn = document.getElementById('sheetPlayTrailerBtn');
+
+      if (trailer.classList.contains('hidden')) {
+        trailer.src = t.videoTeaser;
+        trailer.classList.remove('hidden');
+        backdrop.classList.add('hidden');
+        playBtn.classList.add('hidden');
+        trailer.muted = false;
+        trailer.volume = 0.85;
+        trailer.play();
+        showToast('Reproduzindo trailer');
+      } else {
+        trailer.pause();
+        trailer.classList.add('hidden');
+        backdrop.classList.remove('hidden');
+        playBtn.classList.remove('hidden');
       }
     }
 
+    function toggleSheetWatchlist() {
+      const btn = document.getElementById('sheetWatchlistBtn');
+      if (!currentSheetTitle) return;
+      const t = TITLES_CATALOG[currentSheetTitle];
+      if (btn.textContent.includes('+')) {
+        btn.textContent = '✓ Na Fila';
+        btn.classList.add('bg-mint/20', 'border-mint', 'text-mint');
+        showToast(t.title + ' na sua fila!');
+      } else {
+        btn.textContent = '+ Minha Fila';
+        btn.classList.remove('bg-mint/20', 'border-mint', 'text-mint');
+        showToast(t.title + ' removido da fila.');
+      }
+    }
+
+    function toggleWatchlistMobile(btn, title) {
+      if (btn.textContent.trim() === '✓') {
+        btn.textContent = '+';
+        showToast(title + ' removido da fila.');
+      } else {
+        btn.textContent = '✓';
+        showToast(title + ' na sua fila!');
+      }
+    }
+
+    function toggleMobileHeroAudio() {
+      const video = document.getElementById('mobileHeroVideo');
+      const mutedIcon = document.getElementById('mobileSoundMuted');
+      const activeIcon = document.getElementById('mobileSoundActive');
+      if (!video) return;
+
+      if (video.muted) {
+        video.muted = false;
+        video.volume = 0.85;
+        mutedIcon.classList.add('hidden');
+        activeIcon.classList.remove('hidden');
+        showToast('Áudio do teaser ativado');
+      } else {
+        video.muted = true;
+        mutedIcon.classList.remove('hidden');
+        activeIcon.classList.add('hidden');
+        showToast('Áudio do teaser silenciado');
+      }
+    }
+
+    let toastTimer = null;
     function showToast(msg) {
-      const toast = document.getElementById('neat-toast');
-      const toastMsg = document.getElementById('neat-toast-msg');
-      toastMsg.textContent = msg;
-      toast.classList.remove('opacity-0', '-translate-y-4', 'pointer-events-none');
-      setTimeout(() => {
-        toast.classList.add('opacity-0', '-translate-y-4', 'pointer-events-none');
-      }, 3500);
+      const t = document.getElementById('toastNotification');
+      const m = document.getElementById('toastMessage');
+      if (!t || !m) return;
+      m.textContent = msg;
+      t.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
+      t.classList.add('translate-y-0', 'opacity-100');
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        t.classList.remove('translate-y-0', 'opacity-100');
+        t.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
+      }, 2500);
     }
   </script>
-
 </body>
 </html>

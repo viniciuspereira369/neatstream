@@ -1,387 +1,1575 @@
 <!DOCTYPE html>
-
-<html class="light" lang="pt-BR"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>NeatStream - Dashboard Light Theme</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@500;600;700;800&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        "primary": "#0E7C5B", // Mint auditado WCAG AA (4.8:1)
-                        "mint-graphic": "#16A37A",
-                        "warning": "#B45309", // Warning auditado WCAG AA (4.9:1)
-                        "danger": "#DC2626",
-                        "lavender": "#4F46E5",
-                        "gold-dark": "#A16207",
-                        "tertiary-fixed": "#ffdeac",
-                        "surface-container-highest": "#d3e4fe",
-                        "on-surface-variant": "#475569",
-                        "on-surface": "#0b1c30",
-                        "surface": "#FFFFFF",
-                        "surface-raised": "#FFFFFF",
-                        "border-subtle": "#E2E8F0",
-                        "background": "#FAFBFC",
-                        "text-ink": "#0E1116"
-                    },
-                    fontFamily: {
-                        "display": ["Sora", "sans-serif"],
-                        "body": ["Inter", "sans-serif"],
-                        "mono": ["IBM Plex Mono", "monospace"],
-                        "sans": ["Inter", "sans-serif"],
-                        "headline": ["Sora", "sans-serif"],
-                        "data-label": ["IBM Plex Mono", "monospace"],
-                        "headline-md": ["Sora", "sans-serif"],
-                        "headline-lg": ["Sora", "sans-serif"],
-                        "display-lg": ["Sora", "sans-serif"],
-                        "body-md": ["Inter", "sans-serif"],
-                        "body-sm": ["Inter", "sans-serif"],
-                        "body-lg": ["Inter", "sans-serif"],
-                        "label-caps": ["Inter", "sans-serif"]
-                    },
-                    fontSize: {
-                        "body-sm": ["14px", { lineHeight: "20px", fontWeight: "400" }],
-                        "body-lg": ["18px", { lineHeight: "28px", fontWeight: "400" }],
-                        "headline-md": ["24px", { lineHeight: "32px", fontWeight: "600" }],
-                        "data-label": ["14px", { lineHeight: "20px", letterSpacing: "0.02em", fontWeight: "500" }],
-                        "display-lg": ["40px", { lineHeight: "48px", letterSpacing: "-0.02em", fontWeight: "700" }],
-                        "headline-lg": ["28px", { lineHeight: "36px", letterSpacing: "-0.01em", fontWeight: "600" }],
-                        "body-md": ["16px", { lineHeight: "24px", fontWeight: "400" }],
-                        "label-caps": ["12px", { lineHeight: "16px", letterSpacing: "0.05em", fontWeight: "700" }]
-                    }
-                }
-            }
-        };
-    </script>
-<style>
-        body { background-color: #FAFBFC; color: #0E1116; font-family: 'Inter', sans-serif; }
-        .glass-card { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(226, 232, 240, 0.8); }
-        :focus-visible { outline: 2px solid #0E7C5B; outline-offset: 2px; }
-        .font-mono { font-feature-settings: "tnum" 1, "zero" 1; }
-    </style>
-</head>
-<body class="font-body-md text-body-md antialiased min-h-screen flex">
-<!-- SideNavBar -->
-<nav class="w-64 h-full fixed left-0 top-0 bg-surface border-r border-border-subtle flex flex-col py-8 px-4 z-50">
-<a href="landing.html" title="Voltar para a Landing Page" class="mb-12 flex flex-col items-center hover:opacity-80 transition-opacity">
-<div class="w-14 h-14 rounded-2xl bg-emerald-50 border border-emerald-600/30 flex items-center justify-center text-emerald-700 font-bold text-lg mb-3 tracking-wider shadow-sm">
-  LS
-</div>
-<h1 class="font-headline text-lg font-bold text-primary text-center">NeatStream</h1>
-<p class="text-xs text-on-surface-variant text-center mt-0.5 font-mono">Conta Verificada</p>
-</a>
-<ul class="flex flex-col gap-2 flex-grow">
-<li>
-<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-primary font-bold border-r-4 border-primary bg-surface-container-low transition-all duration-200 ease-in-out" href="#">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">calendar_today</span>
-<span>Hoje</span>
-</a>
-</li>
-<li>
-<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-body-md hover:bg-surface-container hover:text-on-surface transition-colors duration-200 ease-in-out" href="#">
-<span class="material-symbols-outlined">search</span>
-<span>Busca Unificada</span>
-</a>
-</li>
-<li>
-<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-body-md hover:bg-surface-container hover:text-on-surface transition-colors duration-200 ease-in-out" href="#">
-<span class="material-symbols-outlined">subscriptions</span>
-<span>Minhas Assinaturas</span>
-</a>
-</li>
-<li>
-<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-body-md hover:bg-surface-container hover:text-on-surface transition-colors duration-200 ease-in-out" href="#">
-<span class="material-symbols-outlined">account_balance_wallet</span>
-<span>Econômetro</span>
-</a>
-</li>
-<li>
-<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-body-md hover:bg-surface-container hover:text-on-surface transition-colors duration-200 ease-in-out" href="#">
-<span class="material-symbols-outlined">group</span>
-<span>Comunidade</span>
-</a>
-</li>
-<li>
-<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-body-md hover:bg-surface-container hover:text-on-surface transition-colors duration-200 ease-in-out" href="#">
-<span class="material-symbols-outlined">settings</span>
-<span>Configurações</span>
-</a>
-</li>
-</ul>
-<div class="mt-auto pt-8">
-<button class="w-full bg-[#16A37A] text-on-primary font-body-md py-3 px-4 rounded-lg hover:opacity-90 transition-opacity">
-                Assinar Premium
-            </button>
-</div>
-</nav>
-<!-- Main Content Area -->
-<main class="ml-64 flex-grow flex flex-col min-h-screen">
-<!-- TopNavBar -->
-<header class="w-full h-16 sticky top-0 z-40 bg-background flex justify-between items-center px-margin-desktop shadow-sm border-b border-border-subtle">
-<div class="flex-1">
-<!-- Search could go here if specified -->
-</div>
-<div class="flex items-center gap-6">
-<div class="font-data-label text-data-label text-[#16A37A] bg-[#16A37A]/10 px-4 py-2 rounded-full font-semibold">
-                    R$ 124,50
-                </div>
-<div class="flex items-center gap-3">
-<a href="dashboard_dark.html" title="Alternar para Modo Escuro" class="flex items-center gap-1.5 text-xs bg-white px-3 py-1.5 rounded-full border border-border-subtle hover:border-[#16A37A] text-on-surface-variant hover:text-[#16A37A] transition-colors">
-<span class="material-symbols-outlined text-[16px]">dark_mode</span>
-<span>Modo Escuro</span>
-</a>
-<button class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-highest transition-all cursor-pointer active:scale-95">
-<span class="material-symbols-outlined">notifications</span>
-</button>
-<button class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-highest transition-all cursor-pointer active:scale-95">
-<span class="material-symbols-outlined">help_outline</span>
-</button>
-</div>
-<div class="w-9 h-9 rounded-xl bg-emerald-50 border border-emerald-600/30 flex items-center justify-center text-emerald-700 font-bold text-xs tracking-wider">
-  LS
-</div>
-</div>
-</header>
-<!-- Dashboard Content -->
-<div class="p-margin-desktop max-w-[1400px] w-full mx-auto grid grid-cols-12 gap-gutter">
-<!-- Left Column (Main Content) -->
-<div class="col-span-8 flex flex-col gap-stack-lg">
-<!-- Welcome Section -->
-<div>
-<h2 class="font-display-lg text-display-lg text-text-ink mb-2">Olá, Lucas</h2>
-<p class="font-body-lg text-body-lg text-on-surface-variant">Gestão Transparente de Assinaturas</p>
-</div>
-<!-- Hero Section (Destaque do Dia) -->
-<div class="relative w-full h-[320px] rounded-2xl overflow-hidden shadow-sm border border-border-subtle group">
-<div class="absolute inset-0 bg-cover bg-center w-full h-full transition-transform duration-700 group-hover:scale-105" data-alt="A serene, sweeping landscape photograph of a vast, gently rolling desert dune under a bright, clear midday sky. The sand is a warm, light beige, contrasting with a crisp blue sky. The lighting is brilliant and soft, embodying a sense of vast space, clarity, and minimalist beauty, perfectly suited for a light-mode interface." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCsv9M3wioFEHcfqQRQI7hgBJbgosgVIxD_ChRt97QhHjNrLMT0kJjNErFbMhuz93qEVp9dCUrsCalwVjJtbGQ1f0C_B5BB92HH3SDEPBEkvRYbcQLHWf8MN5jlZl7zVwI4-Ij-PgT-OStz__J2XUosxMyMTnvX1OCudUc6JYvyxz5uR88mt5CSvZeXMVrN4digC9phsLalkLh6VNCMBu62xMumQOmQUka-9t5Su37xl6w6lIEcZak3PhRCDdwkNURYkQJ0QvW399w8')"></div>
-<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
-<div class="absolute bottom-0 left-0 p-8 w-full flex justify-between items-end">
-<div>
-<span class="font-label-caps text-label-caps text-on-primary bg-primary/80 px-3 py-1 rounded-full mb-3 inline-block backdrop-blur-sm">DESTAQUE DO DIA</span>
-<h3 class="font-headline-lg text-headline-lg text-on-primary mb-2">Dune: Part Two</h3>
-<p class="font-body-md text-body-md text-on-primary/90 flex items-center gap-2">
-<span class="material-symbols-outlined text-sm">movie</span> Sci-Fi • 2h 46m
-                            </p>
-</div>
-<div class="flex items-center gap-3">
-<button class="bg-[#0E7C5B] text-white font-body-md py-3 px-6 rounded-xl hover:bg-[#00513b] transition-colors shadow-lg flex items-center gap-2 font-medium cursor-pointer">
-<span class="material-symbols-outlined">play_arrow</span>
-                            Assistir Agora
-                        </button>
-<button onclick="toggleLightWatchlist(this)" data-saved="false" class="bg-white/95 backdrop-blur-md text-text-ink hover:bg-white border border-border-subtle font-body-md py-3 px-5 rounded-xl transition-all shadow-sm flex items-center gap-2 font-semibold cursor-pointer">
-<span class="material-symbols-outlined text-[18px]">bookmark_add</span>
-                            + Quero Assistir
-                        </button>
-</div>
-</div>
-</div>
-<!-- Minhas Assinaturas Table -->
-<div class="bg-surface rounded-2xl border border-border-subtle p-6 shadow-sm">
-<div class="flex justify-between items-center mb-6">
-<div>
-  <h3 class="font-headline-md text-headline-md text-text-ink">Minhas Assinaturas</h3>
-  <p class="text-xs text-on-surface-variant mt-0.5">Gestão de custos e alertas com contraste WCAG AA auditado</p>
-</div>
-<button class="text-[#0E7C5B] font-body-sm font-semibold hover:underline">Ver todas</button>
-</div>
-<div class="overflow-x-auto">
-<table class="w-full text-left border-collapse">
-<thead>
-<tr class="border-b border-border-subtle text-on-surface-variant font-body-sm">
-<th class="pb-3 font-semibold">Serviço</th>
-<th class="pb-3 font-semibold">Plano</th>
-<th class="pb-3 font-semibold">Custo/mês</th>
-<th class="pb-3 font-semibold">Status</th>
-<th class="pb-3 font-semibold text-right">Ação</th>
-</tr>
-</thead>
-<tbody class="divide-y divide-border-subtle text-text-ink font-body-md">
-<!-- Disney+ (Alerta de Ociosidade - Warning #B45309 auditado) -->
-<tr class="hover:bg-amber-50/60 bg-amber-50/30 transition-colors group">
-<td class="py-4 flex items-center gap-4">
-<div class="w-10 h-10 rounded-xl bg-white border border-border-subtle flex items-center justify-center p-1.5 shadow-sm">
-<img class="w-full h-full object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAkpdTR0zGhgFhxihyEJ4KdDmC_jwplf3iA2gRhUq1fFngC-QXmk0X6zfqlbKSkq4Ohl5ElJmctzzgGj3lWTDMf98MYlKoRtb_xbH8Vu6yiTSayttCs9o5T788naGy40gQGLfweV4S_QD1C4SWJxIOknUYdE2X-xvnVtM_A_MRp0loQj-o5eXKr_qoCWHiBeAjgk0MRYlrqDaki3FbaDkiHXWMHYFCDw_FRZo-Sl2VWygGLuFq9n57JwE4B5gCcyGMv1x8R7BDB7tw"/>
-</div>
-<div>
-<span class="font-semibold block text-text-ink">Disney+ Premium</span>
-<span class="text-xs text-[#B45309] font-mono">0h nos últimos 30 dias</span>
-</div>
-</td>
-<td class="py-4 text-on-surface-variant">4K UHD</td>
-<td class="py-4 font-data-label font-bold text-text-ink">R$ 43,90</td>
-<td class="py-4">
-<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 text-[#B45309] font-body-sm text-xs font-bold border border-amber-300/80">
-<span class="material-symbols-outlined text-[14px]">warning</span>
-Ociosa (30d+)
-</span>
-</td>
-<td class="py-4 text-right">
-<button onclick="window.location.href='../mobile/celebracao.html'" class="text-xs font-semibold text-white bg-[#0E7C5B] hover:bg-[#00513b] px-3.5 py-2 rounded-xl transition-all shadow-sm cursor-pointer active:scale-95">
-Cancelar
-</button>
-</td>
-</tr>
-<!-- Netflix (Ativa - Mint #0E7C5B auditado) -->
-<tr class="hover:bg-slate-50 transition-colors group">
-<td class="py-4 flex items-center gap-4">
-<div class="w-10 h-10 rounded-xl bg-white border border-border-subtle flex items-center justify-center p-1.5 shadow-sm">
-<img class="w-full h-full object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBlzHm-1hYLYFB7WXwLodtEznDXz2tJxeZgSG5_vXq6egDYidLOtGdGb1Po_xrcgsYHT0HhrJl4ug9a5lo0enPBQUhysRy_VwQRuXDOAHIa2kmvbY439RB1umadX65xFj6Un0axeu9QFgIu5ziAWooYP_ZXakQFgUhLj0WBDYAeOvL8qrf2U-sbqOsIY39Fco1ZsXqdQcf8AtyUbkUEoVQVB_vfn-M36JYp_5s_O7EDaFqw-6XycvpO8WsRKEXgRV7EPcNg4g8GOcI"/>
-</div>
-<div>
-<span class="font-semibold block text-text-ink">Netflix</span>
-<span class="text-xs text-on-surface-variant font-mono">42h assistidas no mês</span>
-</div>
-</td>
-<td class="py-4 text-on-surface-variant">Padrão</td>
-<td class="py-4 font-data-label font-bold text-text-ink">R$ 55,90</td>
-<td class="py-4">
-<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-[#0E7C5B] font-body-sm text-xs font-bold border border-emerald-200">
-<span class="w-1.5 h-1.5 rounded-full bg-[#0E7C5B]"></span>
-Ativa
-</span>
-</td>
-<td class="py-4 text-right">
-<span class="text-xs text-on-surface-variant font-mono">Em dia</span>
-</td>
-</tr>
-<!-- Apple TV+ (Estado: Pausada) -->
-<tr class="hover:bg-slate-50 transition-colors group opacity-85">
-<td class="py-4 flex items-center gap-4">
-<div class="w-10 h-10 rounded-xl bg-slate-100 border border-border-subtle flex items-center justify-center text-slate-500 shadow-sm">
-<span class="material-symbols-outlined text-[20px]">tv</span>
-</div>
-<div>
-<span class="font-semibold block text-text-ink">Apple TV+</span>
-<span class="text-xs text-on-surface-variant font-mono">Cobrança suspensa</span>
-</div>
-</td>
-<td class="py-4 text-on-surface-variant">Individual</td>
-<td class="py-4 font-data-label text-slate-400">R$ 21,90</td>
-<td class="py-4">
-<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 text-slate-600 font-body-sm text-xs font-semibold border border-slate-200">
-<span class="material-symbols-outlined text-[14px]">pause_circle</span>
-Pausada
-</span>
-</td>
-<td class="py-4 text-right">
-<button onclick="reactivateLightService(this, 'Apple TV+')" class="text-xs font-semibold text-[#0E7C5B] hover:text-white border border-[#0E7C5B]/40 hover:bg-[#0E7C5B] px-3.5 py-1.5 rounded-xl transition-all flex items-center gap-1 ml-auto cursor-pointer">
-<span class="material-symbols-outlined text-[14px]">play_arrow</span>
-Reativar
-</button>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-<!-- Right Column (Sidebar / Sua Fila) -->
-<div class="col-span-4 flex flex-col gap-stack-lg">
-<div class="bg-surface rounded-2xl border border-border-subtle p-6 shadow-sm sticky top-[104px]">
-<h3 class="font-headline-md text-headline-md text-text-ink mb-6 flex items-center gap-2">
-<span class="material-symbols-outlined text-primary">queue</span>
-                        Sua Fila
-                    </h3>
-<div class="flex flex-col gap-4">
-<!-- Queue Item 1 -->
-<div class="flex gap-4 p-3 rounded-xl hover:bg-slate-50 transition-colors cursor-pointer group">
-<div class="w-20 h-28 rounded-lg overflow-hidden flex-shrink-0 border border-border-subtle relative">
-<img alt="Poster for Severance" class="w-full h-full object-cover" data-alt="Movie poster style image for a sci-fi thriller. Abstract geometric shapes glowing with a cool blue light against a clean, off-white background, creating a sleek, minimalist sci-fi aesthetic suitable for a light-mode UI." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQXwbaiGb_QGUfinxa3rj3sUY5O4oO0om5J40lxQ4Jl53N9ZBD47azZZ95Ut2tub387dqZ-9NhZtZNpuC20-u5Wn6dVaxMaKJC_rLOJsRfJEPucRGGv8gaovf0mO75hQjLzTumTvZ2bcMQsWjAtr0UdK0GNZ78UEYfSFn2YUjOmuv7rlvX5H0f0SUr6pkipoUBWNjkwVfg9HJFtBbiHNusxuTxCCmslz-Ym8dZFnwl2PxhdPi-cfTBbsbJf05dEgc0xWYVFdMcBvhb"/>
-<div class="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors"></div>
-</div>
-<div class="flex flex-col justify-center py-1">
-<span class="font-label-caps text-label-caps text-primary mb-1">APPLE TV+</span>
-<h4 class="font-body-lg text-body-lg font-semibold text-text-ink leading-tight mb-1">Severance</h4>
-<p class="font-body-sm text-body-sm text-on-surface-variant mb-2">S1:E4 • The We We Are</p>
-<div class="w-full bg-slate-100 rounded-full h-1.5 mt-auto">
-<div class="bg-[#16A37A] h-1.5 rounded-full" style="width: 45%"></div>
-</div>
-</div>
-</div>
-<!-- Queue Item 2 -->
-<div class="flex gap-4 p-3 rounded-xl hover:bg-slate-50 transition-colors cursor-pointer group">
-<div class="w-20 h-28 rounded-lg overflow-hidden flex-shrink-0 border border-border-subtle relative">
-<img alt="Poster for Succession" class="w-full h-full object-cover" data-alt="Cover art for a dramatic series. A close-up, high-key lighting portrait of a character's intense expression, with mostly white and light gray tones, styled for a modern, clean light-mode interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCwtwi-nUFOy6X5ByJnzZiBSFoBDT0x00RWT8nRo79mFOTMEugZ_XWZ2V7VvfkNmuOm839k-BYPer-AlydlggjQIZNbDsW3TlmFHDCbYbmPx6hGvY12VAD7ybaVqO_PCtgb9V8HCpQE5B-PxP-njGMV8zZz1EOO-AljSzmSWj9VnQQi8OmsAaVgn-7a_xxQaHA4o5waW3F0XOXqw99YFUevKEiXr83Zl9QTAtXYIN-rq1E4tPXVYPJsmEUB1niHO1rOTGBpI77RS8jv"/>
-<div class="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors"></div>
-</div>
-<div class="flex flex-col justify-center py-1">
-<span class="font-label-caps text-label-caps text-primary mb-1">MAX</span>
-<h4 class="font-body-lg text-body-lg font-semibold text-text-ink leading-tight mb-1">Succession</h4>
-<p class="font-body-sm text-body-sm text-on-surface-variant mb-2">S4:E3 • Connor's Wedding</p>
-<div class="w-full bg-slate-100 rounded-full h-1.5 mt-auto">
-<div class="bg-[#16A37A] h-1.5 rounded-full" style="width: 10%"></div>
-</div>
-</div>
-</div>
-<!-- Queue Item 3 -->
-<div class="flex gap-4 p-3 rounded-xl hover:bg-slate-50 transition-colors cursor-pointer group">
-<div class="w-20 h-28 rounded-lg overflow-hidden flex-shrink-0 border border-border-subtle relative flex items-center justify-center bg-slate-100 text-on-surface-variant">
-<span class="material-symbols-outlined text-3xl">podcasts</span>
-</div>
-<div class="flex flex-col justify-center py-1">
-<span class="font-label-caps text-label-caps text-primary mb-1">SPOTIFY</span>
-<h4 class="font-body-lg text-body-lg font-semibold text-text-ink leading-tight mb-1">Design Matters</h4>
-<p class="font-body-sm text-body-sm text-on-surface-variant mb-2">Debbie Millman</p>
-<div class="w-full bg-slate-100 rounded-full h-1.5 mt-auto">
-<div class="bg-[#16A37A] h-1.5 rounded-full" style="width: 85%"></div>
-</div>
-</div>
-</div>
-</div>
-<button class="w-full mt-6 py-2.5 border border-border-subtle rounded-lg font-body-md text-text-ink hover:bg-slate-50 transition-colors flex items-center justify-center gap-2">
-                        Ver Fila Completa
-                        <span class="material-symbols-outlined text-sm">arrow_forward</span>
-</button>
-</div>
-</div>
-</div>
-</main>
-
-<!-- Light Toast Notification -->
-<div id="lightToast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none flex items-center gap-3 px-4 py-3 rounded-xl bg-white border border-emerald-200 shadow-xl text-text-ink text-xs font-medium">
-  <span class="material-symbols-outlined text-[#0E7C5B] text-[20px]">check_circle</span>
-  <span id="lightToastMsg">Ação concluída com sucesso.</span>
-</div>
-
-<script>
-  function showLightToast(msg) {
-    const toast = document.getElementById('lightToast');
-    const text = document.getElementById('lightToastMsg');
-    if (!toast || !text) return;
-    text.textContent = msg;
-    toast.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
-    setTimeout(() => {
-      toast.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
-    }, 3200);
-  }
-
-  function toggleLightWatchlist(btn) {
-    const isSaved = btn.getAttribute('data-saved') === 'true';
-    if (!isSaved) {
-      btn.setAttribute('data-saved', 'true');
-      btn.classList.remove('bg-white/95', 'text-text-ink');
-      btn.classList.add('bg-emerald-50', 'text-[#0E7C5B]', 'border-emerald-300');
-      btn.innerHTML = `<span class="material-symbols-outlined text-[18px]">bookmark_added</span> Na Minha Fila`;
-      showLightToast('Duna: Parte 2 adicionado à sua fila inteligente.');
-    } else {
-      btn.setAttribute('data-saved', 'false');
-      btn.classList.remove('bg-emerald-50', 'text-[#0E7C5B]', 'border-emerald-300');
-      btn.classList.add('bg-white/95', 'text-text-ink');
-      btn.innerHTML = `<span class="material-symbols-outlined text-[18px]">bookmark_add</span> + Quero Assistir`;
-      showLightToast('Removido da fila.');
+<html lang="pt-BR" class="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NeatStream — Dashboard Cinema & Gestão (Modo Claro)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            obsidian: '#080C0A',
+            'obsidian-card': '#111714',
+            'obsidian-surface': '#151E19',
+            mint: '#00E599',
+            'mint-dark': '#00B377',
+            'mint-light': '#34F5B2',
+            gold: '#F5B84C',
+            warning: '#FF9838',
+            lavender: '#8B9BFF',
+            canvas: '#FAFBFC',
+          },
+          fontFamily: {
+            sans: ["'Plus Jakarta Sans'", "sans-serif"],
+            display: ["'Plus Jakarta Sans'", "sans-serif"],
+            headline: ["'Plus Jakarta Sans'", "sans-serif"],
+            mono: ["'Plus Jakarta Sans'", "sans-serif"],
+            editorial: ["'Plus Jakarta Sans'", "sans-serif"],
+            serif: ["'Plus Jakarta Sans'", "sans-serif"],
+          }
+        }
+      }
     }
-  }
+  </script>
 
-  function reactivateLightService(btn, serviceName) {
-    btn.innerHTML = `<span class="material-symbols-outlined text-[14px]">check</span> Reativado!`;
-    btn.classList.add('bg-[#0E7C5B]', 'text-white');
-    btn.classList.remove('text-[#0E7C5B]');
-    showLightToast(`${serviceName} reativado com sucesso. Cobrança restaurada no próximo ciclo.`);
-  }
-</script>
-</body></html>
+  <style>
+    body {
+      background-color: #FAFBFC;
+      color: #0E1116;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    h1, h2, h3, h4, h5 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .font-editorial {
+      font-family: 'Plus Jakarta Sans', sans-serif; font-style: italic;
+    }
+    .font-mono { font-family: 'Plus Jakarta Sans', sans-serif; font-feature-settings: 'tnum' 1, 'zero' 1; font-variant-numeric: tabular-nums; }
+
+    /* Ambient Glow */
+    .ambient-glow {
+      position: fixed;
+      top: -200px;
+      right: -100px;
+      width: 750px;
+      height: 750px;
+      background: radial-gradient(circle, rgba(0, 229, 153, 0.05) 0%, rgba(8, 12, 10, 0) 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Cinematic Poster Card with Spring Scale */
+    .poster-card {
+      position: relative;
+      background: #111714;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 1.25rem;
+      overflow: hidden;
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease, box-shadow 0.35s ease;
+      cursor: pointer;
+    }
+    .poster-card:hover {
+      transform: translateY(-6px) scale(1.02);
+      border-color: rgba(0, 229, 153, 0.45);
+      box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.8), 0 0 25px rgba(0, 229, 153, 0.18);
+    }
+    .poster-card:hover img {
+      transform: scale(1.06);
+    }
+
+    /* Ranking Numbers */
+    .ranking-number {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 6rem;
+      font-weight: 800;
+      line-height: 0.8;
+      position: absolute;
+      bottom: -15px;
+      left: -8px;
+      color: transparent;
+      -webkit-text-stroke: 2.5px rgba(0, 229, 153, 0.3);
+      z-index: 20;
+      pointer-events: none;
+      transition: all 0.3s ease;
+    }
+    .poster-card:hover .ranking-number {
+      -webkit-text-stroke: 2.5px #00E599;
+      transform: scale(1.05) translateY(-4px);
+    }
+
+    /* Views */
+    .view-content {
+      display: none;
+      opacity: 0;
+      transition: opacity 0.25s ease-in-out;
+    }
+    .view-content.active {
+      display: block;
+      opacity: 1;
+    }
+
+    /* Fan of Stacked Posters for Community Lists */
+    .poster-fan {
+      position: relative;
+      height: 140px;
+      width: 100%;
+      overflow: visible;
+    }
+    .fan-item {
+      position: absolute;
+      top: 0;
+      width: 80px;
+      height: 120px;
+      border-radius: 0.75rem;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      object-cover: cover;
+    }
+    .poster-card:hover .fan-1 { transform: rotate(-10deg) translateX(-15px); }
+    .poster-card:hover .fan-2 { transform: rotate(-3deg) translateY(-4px); }
+    .poster-card:hover .fan-3 { transform: rotate(8deg) translateX(15px); }
+
+    /* Custom Slider */
+    input[type=range]::-webkit-slider-thumb {
+      height: 18px;
+      width: 18px;
+      border-radius: 50%;
+      background: #00E599;
+      cursor: pointer;
+      -webkit-appearance: none;
+      box-shadow: 0 0 12px rgba(0, 229, 153, 0.6);
+      border: 2px solid #080C0A;
+    }
+
+    /* ====== WATCH MODAL CINEMÁTICO (TEMA CLARO) ====== */
+    #watchModalOverlay {
+      position: fixed; inset: 0; z-index: 200;
+      background: rgba(14, 17, 22, 0.65);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    #watchModalOverlay.active { opacity: 1; pointer-events: auto; }
+    #watchModalCard {
+      width: 95%; max-width: 720px; max-height: 90vh;
+      background: #FFFFFF;
+      border: 1px solid rgba(0,0,0,0.1);
+      border-radius: 1.75rem;
+      overflow: hidden; overflow-y: auto;
+      box-shadow: 0 30px 70px -15px rgba(0,0,0,0.25), 0 0 40px rgba(0,229,153,0.12);
+      transform: scale(0.92) translateY(24px);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    #watchModalOverlay.active #watchModalCard { transform: scale(1) translateY(0); }
+    #watchModalCard::-webkit-scrollbar { width: 4px; }
+    #watchModalCard::-webkit-scrollbar-thumb { background: rgba(14, 124, 91, 0.25); border-radius: 4px; }
+    .modal-backdrop-wrap { position: relative; width: 100%; aspect-ratio: 16/9; overflow: hidden; }
+    .modal-backdrop-wrap img, .modal-backdrop-wrap video { width: 100%; height: 100%; object-fit: cover; }
+    .modal-backdrop-gradient {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, #FFFFFF 0%, rgba(255,255,255,0.7) 40%, transparent 100%);
+      pointer-events: none;
+    }
+    .modal-close-btn {
+      position: absolute; top: 16px; right: 16px; z-index: 10;
+      width: 36px; height: 36px; border-radius: 50%;
+      background: rgba(0,0,0,0.6); backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: white; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .modal-close-btn:hover { background: rgba(0,0,0,0.85); transform: scale(1.08); }
+    .modal-play-trailer-btn {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); z-index: 10;
+      width: 56px; height: 56px; border-radius: 50%;
+      background: rgba(0,229,153,0.9); backdrop-filter: blur(6px);
+      border: 2px solid rgba(255,255,255,0.6);
+      color: #080C0A; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: all 0.25s;
+      box-shadow: 0 0 30px rgba(0,229,153,0.5);
+    }
+    .modal-play-trailer-btn:hover { background: #00E599; transform: translate(-50%,-50%) scale(1.1); }
+    .sub-status-included {
+      background: rgba(14, 124, 91, 0.08); border: 1px solid rgba(14, 124, 91, 0.25); border-radius: 1rem; padding: 12px 16px;
+    }
+    .sub-status-required {
+      background: rgba(255,152,56,0.12); border: 1px solid rgba(255,152,56,0.35); border-radius: 1rem; padding: 12px 16px;
+    }
+
+    /* ====== CLASSIND OFICIAL BRASILEIRO (DJCTQ) ====== */
+    .classind-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      border-radius: 4px;
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      font-weight: 800;
+      font-size: 11px;
+      line-height: 1;
+      text-align: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.35);
+      user-select: none;
+      flex-shrink: 0;
+      letter-spacing: -0.02em;
+    }
+    .classind-l  { background-color: #0C9443; color: #FFFFFF; }
+    .classind-10 { background-color: #0074BD; color: #FFFFFF; }
+    .classind-12 { background-color: #F7C922; color: #111111; }
+    .classind-14 { background-color: #F26724; color: #FFFFFF; }
+    .classind-16 { background-color: #E52320; color: #FFFFFF; }
+    .classind-18 { background-color: #1A1A1A; color: #FFFFFF; border: 1px solid rgba(255,255,255,0.25); }
+
+    /* ====== BRAND LOGO PILLS ====== */
+    .brand-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 9px;
+      border-radius: 9999px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 10px;
+      line-height: 1;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+      user-select: none;
+      transition: all 0.2s ease;
+    }
+    .brand-pill svg { height: 11px; width: auto; flex-shrink: 0; }
+    .brand-pill-max { background: rgba(0, 43, 231, 0.9); border: 1px solid rgba(96, 165, 250, 0.6); color: #FFFFFF; }
+    .brand-pill-disney { background: rgba(17, 60, 150, 0.9); border: 1px solid rgba(96, 165, 250, 0.6); color: #FFFFFF; }
+    .brand-pill-netflix { background: rgba(229, 9, 20, 0.9); border: 1px solid rgba(239, 68, 68, 0.6); color: #FFFFFF; }
+    .brand-pill-prime { background: rgba(0, 168, 225, 0.9); border: 1px solid rgba(14, 165, 233, 0.6); color: #FFFFFF; }
+    .brand-pill-apple { background: rgba(30, 41, 59, 0.9); border: 1px solid rgba(255, 255, 255, 0.4); color: #FFFFFF; }
+
+    /* ====== BRAND APP TILES (SQUIRCLES) ====== */
+    .brand-app-tile {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      flex-shrink: 0;
+      user-select: none;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
+      overflow: hidden;
+      position: relative;
+    }
+    .brand-app-tile img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .brand-app-tile:hover {
+      transform: scale(1.08);
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.5);
+    }
+    .brand-app-tile-max {
+      background: #0022B8;
+      border-color: rgba(96, 165, 250, 0.4);
+    }
+    .brand-app-tile-disney {
+      background: #030B26;
+      border-color: rgba(96, 165, 250, 0.45);
+    }
+    .brand-app-tile-netflix {
+      background: #000000;
+      border-color: rgba(229, 9, 20, 0.4);
+    }
+    .brand-app-tile-prime {
+      background: #00A8E1;
+      border-color: rgba(0, 168, 225, 0.4);
+    }
+    .brand-app-tile-apple {
+      background: #000000;
+      border-color: rgba(0, 0, 0, 0.25);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex h-screen overflow-hidden antialiased bg-[#FAFBFC] text-[#0E1116]">
+  <div class="ambient-glow"></div>
+
+  <!-- Sidebar -->
+  <aside class="w-64 h-full fixed left-0 top-0 bg-white border-r border-gray-200 flex flex-col py-6 px-4 z-50 select-none">
+    <!-- Brand -->
+    <a href="landing.html" class="flex items-center gap-3 px-2 mb-8 group cursor-pointer">
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-mint-dark to-mint flex items-center justify-center text-obsidian font-display font-black text-sm tracking-wider shadow-[0_0_20px_rgba(0,229,153,0.35)] group-hover:scale-105 transition-transform">
+        NS
+      </div>
+      <div>
+        <h1 class="text-base font-display font-bold text-gray-900 tracking-tight">Neat<span class="text-[#0E7C5B]">Stream</span></h1>
+        <p class="text-[10px] text-gray-500 font-mono tracking-widest uppercase">Modo Cinema 2026</p>
+      </div>
+    </a>
+
+    <!-- Navigation Hubs -->
+    <nav class="flex-1 space-y-1.5" id="dashboard-nav">
+      <button onclick="switchDashboardView('descoberta')" id="nav-descoberta" class="nav-link w-full flex items-center justify-between px-3.5 py-3 rounded-xl bg-[#0E7C5B] text-white font-bold shadow-[0_0_15px_rgba(0,229,153,0.3)] transition-all text-left cursor-pointer">
+        <div class="flex items-center gap-3">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polygon points="10 8 16 12 10 16 10 8"></polygon>
+          </svg>
+          <span class="text-xs tracking-tight">Cinema &amp; Catálogo</span>
+        </div>
+        <span class="w-2 h-2 rounded-full bg-obsidian animate-ping"></span>
+      </button>
+
+      <button onclick="switchDashboardView('financas')" id="nav-financas" class="nav-link w-full flex items-center justify-between px-3.5 py-3 rounded-xl text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-all text-left cursor-pointer">
+        <div class="flex items-center gap-3">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+            <line x1="2" y1="10" x2="22" y2="10"></line>
+          </svg>
+          <span class="text-xs tracking-tight">Finanças &amp; Econômetro</span>
+        </div>
+        <span class="w-1.5 h-1.5 rounded-full bg-warning animate-pulse" title="Oportunidade de economia"></span>
+      </button>
+
+      <button onclick="switchDashboardView('comunidade')" id="nav-comunidade" class="nav-link w-full flex items-center justify-between px-3.5 py-3 rounded-xl text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-all text-left cursor-pointer">
+        <div class="flex items-center gap-3">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+          </svg>
+          <span class="text-xs tracking-tight">Comunidade &amp; Listas</span>
+        </div>
+        <span class="px-1.5 py-0.5 rounded text-[9px] font-mono bg-lavender/15 text-lavender border border-lavender/30">Social</span>
+      </button>
+
+      <div class="pt-5 pb-2">
+        <p class="px-3.5 text-[10px] font-mono text-gray-500 uppercase tracking-widest">Navegação Rápida</p>
+      </div>
+
+      <a href="../index.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-all">
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+          <line x1="8" y1="21" x2="16" y2="21"></line>
+          <line x1="12" y1="17" x2="12" y2="21"></line>
+        </svg>
+        <span class="text-xs">Master Studio Hub</span>
+      </a>
+    </nav>
+
+    <!-- Compact Open Finance Live Widget -->
+    <div class="p-3 rounded-2xl bg-white border border-gray-200 mb-4 space-y-1">
+      <div class="flex items-center justify-between">
+        <span class="text-[10px] font-mono text-[#0E7C5B] font-bold uppercase">Open Finance</span>
+        <span class="w-1.5 h-1.5 rounded-full bg-mint animate-pulse"></span>
+      </div>
+      <p class="text-[11px] text-gray-500">4 streamings conectados</p>
+      <div class="flex gap-1 pt-1">
+        <span class="w-2 h-2 rounded-full bg-blue-400" title="Disney+"></span>
+        <span class="w-2 h-2 rounded-full bg-red-500" title="Netflix"></span>
+        <span class="w-2 h-2 rounded-full bg-purple-500" title="Max"></span>
+        <span class="w-2 h-2 rounded-full bg-gray-400" title="Apple TV+"></span>
+      </div>
+    </div>
+
+    <!-- User Profile Pill -->
+    <div class="pt-3 border-t border-gray-200 flex items-center justify-between">
+      <div class="flex items-center gap-2.5">
+        <div class="w-8 h-8 rounded-lg bg-emerald-50 text-[#0E7C5B] border border-[#0E7C5B]/30 flex items-center justify-center text-[#0E7C5B] font-mono text-xs font-bold">
+          LS
+        </div>
+        <div>
+          <p class="text-xs font-semibold text-gray-900">Lucas Silva</p>
+          <p class="text-[10px] text-gray-500 font-mono">Cinéfilo Nível 4</p>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main View Area -->
+  <main class="ml-64 flex-1 flex flex-col h-full relative z-10">
+    <!-- Header with Floating Capsule Tab Switcher -->
+    <header class="bg-white/95 backdrop-blur-md fixed top-0 right-0 w-[calc(100%-16rem)] h-16 border-b border-gray-200 flex justify-between items-center px-8 z-40">
+      <div class="flex items-center gap-3">
+        <h2 class="text-sm font-semibold text-gray-900 tracking-tight">Boa noite, Lucas</h2>
+        <span class="text-xs text-gray-500 font-editorial italic hidden xl:block">"Uma visão cinematográfica do seu entretenimento e patrimônio."</span>
+      </div>
+
+      <!-- Floating Capsule Tab Switcher (Center) -->
+      <div class="flex items-center p-1 rounded-full bg-white border border-gray-200 shadow-[0_4px_24px_rgba(0,0,0,0.5)]">
+        <button id="tab-btn-descoberta" onclick="switchDashboardView('descoberta')" class="tab-btn px-4 py-1.5 rounded-full text-xs font-semibold transition-all duration-300 flex items-center gap-2 cursor-pointer bg-[#0E7C5B] text-white shadow-[0_0_12px_rgba(0,229,153,0.3)]">
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polygon points="10 8 16 12 10 16 10 8"></polygon>
+          </svg>
+          <span>Cinema &amp; Catálogo</span>
+        </button>
+        <button id="tab-btn-financas" onclick="switchDashboardView('financas')" class="tab-btn px-4 py-1.5 rounded-full text-xs font-semibold transition-all duration-300 flex items-center gap-2 cursor-pointer text-gray-500 hover:text-gray-900">
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+            <line x1="2" y1="10" x2="22" y2="10"></line>
+          </svg>
+          <span>Finanças &amp; HUD</span>
+          <span class="w-1.5 h-1.5 rounded-full bg-warning animate-pulse" title="Oportunidade de economia"></span>
+        </button>
+        <button id="tab-btn-comunidade" onclick="switchDashboardView('comunidade')" class="tab-btn px-4 py-1.5 rounded-full text-xs font-semibold transition-all duration-300 flex items-center gap-2 cursor-pointer text-gray-500 hover:text-gray-900">
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+          </svg>
+          <span>Comunidade &amp; Listas</span>
+        </button>
+      </div>
+
+      <!-- Right Actions -->
+      <div class="flex items-center gap-4">
+        <!-- Compact HUD Quick Badge -->
+        <div onclick="switchDashboardView('financas')" class="hidden 2xl:flex items-center gap-3 bg-[#0F1512] px-3.5 py-1.5 rounded-full border border-[#0E7C5B]/30 cursor-pointer hover:border-[#0E7C5B] transition-all">
+          <span class="w-2 h-2 rounded-full bg-mint animate-pulse"></span>
+          <span class="font-mono text-xs text-gray-900">R$ 142,60 <span class="text-gray-500">/ R$ 140</span></span>
+          <span class="text-[10px] font-mono text-[#0E7C5B] bg-emerald-50 text-[#0E7C5B] px-2 py-0.5 rounded-full font-bold">+R$ 526/ano</span>
+        </div>
+
+        <a href="dashboard_dark.html" title="Alternar para Modo Escuro" class="flex items-center gap-1.5 text-xs bg-[#0F1512] px-3 py-1.5 rounded-full border border-gray-200 hover:border-[#0E7C5B]/30 text-gray-500 hover:text-gray-900 transition-all">
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+          </svg>
+          <span>Escuro</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- Scrollable Content Area -->
+    <div class="flex-1 overflow-y-auto pt-20 px-8 pb-16 space-y-10">
+
+      <!-- ========================================== -->
+      <!-- VIEW 1: CINEMA & CATÁLOGO (DEFAULT VIEW)   -->
+      <!-- ========================================== -->
+      <section id="view-descoberta" class="view-content active space-y-8">
+
+        <!-- FULL-BLEED CINEMATIC HERO BILLBOARD COM VÍDEO TEASER EM LOOP -->
+        <div class="relative rounded-3xl overflow-hidden min-h-[440px] flex items-end p-8 sm:p-10 border border-gray-200 shadow-2xl bg-black group">
+          <!-- Live Video Teaser Element with Backdrop Poster Fallback -->
+          <video id="billboardVideo" autoplay muted loop playsinline poster="../assets/backdrops/dune2_backdrop.jpg" class="absolute inset-0 w-full h-full object-cover opacity-80 transition-opacity duration-700">
+            <source src="../assets/videos/dune2_teaser.mp4" type="video/mp4">
+          </video>
+          
+          <!-- Cinematic Atmosphere Gradient Overlays -->
+          <div class="absolute inset-0 bg-gradient-to-t from-[#080C0A] via-[#080C0A]/40 to-transparent pointer-events-none"></div>
+          <div class="absolute inset-0 bg-gradient-to-r from-[#080C0A]/95 via-[#080C0A]/60 to-transparent pointer-events-none"></div>
+
+          <!-- Video Controls (Mute/Unmute & Play/Pause) -->
+          <div class="absolute top-6 right-6 z-20 flex items-center gap-2">
+            <button id="videoSoundBtn" onclick="toggleBillboardAudio()" title="Ativar/Desativar Som" class="w-10 h-10 rounded-full bg-black/60 hover:bg-black/80 border border-white/15 text-white flex items-center justify-center backdrop-blur-md transition-all active:scale-90 cursor-pointer shadow-lg">
+              <svg id="soundIconMuted" class="w-4 h-4 text-white/80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"/></svg>
+              <svg id="soundIconActive" class="w-4 h-4 text-mint hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
+            </button>
+            <button id="videoPlayBtn" onclick="toggleBillboardPlay()" title="Pausar/Reproduzir Vídeo" class="w-10 h-10 rounded-full bg-black/60 hover:bg-black/80 border border-white/15 text-white flex items-center justify-center backdrop-blur-md transition-all active:scale-90 cursor-pointer shadow-lg">
+              <svg id="playIconPlaying" class="w-4 h-4 text-white/80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6"/></svg>
+              <svg id="playIconPaused" class="w-4 h-4 text-white/80 hidden" fill="currentColor" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            </button>
+          </div>
+
+          <div class="relative z-10 max-w-2xl space-y-3.5">
+            <div class="flex items-center gap-2.5 flex-wrap">
+              <span class="px-3 py-1 rounded-full text-[10px] font-mono bg-[#0E7C5B] text-white font-bold tracking-wider">TEASER EM 4K HDR</span>
+              <div class="flex items-center gap-1.5" title="Disponível no Max">
+                <div class="brand-app-tile brand-app-tile-max">
+                  <img src="../assets/logos/max.png" alt="Max" class="w-full h-full object-cover">
+                </div>
+                <span class="text-xs font-bold text-white tracking-wide">Max</span>
+              </div>
+              <span class="classind-badge classind-14" title="Não recomendado para menores de 14 anos">14</span>
+              <span class="text-xs font-mono text-gray-300">Dolby Atmos &middot; Direção Denis Villeneuve</span>
+            </div>
+            
+            <h2 class="text-4xl sm:text-5xl font-extrabold tracking-tight font-display text-white">Duna: Parte 2</h2>
+            
+            <p class="text-xs sm:text-sm text-gray-200 line-clamp-2 leading-relaxed">
+              Paul Atreides se une a Chani e aos Fremen em busca de vingança contra os conspiradores que destruíram sua família. Uma experiência cinematográfica colossal e imersiva.
+            </p>
+
+            <div class="flex flex-wrap items-center gap-3 pt-2">
+              <button onclick="openWatchModal('dune2')" class="px-6 py-3 rounded-2xl bg-gradient-to-r from-mint to-mint-dark text-obsidian font-display font-bold text-xs flex items-center gap-2 shadow-[0_0_25px_rgba(0,229,153,0.4)] hover:brightness-110 active:scale-95 transition-all cursor-pointer">
+                <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                Assistir Agora
+              </button>
+              <button onclick="toggleBillboardAudio(true)" class="px-5 py-3 rounded-2xl bg-gray-100 hover:bg-gray-200 text-gray-900 text-xs font-semibold backdrop-blur-md transition-all flex items-center gap-1.5 cursor-pointer">
+                <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                <span>Ouvir Teaser</span>
+              </button>
+              <button onclick="toggleWebWatchlist(this, 'Duna: Parte 2')" class="px-4 py-3 rounded-2xl bg-gray-100 hover:bg-gray-200 text-gray-900 text-xs backdrop-blur-md transition-all cursor-pointer font-mono">
+                ✓ Na Minha Fila
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- DECISÃO ANTI-FADIGA VISUAL ("TENHO X MINUTOS") -->
+        <div class="p-6 rounded-3xl bg-white border border-gray-200 space-y-4">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-mono text-[#0E7C5B] font-bold uppercase tracking-wider">Decisão Rápida em 1 Toque</span>
+              <span class="text-xs text-gray-500 font-editorial italic">Anti-fadiga de catálogo</span>
+            </div>
+            <span class="text-[11px] font-mono text-gray-500">Recomendação cirúrgica</span>
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <button onclick="setFastChoiceTime(this, '30m')" class="time-choice-btn p-3 rounded-2xl bg-emerald-50 text-[#0E7C5B] border border-[#0E7C5B] text-left transition-all cursor-pointer flex items-center gap-3">
+              <img src="../assets/posters/the_bear.jpg" alt="30m" class="w-10 h-10 rounded-xl object-cover">
+              <div>
+                <span class="text-xs font-bold text-gray-900 block">30 min</span>
+                <span class="text-[10px] text-gray-500 block">O Urso T3 E4</span>
+              </div>
+            </button>
+            <button onclick="setFastChoiceTime(this, '45-60m')" class="time-choice-btn p-3 rounded-2xl bg-white hover:bg-gray-100 border border-gray-200 text-left transition-all cursor-pointer flex items-center gap-3">
+              <img src="../assets/posters/severance.jpg" alt="45m" class="w-10 h-10 rounded-xl object-cover">
+              <div>
+                <span class="text-xs font-bold text-gray-900 block">45 a 60 min</span>
+                <span class="text-[10px] text-gray-500 block">Ruptura T1</span>
+              </div>
+            </button>
+            <button onclick="setFastChoiceTime(this, '90-110m')" class="time-choice-btn p-3 rounded-2xl bg-white hover:bg-gray-100 border border-gray-200 text-left transition-all cursor-pointer flex items-center gap-3">
+              <img src="../assets/posters/oppenheimer.jpg" alt="90m" class="w-10 h-10 rounded-xl object-cover">
+              <div>
+                <span class="text-xs font-bold text-gray-900 block">90 a 110 min</span>
+                <span class="text-[10px] text-gray-500 block">Filme fechado</span>
+              </div>
+            </button>
+            <button onclick="setFastChoiceTime(this, '120m+')" class="time-choice-btn p-3 rounded-2xl bg-white hover:bg-gray-100 border border-gray-200 text-left transition-all cursor-pointer flex items-center gap-3">
+              <img src="../assets/posters/dune2.jpg" alt="120m" class="w-10 h-10 rounded-xl object-cover">
+              <div>
+                <span class="text-xs font-bold text-gray-900 block">2h30+ (Épico)</span>
+                <span class="text-[10px] text-gray-500 block">Duna: Parte 2</span>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <!-- TOP 10 NO BRASIL HOJE (PÔSTERES VERTICAIS 2:3 EM ALTA DEFINIÇÃO) -->
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <h3 class="text-base font-bold font-display text-gray-900 tracking-tight">Top 10 no Brasil Hoje</h3>
+              <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-50 text-[#0E7C5B] text-[#0E7C5B] border border-[#0E7C5B]/30 font-bold">Em Alta</span>
+            </div>
+            <span class="text-xs text-gray-500 font-mono">Consolidado multi-plataforma</span>
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+            <!-- Poster 1 -->
+            <div onclick="openWatchModal('dune2')" class="poster-card group">
+              <span class="ranking-number">1</span>
+              <div class="aspect-[2/3] w-full overflow-hidden relative">
+                <img src="../assets/posters/dune2.jpg" alt="Duna 2" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                <div class="brand-app-tile brand-app-tile-max absolute top-2.5 right-2.5 z-10" title="Disponível no Max">
+                  <img src="../assets/logos/max.png" alt="Max" class="w-full h-full object-cover">
+                </div>
+                <span class="classind-badge classind-14 absolute bottom-2.5 right-2.5 z-10" title="Classificação 14 anos">14</span>
+              </div>
+              <div class="p-3">
+                <div class="flex items-center justify-between text-[10px] font-mono text-gray-500">
+                  <span>Ficção &middot; 2h46m</span>
+                  <span class="text-amber-500 font-bold flex items-center gap-1">
+                    <svg class="w-3 h-3 fill-amber-400 text-amber-400" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                    8.8
+                  </span>
+                </div>
+                <h4 class="text-xs font-bold text-gray-900 truncate mt-1">Duna: Parte 2</h4>
+              </div>
+            </div>
+
+            <!-- Poster 2 -->
+            <div onclick="openWatchModal('the_bear')" class="poster-card group">
+              <span class="ranking-number">2</span>
+              <div class="aspect-[2/3] w-full overflow-hidden relative">
+                <img src="../assets/posters/the_bear.jpg" alt="The Bear" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                <div class="brand-app-tile brand-app-tile-disney absolute top-2.5 right-2.5 z-10" title="Disponível no Disney+">
+                  <img src="../assets/logos/disney.png" alt="Disney+" class="w-full h-full object-cover">
+                </div>
+                <span class="classind-badge classind-16 absolute bottom-2.5 right-2.5 z-10" title="Classificação 16 anos">16</span>
+              </div>
+              <div class="p-3">
+                <div class="flex items-center justify-between text-[10px] font-mono text-gray-500">
+                  <span>Drama &middot; T3</span>
+                  <span class="text-amber-500 font-bold flex items-center gap-1">
+                    <svg class="w-3 h-3 fill-amber-400 text-amber-400" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                    9.1
+                  </span>
+                </div>
+                <h4 class="text-xs font-bold text-gray-900 truncate mt-1">O Urso</h4>
+              </div>
+            </div>
+
+            <!-- Poster 3 -->
+            <div onclick="openWatchModal('shogun')" class="poster-card group">
+              <span class="ranking-number">3</span>
+              <div class="aspect-[2/3] w-full overflow-hidden relative">
+                <img src="../assets/posters/shogun.jpg" alt="Shogun" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                <div class="brand-app-tile brand-app-tile-disney absolute top-2.5 right-2.5 z-10" title="Disponível no Disney+">
+                  <img src="../assets/logos/disney.png" alt="Disney+" class="w-full h-full object-cover">
+                </div>
+                <span class="classind-badge classind-16 absolute bottom-2.5 right-2.5 z-10" title="Classificação 16 anos">16</span>
+              </div>
+              <div class="p-3">
+                <div class="flex items-center justify-between text-[10px] font-mono text-gray-500">
+                  <span>Épico &middot; 10 eps</span>
+                  <span class="text-amber-500 font-bold flex items-center gap-1">
+                    <svg class="w-3 h-3 fill-amber-400 text-amber-400" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                    8.9
+                  </span>
+                </div>
+                <h4 class="text-xs font-bold text-gray-900 truncate mt-1">Xógum</h4>
+              </div>
+            </div>
+
+            <!-- Poster 4 -->
+            <div onclick="openWatchModal('severance')" class="poster-card group">
+              <span class="ranking-number">4</span>
+              <div class="aspect-[2/3] w-full overflow-hidden relative">
+                <img src="../assets/posters/severance.jpg" alt="Severance" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                <div class="brand-app-tile brand-app-tile-apple absolute top-2.5 right-2.5 z-10" title="Disponível no Apple TV+">
+                  <img src="../assets/logos/apple.png" alt="Apple TV+" class="w-full h-full object-cover">
+                </div>
+                <span class="classind-badge classind-14 absolute bottom-2.5 right-2.5 z-10" title="Classificação 14 anos">14</span>
+              </div>
+              <div class="p-3">
+                <div class="flex items-center justify-between text-[10px] font-mono text-gray-500">
+                  <span>Suspense &middot; T1</span>
+                  <span class="text-amber-500 font-bold flex items-center gap-1">
+                    <svg class="w-3 h-3 fill-amber-400 text-amber-400" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                    8.7
+                  </span>
+                </div>
+                <h4 class="text-xs font-bold text-gray-900 truncate mt-1">Ruptura</h4>
+              </div>
+            </div>
+
+            <!-- Poster 5 -->
+            <div onclick="openWatchModal('oppenheimer')" class="poster-card group">
+              <span class="ranking-number">5</span>
+              <div class="aspect-[2/3] w-full overflow-hidden relative">
+                <img src="../assets/posters/oppenheimer.jpg" alt="Oppenheimer" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                <div class="brand-app-tile brand-app-tile-prime absolute top-2.5 right-2.5 z-10" title="Disponível no Prime Video">
+                  <img src="../assets/logos/prime.png" alt="Prime Video" class="w-full h-full object-cover">
+                </div>
+                <span class="classind-badge classind-14 absolute bottom-2.5 right-2.5 z-10" title="Classificação 14 anos">14</span>
+              </div>
+              <div class="p-3">
+                <div class="flex items-center justify-between text-[10px] font-mono text-gray-500">
+                  <span>História &middot; 3h00m</span>
+                  <span class="text-amber-500 font-bold flex items-center gap-1">
+                    <svg class="w-3 h-3 fill-amber-400 text-amber-400" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                    8.9
+                  </span>
+                </div>
+                <h4 class="text-xs font-bold text-gray-900 truncate mt-1">Oppenheimer</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ========================================== -->
+      <!-- VIEW 2: FINANÇAS & HUD COMPACTO            -->
+      <!-- ========================================== -->
+      <section id="view-financas" class="view-content space-y-8">
+
+        <!-- SLEEK COMPACT FINANCIAL HUD BAR (REPLACES BULKY TEXT TABLES) -->
+        <div class="p-6 rounded-3xl bg-white border border-[#0E7C5B]/25 shadow-xl relative overflow-hidden space-y-6">
+          <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-gray-200">
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-mono bg-emerald-50 text-[#0E7C5B] text-[#0E7C5B] border border-[#0E7C5B]/30 font-bold uppercase">HUD Orçamentário Ativo</span>
+                <span class="text-xs text-gray-500 font-mono">Open Finance Sincronizado</span>
+              </div>
+              <h2 class="text-2xl font-bold font-display text-gray-900 tracking-tight mt-1">Econômetro &amp; Bateria de Streamings</h2>
+            </div>
+
+            <!-- Mini Radial Gauge & Direct Stat -->
+            <div class="flex items-center gap-6 bg-white px-5 py-3 rounded-2xl border border-gray-200">
+              <div>
+                <span class="text-[10px] font-mono text-gray-500 uppercase tracking-widest block">Gasto Atual vs Teto</span>
+                <span class="text-base font-mono font-bold text-gray-900">R$ 142,60 <span class="text-gray-500">/</span> <span id="budgetHUDVal" class="text-[#0E7C5B]">R$ 140,00</span></span>
+              </div>
+              <div class="border-l border-gray-200 pl-5">
+                <span class="text-[10px] font-mono text-gray-500 uppercase tracking-widest block">Economia Anual</span>
+                <span id="savingsHUDVal" class="text-base font-mono font-bold text-[#0E7C5B]">+R$ 526,80</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Slider Dinâmico Compacto -->
+          <div class="space-y-2">
+            <div class="flex justify-between text-xs font-mono text-gray-500">
+              <span>Ajustar Teto Mensal Desejado</span>
+              <span id="sliderHUDDisplay" class="text-[#0E7C5B] font-bold">R$ 140,00 / mês</span>
+            </div>
+            <input type="range" min="80" max="250" step="10" value="140" oninput="handleHUDSlider(this.value)" class="w-full h-2 bg-gray-800 rounded-lg appearance-none cursor-pointer">
+          </div>
+
+          <!-- Bateria Visual de Streamings Ativos (Substitui Tabela Pesada) -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-2">
+            <!-- Disney+ (Em Risco de Ociosidade) -->
+            <div class="p-4 rounded-2xl bg-amber-500/10 border border-warning/40 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <div class="brand-app-tile brand-app-tile-disney w-6 h-6 rounded-md">
+                      <img src="../assets/logos/disney.png" alt="Disney+" class="w-full h-full object-cover">
+                    </div>
+                    <span class="text-xs font-bold text-blue-500">Disney+ Standard</span>
+                  </div>
+                  <span class="px-2 py-0.5 rounded text-[9px] font-mono bg-warning/20 text-warning font-bold">OCIOSO HÁ 34D</span>
+                </div>
+                <p class="text-lg font-mono font-bold text-gray-900 mt-2">R$ 43,90<span class="text-xs text-gray-500">/mês</span></p>
+                <div class="w-full bg-black/40 h-1.5 rounded-full mt-2 overflow-hidden">
+                  <div class="bg-warning h-full w-[10%]"></div>
+                </div>
+              </div>
+              <button onclick="openSeasonPauseModal('Disney+', 'O Urso', '18 de Set')" class="mt-4 w-full py-1.5 rounded-xl bg-warning hover:bg-warning/90 text-obsidian text-xs font-bold transition-all cursor-pointer">
+                Agendar Pausa de Temporada
+              </button>
+            </div>
+
+            <!-- Netflix 4K -->
+            <div class="p-4 rounded-2xl bg-white border border-gray-200 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <div class="brand-app-tile brand-app-tile-netflix w-6 h-6 rounded-md">
+                      <img src="../assets/logos/netflix.png" alt="Netflix" class="w-full h-full object-cover">
+                    </div>
+                    <span class="text-xs font-bold text-red-500">Netflix Premium 4K</span>
+                  </div>
+                  <span class="px-2 py-0.5 rounded text-[9px] font-mono bg-emerald-100 text-[#0E7C5B] font-bold">100% UTILIZADO</span>
+                </div>
+                <p class="text-lg font-mono font-bold text-gray-900 mt-2">R$ 55,90<span class="text-xs text-gray-500">/mês</span></p>
+                <div class="w-full bg-gray-100 h-1.5 rounded-full mt-2 overflow-hidden">
+                  <div class="bg-mint h-full w-[95%]"></div>
+                </div>
+              </div>
+              <span class="mt-4 text-[11px] font-mono text-gray-500 block text-center">Manter Ativo &middot; Excelente ROI</span>
+            </div>
+
+            <!-- Max -->
+            <div class="p-4 rounded-2xl bg-white border border-gray-200 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <div class="brand-app-tile brand-app-tile-max w-6 h-6 rounded-md">
+                      <img src="../assets/logos/max.png" alt="Max" class="w-full h-full object-cover">
+                    </div>
+                    <span class="text-xs font-bold text-purple-600">Max (HBO)</span>
+                  </div>
+                  <span class="px-2 py-0.5 rounded text-[9px] font-mono bg-purple-500/20 text-purple-700 font-bold">MODERADO</span>
+                </div>
+                <p class="text-lg font-mono font-bold text-gray-900 mt-2">R$ 39,90<span class="text-xs text-gray-500">/mês</span></p>
+                <div class="w-full bg-gray-100 h-1.5 rounded-full mt-2 overflow-hidden">
+                  <div class="bg-purple-500 h-full w-[65%]"></div>
+                </div>
+              </div>
+              <span class="mt-4 text-[11px] font-mono text-gray-500 block text-center">Duna 2 assistido &middot; Monitorando</span>
+            </div>
+
+            <!-- Apple TV+ -->
+            <div class="p-4 rounded-2xl bg-white border border-gray-200 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <div class="brand-app-tile brand-app-tile-apple w-6 h-6 rounded-md">
+                      <img src="../assets/logos/apple.png" alt="Apple TV+" class="w-full h-full object-cover">
+                    </div>
+                    <span class="text-xs font-bold text-gray-800">Apple TV+</span>
+                  </div>
+                  <span class="px-2 py-0.5 rounded text-[9px] font-mono bg-gray-100 text-gray-700 font-bold">PLANO ANUAL</span>
+                </div>
+                <p class="text-lg font-mono font-bold text-gray-900 mt-2">R$ 21,90<span class="text-xs text-gray-500">/mês eq.</span></p>
+                <div class="w-full bg-gray-100 h-1.5 rounded-full mt-2 overflow-hidden">
+                  <div class="bg-gray-400 h-full w-[30%]"></div>
+                </div>
+              </div>
+              <span class="mt-4 text-[11px] font-mono text-gray-500 block text-center">Ruptura T2 na fila</span>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ========================================== -->
+      <!-- VIEW 3: COMUNIDADE VISUAL COM LEQUE PÔSTERES-->
+      <!-- ========================================== -->
+      <section id="view-comunidade" class="view-content space-y-8">
+
+        <!-- User Gamified Cinephile Card -->
+        <div class="p-6 rounded-3xl bg-white border border-gray-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="flex items-center gap-4">
+            <div class="w-14 h-14 rounded-2xl bg-emerald-50 text-[#0E7C5B] border border-[#0E7C5B]/30 flex items-center justify-center text-[#0E7C5B] font-mono text-xl font-bold">
+              LS
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <h3 class="text-lg font-bold font-display text-gray-900">Lucas Silva</h3>
+                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-mono bg-emerald-50 text-[#0E7C5B] text-[#0E7C5B] border border-[#0E7C5B]/30">Nível 4 · Cinéfilo Consciente</span>
+              </div>
+              <p class="text-xs text-gray-500 mt-0.5">84 membros assistiram recomendações suas</p>
+            </div>
+          </div>
+
+          <div class="flex gap-2 font-mono text-xs">
+            <span class="px-3 py-1.5 rounded-xl bg-white border border-gray-200 text-gray-600">🏆 Crítico Ouro</span>
+            <span class="px-3 py-1.5 rounded-xl bg-white border border-gray-200 text-gray-600">⚡ Decisão &lt;3 min</span>
+            <span class="px-3 py-1.5 rounded-xl bg-white border border-[#0E7C5B]/30 text-[#0E7C5B]">💰 R$ 526 poupados</span>
+          </div>
+        </div>
+
+        <!-- Curadorias Visuais (Leques de Pôsteres) -->
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-mono text-[#0E7C5B] font-bold uppercase tracking-wider">[01] Listas Curadas da Comunidade</span>
+              <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-lavender/20 text-lavender border border-lavender/30">1-Clique Clone</span>
+            </div>
+            <span class="text-xs text-gray-500 font-mono">+1.400 listas ativas</span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- List 1: Clássicos Contemporâneos -->
+            <div class="poster-card p-5 space-y-4">
+              <!-- Visual Poster Fan -->
+              <div class="poster-fan flex items-center justify-center pt-2">
+                <img src="../assets/posters/dune2.jpg" alt="Duna 2" class="fan-item fan-1 left-8 z-10">
+                <img src="../assets/posters/blade_runner_2049.jpg" alt="Blade Runner" class="fan-item fan-2 left-20 z-20">
+                <img src="../assets/posters/succession.jpg" alt="Succession" class="fan-item fan-3 left-32 z-30">
+              </div>
+
+              <div>
+                <span class="text-[10px] font-mono text-purple-300">por @beatriz_cine &middot; Max</span>
+                <h4 class="text-sm font-bold text-gray-900 font-display mt-0.5">Clássicos Contemporâneos na Max</h4>
+                <p class="text-xs text-gray-500 mt-1">18 títulos imperdíveis que fogem dos algoritmos comerciais.</p>
+              </div>
+
+              <button onclick="cloneCommunityList(this, 'Clássicos Contemporâneos')" class="w-full py-2 rounded-xl bg-gray-50 hover:bg-mint hover:text-obsidian border border-gray-200 hover:border-[#0E7C5B] text-xs font-semibold text-gray-900 transition-all cursor-pointer">
+                + Clonar para Minha Fila (18)
+              </button>
+            </div>
+
+            <!-- List 2: Minisséries Fim de Semana -->
+            <div class="poster-card p-5 space-y-4">
+              <div class="poster-fan flex items-center justify-center pt-2">
+                <img src="../assets/posters/the_bear.jpg" alt="The Bear" class="fan-item fan-1 left-8 z-10">
+                <img src="../assets/posters/severance.jpg" alt="Severance" class="fan-item fan-2 left-20 z-20">
+                <img src="../assets/posters/shogun.jpg" alt="Shogun" class="fan-item fan-3 left-32 z-30">
+              </div>
+
+              <div>
+                <span class="text-[10px] font-mono text-[#0E7C5B]">por @carlos_streaming &middot; Multiplataforma</span>
+                <h4 class="text-sm font-bold text-gray-900 font-display mt-0.5">Minisséries para 1 Fim de Semana</h4>
+                <p class="text-xs text-gray-500 mt-1">Histórias completas com menos de 7 episódios. Sem enrolação.</p>
+              </div>
+
+              <button onclick="cloneCommunityList(this, 'Minisséries 1 Fim de Semana')" class="w-full py-2 rounded-xl bg-gray-50 hover:bg-mint hover:text-obsidian border border-gray-200 hover:border-[#0E7C5B] text-xs font-semibold text-gray-900 transition-all cursor-pointer">
+                + Clonar para Minha Fila (6)
+              </button>
+            </div>
+
+            <!-- List 3: Ficção Psicológica -->
+            <div class="poster-card p-5 space-y-4">
+              <div class="poster-fan flex items-center justify-center pt-2">
+                <img src="../assets/posters/severance.jpg" alt="Ruptura" class="fan-item fan-1 left-8 z-10">
+                <img src="../assets/posters/oppenheimer.jpg" alt="Oppenheimer" class="fan-item fan-2 left-20 z-20">
+                <img src="../assets/posters/arcane.jpg" alt="Arcane" class="fan-item fan-3 left-32 z-30">
+              </div>
+
+              <div>
+                <span class="text-[10px] font-mono text-blue-300">por @marcos_sci &middot; Apple &amp; Prime</span>
+                <h4 class="text-sm font-bold text-gray-900 font-display mt-0.5">Ficção Psicológica &amp; Suspense</h4>
+                <p class="text-xs text-gray-500 mt-1">Reviravoltas que justificam qualquer assinatura mensal.</p>
+              </div>
+
+              <button onclick="cloneCommunityList(this, 'Ficção Psicológica')" class="w-full py-2 rounded-xl bg-gray-50 hover:bg-mint hover:text-obsidian border border-gray-200 hover:border-[#0E7C5B] text-xs font-semibold text-gray-900 transition-all cursor-pointer">
+                + Clonar para Minha Fila (12)
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mural de Resenhas Autênticas com Chips de Reação -->
+        <div class="space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-mono text-[#0E7C5B] font-bold uppercase tracking-wider">[02] Mural de Resenhas Autênticas</span>
+            <span class="text-xs text-gray-500 font-mono">Feedback sem spoilers</span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Review 1 -->
+            <div class="p-4 rounded-2xl bg-white border border-gray-200 space-y-2">
+              <div class="flex items-center justify-between text-xs">
+                <span class="font-bold text-gray-900">Camila Mendes <span class="text-gray-500 font-normal">avaliou</span> Duna: Parte 2</span>
+                <span class="text-amber-500 font-mono font-bold flex items-center gap-1">
+                  <svg class="w-3 h-3 fill-amber-400 text-amber-400" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  9.5
+                </span>
+              </div>
+              <p class="text-xs text-gray-600 leading-relaxed font-sans">
+                "A escala visual e o trabalho de som desse filme faz valer absolutamente a assinatura da Max."
+              </p>
+              <div class="flex gap-2 pt-1">
+                <button onclick="toggleReaction(this)" class="px-2.5 py-1 rounded-lg bg-gray-50 hover:bg-gray-100 border border-gray-200 text-[11px] font-mono text-gray-600 flex items-center gap-1.5 cursor-pointer">
+                  <span class="flex items-center gap-1 text-orange-500">
+                    <svg class="w-3.5 h-3.5 fill-orange-500/20 stroke-current" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 3.5z"/></svg>
+                    <span class="text-gray-700 font-sans">Intenso</span>
+                  </span>
+                  <span class="count text-[#0E7C5B] font-bold">128</span>
+                </button>
+                <button onclick="toggleReaction(this)" class="px-2.5 py-1 rounded-lg bg-gray-50 hover:bg-gray-100 border border-gray-200 text-[11px] font-mono text-gray-600 flex items-center gap-1.5 cursor-pointer">
+                  <span class="flex items-center gap-1 text-amber-500">
+                    <svg class="w-3.5 h-3.5 fill-amber-500/20 stroke-current" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+                    <span class="text-gray-700 font-sans">Monumental</span>
+                  </span>
+                  <span class="count text-[#0E7C5B] font-bold">94</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Review 2 -->
+            <div class="p-4 rounded-2xl bg-white border border-gray-200 space-y-2">
+              <div class="flex items-center justify-between text-xs">
+                <span class="font-bold text-gray-900">Rafael Duarte <span class="text-gray-500 font-normal">avaliou</span> O Urso</span>
+                <span class="text-amber-500 font-mono font-bold flex items-center gap-1">
+                  <svg class="w-3 h-3 fill-amber-400 text-amber-400" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  9.2
+                </span>
+              </div>
+              <p class="text-xs text-gray-600 leading-relaxed font-sans">
+                "Concluí os episódios em 48h e usei o NeatStream para agendar a pausa do Disney+ pós-temporada."
+              </p>
+              <div class="flex gap-2 pt-1">
+                <button onclick="toggleReaction(this)" class="px-2.5 py-1 rounded-lg bg-gray-50 hover:bg-gray-100 border border-gray-200 text-[11px] font-mono text-gray-600 flex items-center gap-1.5 cursor-pointer">
+                  <span class="flex items-center gap-1 text-purple-500">
+                    <svg class="w-3.5 h-3.5 fill-purple-500/20 stroke-current" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/><path d="M12 5v13"/></svg>
+                    <span class="text-gray-700 font-sans">Tensão Pura</span>
+                  </span>
+                  <span class="count text-[#0E7C5B] font-bold">210</span>
+                </button>
+                <button onclick="toggleReaction(this)" class="px-2.5 py-1 rounded-lg bg-gray-50 hover:bg-gray-100 border border-gray-200 text-[11px] font-mono text-gray-600 flex items-center gap-1.5 cursor-pointer">
+                  <span class="flex items-center gap-1 text-yellow-500">
+                    <svg class="w-3.5 h-3.5 fill-yellow-500/20 stroke-current" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                    <span class="text-gray-700 font-sans">Eletrizante</span>
+                  </span>
+                  <span class="count text-[#0E7C5B] font-bold">142</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Modal Pausa de Temporada -->
+  <div id="seasonPauseModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div class="bg-white border border-[#0E7C5B]/40 rounded-3xl p-6 max-w-md w-full shadow-2xl space-y-4">
+      <div class="flex items-center justify-between pb-3 border-b border-gray-200">
+        <h3 class="text-sm font-bold font-display text-gray-900">Agendar Pausa de Temporada</h3>
+        <button onclick="closeSeasonPauseModal()" class="text-gray-500 hover:text-gray-900">&times;</button>
+      </div>
+      <p class="text-xs text-gray-600">
+        O NeatStream pausará a assinatura no momento em que a temporada for concluída, evitando cobranças recorrentes por inércia.
+      </p>
+      <div class="p-3.5 rounded-xl bg-white border border-gray-200 font-mono text-xs space-y-1.5">
+        <div class="flex justify-between text-gray-500"><span>Serviço:</span> <span class="text-gray-900 font-bold" id="modalServiceName">Disney+</span></div>
+        <div class="flex justify-between text-gray-500"><span>Série:</span> <span class="text-gray-900 font-bold" id="modalSeriesName">O Urso</span></div>
+        <div class="flex justify-between text-gray-500"><span>Data prevista:</span> <span class="text-[#0E7C5B] font-bold" id="modalTargetDate">18/Set</span></div>
+      </div>
+      <div class="flex gap-3 pt-2">
+        <button onclick="closeSeasonPauseModal()" class="flex-1 py-2 rounded-xl bg-gray-100 text-gray-900 text-xs font-semibold">Cancelar</button>
+        <button onclick="confirmSeasonPause()" class="flex-1 py-2 rounded-xl bg-[#0E7C5B] text-white text-xs font-bold shadow-lg">Confirmar Pausa</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== MODAL CINEMÁTICO "ONDE ASSISTIR" (TEMA CLARO) ====== -->
+  <div id="watchModalOverlay" onclick="if(event.target===this)closeWatchModal()">
+    <div id="watchModalCard">
+      <!-- Backdrop Cinemático 16:9 -->
+      <div class="modal-backdrop-wrap">
+        <img id="modalBackdrop" src="" alt="Backdrop">
+        <video id="modalTrailerVideo" class="hidden" muted loop playsinline></video>
+        <div class="modal-backdrop-gradient"></div>
+        <button onclick="closeWatchModal()" class="modal-close-btn" title="Fechar">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+        <button id="modalPlayTrailerBtn" onclick="playModalTrailer()" class="modal-play-trailer-btn" title="Reproduzir Trailer">
+          <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+        </button>
+        <!-- Badges sobre o backdrop -->
+        <div class="absolute bottom-4 left-5 z-10 flex items-center gap-2">
+          <span id="modalResolutionBadge" class="px-2.5 py-1 rounded-full text-[10px] font-mono bg-black/70 backdrop-blur-md text-white border border-white/20 font-bold"></span>
+          <span id="modalClassBadge"></span>
+        </div>
+      </div>
+
+      <!-- Conteúdo do Modal -->
+      <div class="p-6 space-y-5">
+        <!-- Provider Badge + Título -->
+        <div>
+          <div class="flex items-center gap-2.5 mb-2">
+            <div id="modalProviderBadge" class="flex items-center gap-2"></div>
+            <span id="modalTypeBadge" class="px-2.5 py-0.5 rounded text-[10px] font-mono bg-gray-100 text-gray-700 border border-gray-200"></span>
+          </div>
+          <h2 id="modalTitle" class="text-2xl sm:text-3xl font-extrabold tracking-tight font-display text-gray-900 leading-tight"></h2>
+          <p id="modalOriginalTitle" class="text-xs font-mono text-gray-500 mt-1"></p>
+        </div>
+
+        <!-- Rating + Duração + Gênero -->
+        <div class="flex flex-wrap items-center gap-3 text-xs font-mono">
+          <span class="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-amber-50 text-amber-700 border border-amber-300 font-bold">
+            <svg class="w-3.5 h-3.5 fill-amber-400 text-amber-400" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+            <span id="modalRatingVal"></span>
+          </span>
+          <span id="modalCriticScore" class="text-gray-600"></span>
+          <span class="text-gray-300">·</span>
+          <span id="modalDuration" class="text-gray-600"></span>
+          <span class="text-gray-300">·</span>
+          <span id="modalGenre" class="text-gray-600"></span>
+        </div>
+
+        <!-- Sinopse -->
+        <p id="modalSynopsis" class="text-sm text-gray-700 leading-relaxed"></p>
+
+        <!-- Status de Assinatura (Inteligência Financeira) -->
+        <div id="modalSubStatus"></div>
+
+        <!-- Ações Principais -->
+        <div class="flex flex-col sm:flex-row gap-3 pt-1">
+          <a id="modalWatchBtn" href="#" target="_blank" rel="noopener" class="flex-1 py-3.5 rounded-2xl bg-gradient-to-r from-mint to-mint-dark text-obsidian font-display font-bold text-sm flex items-center justify-center gap-2.5 shadow-[0_0_25px_rgba(0,229,153,0.4)] hover:brightness-110 active:scale-[0.97] transition-all cursor-pointer no-underline text-center">
+            <span id="modalWatchLogo" class="inline-flex items-center"></span>
+            <span id="modalWatchBtnText">Assistir Agora</span>
+          </a>
+          <button id="modalTrailerBtn" onclick="playModalTrailer()" class="px-5 py-3.5 rounded-2xl bg-gray-100 hover:bg-gray-200 text-gray-800 text-sm font-semibold transition-all flex items-center justify-center gap-2 cursor-pointer border border-gray-200">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            Trailer
+          </button>
+          <button id="modalWatchlistBtn" onclick="toggleModalWatchlist()" class="px-5 py-3.5 rounded-2xl bg-gray-100 hover:bg-gray-200 text-gray-800 text-sm transition-all cursor-pointer border border-gray-200 font-mono">
+            + Minha Fila
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toastNotification" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+    <div class="bg-white border border-[#0E7C5B] text-gray-900 px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-3 text-xs font-mono">
+      <span class="w-2 h-2 rounded-full bg-mint animate-pulse"></span>
+      <span id="toastMessage">Ação realizada com sucesso</span>
+    </div>
+  </div>
+
+  <script>
+    // ====== REPOSITÓRIO CENTRAL DE LOGOS SVG OFICIAIS ======
+    const BRAND_SVGS = {
+      max: `<svg class="brand-svg-max h-3.5 w-auto" viewBox="0 0 100 24" fill="currentColor"><path d="M4 20V4h6.5l5.5 12 5.5-12H28v16h-4.8V9.5l-5 10.5h-3.4l-5-10.5V20H4zm34.5-14c5.5 0 9.8 4.3 9.8 9.8s-4.3 9.8-9.8 9.8c-3.5 0-6.5-1.8-8.2-4.5V20h-4.8V4h4.8v6.2c1.7-2.7 4.7-4.2 8.2-4.2zm-2.2 15c2.9 0 5.2-2.3 5.2-5.2s-2.3-5.2-5.2-5.2-5.2 2.3-5.2 5.2 2.3 5.2 5.2 5.2zm27.2-5.2l8-9.8h-6.2l-4.8 6-4.8-6h-6.2l8 9.8-8.5 10.2h6.2l5.3-6.4 5.3 6.4h6.2l-8.5-10.2z"/></svg>`,
+      disney: `<svg class="brand-svg-disney h-3.5 w-auto" viewBox="0 0 110 32" fill="currentColor"><path d="M22.5 27.2c-5 0-8.5-3-8.5-7.7 0-5.8 5.5-9.9 13.2-9.9 1.4 0 2.8.2 4 .4-.4-5.5-3.5-8-9.2-8-3.4 0-6.7.9-9.1 2.5l-1.6-4c2.8-1.9 7.4-3 12.2-3 9.2 0 14.9 4.6 14.9 14.5v15.9h-5.2v-3.2c-2.1 2.5-5 3.7-8 3.7zm7.3-12.8c-1.1-.2-2.3-.3-3.6-.3-4.4 0-7.3 2.1-7.3 5.1 0 2.3 1.8 3.9 4.4 3.9 2.8 0 5.1-1.6 6-3.9v-4.8h.5zm21-14.5c-2.3 0-4.1-1.8-4.1-4.1 0-2.3 1.8-4.1 4.1-4.1s4.1 1.8 4.1 4.1c0 2.3-1.8 4.1-4.1 4.1zm-3.9 26.6V10.2h7.8v16.3h-7.8zm16.5-8.5c2.3 1.6 5 2.5 7.6 2.5 2 0 3.2-.7 3.2-1.8 0-1.1-1.1-1.6-3.9-2.5-4.8-1.6-7.4-3.2-7.4-6.7 0-4.1 3.4-6.7 8.3-6.7 3 0 5.9.9 7.8 2.3l-2 4.6c-1.8-1.1-3.9-1.8-5.9-1.8-2 0-3 .7-3 1.8 0 1.1 1.1 1.6 3.9 2.5 5 1.6 7.4 3.6 7.4 6.7 0 4.3-3.4 7-8.9 7-3.4 0-6.7-1.1-9-2.8l1.7-5.1h.2zm31.3-2h-4.4v-5.9h4.4v-4.2h5v4.2h4.4v4.7h-4.4v8c0 1.6.7 2.3 2.1 2.3.7 0 1.4-.2 2-.4l.7 4.4c-1.2.5-2.8.7-4.4.7-3.7 0-5.3-1.6-5.3-4.8v-5.2zm24.5-2.7V13.2h-3.9v-3h3.9V6.3h5v3.9h3.9v3h-3.9v9.4c0 1.4.7 2.1 2.1 2.1.5 0 1.2-.2 1.8-.4l.5 3c-.9.4-2.1.5-3.4.5-3.2 0-6-1.4-6-5.1zm-8.3-13.1h-2.8c-3.2-5.5-9.1-9.1-16-9.1-10.3 0-18.7 8-19.2 18.1h3c.5-8.4 7.8-15.3 16.5-15.3 5.7 0 10.8 2.8 13.7 7.3h4.8z"/></svg>`,
+      netflix: `<svg class="brand-svg-netflix h-3.5 w-auto" viewBox="0 0 24 32" fill="none"><path d="M0 0h5.5v32H0z" fill="#B81D24"/><path d="M18.5 0H24v32h-5.5z" fill="#B81D24"/><path d="M0 0l18.5 32H24L5.5 0z" fill="#E50914"/></svg>`,
+      prime: `<svg class="brand-svg-prime h-3.5 w-auto" viewBox="0 0 95 24" fill="currentColor"><path d="M4.5 19V6.2h4.8v1.9c1.1-1.4 2.7-2.3 4.6-2.3 3.7 0 6.4 2.8 6.4 6.7s-2.7 6.7-6.4 6.7c-1.8 0-3.4-.7-4.5-2v6.5H4.5V19zm8.9-8c-2 0-3.7 1.5-3.7 3.7s1.7 3.7 3.7 3.7 3.7-1.5 3.7-3.7-1.7-3.7-3.7-3.7zm12.7 8V6.2h4.6v2.1c1-1.5 2.4-2.3 4.1-2.3.5 0 .8 0 1.2.1v4.6c-.5-.1-1-.1-1.5-.1-2.2 0-3.9 1.5-3.9 4v4.5h-4.5zm13 0V6.2h4.8V19h-4.8zm2.4-15c-1.6 0-2.8-1.2-2.8-2.8 0-1.5 1.2-2.8 2.8-2.8s2.8 1.3 2.8 2.8c0 1.6-1.2 2.8-2.8 2.8zm6.5 15V6.2h4.6v1.9c1.1-1.4 2.7-2.3 4.5-2.3 2 0 3.5.9 4.2 2.5 1.2-1.5 2.8-2.5 4.8-2.5 3.2 0 5.3 2.1 5.3 5.7v7.1h-4.7v-6.2c0-1.5-.8-2.4-2.2-2.4s-2.5.9-2.5 2.6v6h-4.7v-6.2c0-1.5-.8-2.4-2.2-2.4s-2.5.9-2.5 2.6v6H48zm29.2-6.5c.1-3.7 2.8-6.3 6.5-6.3 3.9 0 6.4 2.7 6.4 6.7v.8h-8.3c.2 1.7 1.7 2.7 3.4 2.7 1.3 0 2.5-.6 3.1-1.5l3.3 1.9c-1.3 2-3.7 3.2-6.5 3.2-4 0-6.8-2.7-6.8-6.7zm8.3-1.5c-.2-1.4-1.4-2.4-2.7-2.4-1.4 0-2.5 1-2.7 2.4h5.4zm-60 10.1c9.3 4.1 21.9 5.4 32.5 1.6 1.1-.4 1.9.5 1.4 1.3-1.6 2.6-4.8 4.1-8.7 5.1-10.4 2.4-21.7.4-29.6-5.2-.8-.6-.2-1.5.8-1.6l3.6-.5zm28.8-.1c.8-1.1 2.8-.7 4.1-.2.5.2.5.7.1 1-1.7 1.4-3.9 1.9-5.3 1.8-.5 0-.7-.4-.5-.8.5-.6 1.1-1.2 1.6-1.8z" fill="#00A8E1"/></svg>`,
+      apple: `<svg class="brand-svg-apple h-3.5 w-auto" viewBox="0 0 85 24" fill="currentColor"><path d="M10.4 11.7c0-3.1 2.5-4.7 2.6-4.8-1.4-2.1-3.7-2.4-4.5-2.5-1.9-.2-3.7 1.2-4.6 1.2-.9 0-2.5-1.1-4-1.1-2.1 0-4 1.2-5.1 3.1-2.2 3.8-.6 9.4 1.5 12.6 1.1 1.5 2.2 3.2 3.9 3.1 1.5-.1 2.2-1.1 4-1.1 1.9 0 2.4 1.1 4 1.1 1.7 0 2.8-1.5 3.9-3.1 1.2-1.8 1.7-3.5 1.8-3.6-.1 0-3.2-1.2-3.2-4.9zM8.2 3c.8-1.1 1.4-2.5 1.3-3.9-1.2.1-2.7.8-3.5 1.9-.7.8-1.4 2.4-1.3 3.7 1.4.1 2.7-.7 3.5-1.7zm13.6 17.1h-3V8.7h3v2.1h.1c.6-1.5 2.1-2.5 4-2.5h1.3v3h-1.7c-2.2 0-3.8 1.3-3.8 3.7v5.1zm14.5 0h-4.3l-4.5-11.4h3.4l3.5 8.1h.1l3.5-8.1h3.4l-4.7 11.4zm15.4-4.5h-3v-5.2h3V7.2h3.3v2.8h3v3.2h-3v5.3c0 1.1.5 1.5 1.4 1.5.5 0 1-.1 1.3-.2l.5 3c-.8.4-1.9.5-3 .5-2.5 0-4-1.1-4-3.2v-3.6zm16.3-1.8v-3.7h-2.6v-2h2.6V6.1h3.3v2.6h2.6v2h-2.6v6.2c0 1 .5 1.4 1.4 1.4.4 0 .8-.1 1.2-.2l.4 2c-.6.3-1.4.4-2.3.4-2.1 0-4-1-4-3.4z"/></svg>`
+    };
+
+    function getBrandAppTileHtml(providerKey, customClass = '') {
+      const p = String(providerKey || '').toLowerCase();
+      const names = { max: 'Max', disney: 'Disney+', netflix: 'Netflix', prime: 'Prime Video', apple: 'Apple TV+' };
+      const name = names[p] || providerKey;
+      return `<div class="brand-app-tile brand-app-tile-${p} overflow-hidden ${customClass}" title="Disponível no ${name}">
+        <img src="../assets/logos/${p}.png" alt="${name}" class="w-full h-full object-cover" loading="lazy" onerror="this.style.display='none'">
+      </div>`;
+    }
+
+    function getBrandPillHtml(providerKey, customClass = '') {
+      const p = String(providerKey || '').toLowerCase();
+      const svg = BRAND_SVGS[p] || '';
+      const names = { max: 'Max', disney: 'Disney+', netflix: 'Netflix', prime: 'Prime Video', apple: 'Apple TV+' };
+      const name = names[p] || providerKey;
+      return `<div class="brand-pill brand-pill-${p} ${customClass}">${svg}<span>${name}</span></div>`;
+    }
+
+    function getClassIndBadgeHtml(ratingStr, customClass = '') {
+      const clean = String(ratingStr || '').replace('+', '').trim().toUpperCase();
+      const code = clean === 'L' || clean === 'LIVRE' ? 'l' : clean;
+      const display = clean === 'l' ? 'L' : clean;
+      const titleMap = {
+        'l': 'Classificação Livre',
+        '10': 'Não recomendado para menores de 10 anos',
+        '12': 'Não recomendado para menores de 12 anos',
+        '14': 'Não recomendado para menores de 14 anos',
+        '16': 'Não recomendado para menores de 16 anos',
+        '18': 'Não recomendado para menores de 18 anos'
+      };
+      const title = titleMap[code] || `Classificação ${display}`;
+      return `<span class="classind-badge classind-${code} ${customClass}" title="${title}">${display}</span>`;
+    }
+
+    // ====== CATÁLOGO DE TÍTULOS (DADOS ESTRUTURADOS) ======
+    const TITLES_CATALOG = {
+      dune2: {
+        title: 'Duna: Parte 2', originalTitle: 'Dune: Part Two (2024)', type: 'Filme',
+        duration: '2h 46m', rating: '8.8', criticScore: 'Metacritic 79', genre: 'Ficção Científica · Épico',
+        synopsis: 'Paul Atreides se une a Chani e aos Fremen em busca de vingança contra os conspiradores que destruíram sua família. Uma experiência cinematográfica colossal, visual e sonoramente imersiva.',
+        resolution: '4K UHD · Dolby Atmos', classification: '14',
+        provider: { key: 'max', name: 'Max' },
+        watchUrl: 'https://play.max.com/movie/dune-part-two',
+        subscriptionStatus: 'included', subscriptionNote: 'Incluso no seu plano Max — R$ 39,90/mês',
+        poster: '../assets/posters/dune2.jpg', backdrop: '../assets/backdrops/dune2_backdrop.jpg',
+        videoTeaser: '../assets/videos/dune2_teaser.mp4'
+      },
+      the_bear: {
+        title: 'O Urso (The Bear)', originalTitle: 'The Bear — Temporada 3 (2024)', type: 'Série',
+        duration: 'T3 · 10 eps · ~32 min cada', rating: '9.1', criticScore: 'Metacritic 92', genre: 'Drama · Culinária',
+        synopsis: 'Carmy volta para Chicago para transformar o restaurante da família em uma experiência gastronômica de alto nível, enfrentando trauma, obsessão e pressões emocionais.',
+        resolution: '4K HDR · Dolby Vision', classification: '16',
+        provider: { key: 'disney', name: 'Disney+' },
+        watchUrl: 'https://www.disneyplus.com/series/the-bear',
+        subscriptionStatus: 'included', subscriptionNote: 'Incluso no seu Disney+ Standard — R$ 43,90/mês',
+        poster: '../assets/posters/the_bear.jpg', backdrop: '../assets/backdrops/the_bear_backdrop.jpg',
+        videoTeaser: '../assets/videos/the_bear_teaser.mp4'
+      },
+      shogun: {
+        title: 'Xógum: A Gloriosa Saga do Japão', originalTitle: 'Shōgun (2024)', type: 'Série',
+        duration: '10 episódios · ~60 min cada', rating: '8.9', criticScore: 'Metacritic 84', genre: 'Drama Épico · Histórico',
+        synopsis: 'No Japão feudal de 1600, um náufrago inglês é forçado a navegar a complexa teia política de senhores da guerra e samurais enquanto o país caminha para uma guerra civil.',
+        resolution: '4K UHD · Atmos', classification: '16',
+        provider: { key: 'disney', name: 'Disney+' },
+        watchUrl: 'https://www.disneyplus.com/series/shogun',
+        subscriptionStatus: 'included', subscriptionNote: 'Incluso no seu Disney+ Standard — R$ 43,90/mês',
+        poster: '../assets/posters/shogun.jpg', backdrop: '../assets/backdrops/shogun_backdrop.jpg',
+        videoTeaser: null
+      },
+      severance: {
+        title: 'Ruptura (Severance)', originalTitle: 'Severance — Temporada 1 (2022)', type: 'Série',
+        duration: 'T1 · 9 eps · ~50 min cada', rating: '8.7', criticScore: 'Metacritic 83', genre: 'Suspense · Ficção Científica',
+        synopsis: 'Funcionários de uma corporação misteriosa passam por um procedimento que separa cirurgicamente suas memórias de trabalho das pessoais. Mas a parede entre os dois mundos começa a rachar.',
+        resolution: '4K HDR · Dolby Vision', classification: '14',
+        provider: { key: 'apple', name: 'Apple TV+' },
+        watchUrl: 'https://tv.apple.com/show/severance',
+        subscriptionStatus: 'included', subscriptionNote: 'Incluso no seu Apple TV+ Anual — R$ 21,90/mês',
+        poster: '../assets/posters/severance.jpg', backdrop: '../assets/backdrops/severance_backdrop.jpg',
+        videoTeaser: null
+      },
+      oppenheimer: {
+        title: 'Oppenheimer', originalTitle: 'Oppenheimer (2023)', type: 'Filme',
+        duration: '3h 00m', rating: '8.9', criticScore: 'Metacritic 88', genre: 'Drama Histórico · Biografia',
+        synopsis: 'A história do físico J. Robert Oppenheimer e seu papel no desenvolvimento da bomba atômica durante a Segunda Guerra Mundial. Um épico biográfico de Christopher Nolan.',
+        resolution: '4K IMAX · Dolby Atmos', classification: '14',
+        provider: { key: 'prime', name: 'Prime Video' },
+        watchUrl: 'https://www.primevideo.com/detail/Oppenheimer',
+        subscriptionStatus: 'required', subscriptionNote: 'Requer aluguel ou compra digital no Prime Video — a partir de R$ 14,90',
+        poster: '../assets/posters/oppenheimer.jpg', backdrop: '../assets/backdrops/oppenheimer_backdrop.jpg',
+        videoTeaser: null
+      },
+      arcane: {
+        title: 'Arcane', originalTitle: 'Arcane — Temporada 2 (2024)', type: 'Série',
+        duration: 'T2 · 9 eps · ~40 min cada', rating: '9.0', criticScore: 'Metacritic 85', genre: 'Animação · Ação · Fantasia',
+        synopsis: 'Em meio à crescente tensão entre as cidades-gêmeas de Piltover e Zaun, duas irmãs lutam em lados opostos de uma guerra ideológica. Animação revolucionária baseada no universo de League of Legends.',
+        resolution: '4K HDR10+', classification: '14',
+        provider: { key: 'netflix', name: 'Netflix' },
+        watchUrl: 'https://www.netflix.com/title/arcane',
+        subscriptionStatus: 'included', subscriptionNote: 'Incluso no seu Netflix Premium 4K — R$ 55,90/mês',
+        poster: '../assets/posters/arcane.jpg', backdrop: '../assets/backdrops/arcane_backdrop.jpg',
+        videoTeaser: null
+      },
+      succession: {
+        title: 'Succession', originalTitle: 'Succession — Completa (2018–2023)', type: 'Série',
+        duration: '4 Temporadas · 39 eps', rating: '8.9', criticScore: 'Metacritic 92', genre: 'Drama · Poder · Família',
+        synopsis: 'A família Roy, dona de um dos maiores conglomerados de mídia do mundo, luta pelo controle do império enquanto o patriarca envelhece. Sátira incisiva sobre poder, riqueza e disfunção familiar.',
+        resolution: '4K HDR · Atmos', classification: '16',
+        provider: { key: 'max', name: 'Max' },
+        watchUrl: 'https://play.max.com/show/succession',
+        subscriptionStatus: 'included', subscriptionNote: 'Incluso no seu plano Max — R$ 39,90/mês',
+        poster: '../assets/posters/succession.jpg', backdrop: '../assets/backdrops/succession_backdrop.jpg',
+        videoTeaser: null
+      },
+      stranger_things: {
+        title: 'Stranger Things', originalTitle: 'Stranger Things — T4 (2022)', type: 'Série',
+        duration: 'T4 · 9 eps · ~75 min cada', rating: '8.7', criticScore: 'Metacritic 71', genre: 'Ficção Científica · Terror · Nostalgia',
+        synopsis: 'Na cidade de Hawkins, Indiana, um grupo de jovens enfrenta forças sobrenaturais, experimentos governamentais secretos e o misterioso Mundo Invertido.',
+        resolution: '4K Dolby Vision · Atmos', classification: '14',
+        provider: { key: 'netflix', name: 'Netflix' },
+        watchUrl: 'https://www.netflix.com/title/stranger-things',
+        subscriptionStatus: 'included', subscriptionNote: 'Incluso no seu Netflix Premium 4K — R$ 55,90/mês',
+        poster: '../assets/posters/stranger_things.jpg', backdrop: '../assets/backdrops/stranger_things_backdrop.jpg',
+        videoTeaser: null
+      },
+      fallout: {
+        title: 'Fallout', originalTitle: 'Fallout — Temporada 1 (2024)', type: 'Série',
+        duration: 'T1 · 8 eps · ~55 min cada', rating: '8.5', criticScore: 'Metacritic 73', genre: 'Ficção Científica · Aventura',
+        synopsis: 'Num futuro pós-apocalíptico, sobreviventes de bunkers subterrâneos emergem para uma terra arrasada governada por facções rivais, mutantes e tecnologia retrô-futurista.',
+        resolution: '4K UHD · Atmos', classification: '16',
+        provider: { key: 'prime', name: 'Prime Video' },
+        watchUrl: 'https://www.primevideo.com/detail/Fallout',
+        subscriptionStatus: 'required', subscriptionNote: 'Requer assinatura Prime Video — R$ 14,90/mês',
+        poster: '../assets/posters/fallout.jpg', backdrop: '../assets/backdrops/fallout_backdrop.jpg',
+        videoTeaser: null
+      },
+      blade_runner_2049: {
+        title: 'Blade Runner 2049', originalTitle: 'Blade Runner 2049 (2017)', type: 'Filme',
+        duration: '2h 44m', rating: '8.0', criticScore: 'Metacritic 81', genre: 'Ficção Científica · Neo-Noir',
+        synopsis: 'O novo blade runner, Oficial K, descobre um segredo enterrado há muito tempo que tem o potencial de mergulhar o que resta da sociedade no caos.',
+        resolution: '4K UHD · Dolby Atmos', classification: '14',
+        provider: { key: 'max', name: 'Max' },
+        watchUrl: 'https://play.max.com/movie/blade-runner-2049',
+        subscriptionStatus: 'included', subscriptionNote: 'Incluso no seu plano Max — R$ 39,90/mês',
+        poster: '../assets/posters/blade_runner_2049.jpg', backdrop: '../assets/backdrops/blade_runner_2049_backdrop.jpg',
+        videoTeaser: null
+      },
+      the_last_of_us: {
+        title: 'The Last of Us', originalTitle: 'The Last of Us — T1 (2023)', type: 'Série',
+        duration: 'T1 · 9 eps · ~55 min cada', rating: '8.8', criticScore: 'Metacritic 84', genre: 'Drama · Pós-Apocalíptico',
+        synopsis: 'Vinte anos após a destruição da civilização moderna, Joel é contratado para contrabandear Ellie, uma garota de 14 anos, para fora de uma zona de quarentena opressiva.',
+        resolution: '4K HDR · Atmos', classification: '16',
+        provider: { key: 'max', name: 'Max' },
+        watchUrl: 'https://play.max.com/show/the-last-of-us',
+        subscriptionStatus: 'included', subscriptionNote: 'Incluso no seu plano Max — R$ 39,90/mês',
+        poster: '../assets/posters/the_last_of_us.jpg', backdrop: '../assets/backdrops/the_last_of_us_backdrop.jpg',
+        videoTeaser: null
+      },
+      anatomy_of_a_fall: {
+        title: 'Anatomia de uma Queda', originalTitle: 'Anatomie d\'une chute (2023)', type: 'Filme',
+        duration: '2h 32m', rating: '7.8', criticScore: 'Metacritic 87', genre: 'Drama · Suspense Jurídico',
+        synopsis: 'Sandra é suspeita da morte do marido. A investigação e o julgamento que se seguem revelam as tensões ocultas e as feridas profundas do casal, dissecando uma relação complexa sob o escrutínio público.',
+        resolution: 'Full HD 1080p', classification: '14',
+        provider: { key: 'prime', name: 'Prime Video' },
+        watchUrl: 'https://www.primevideo.com/detail/Anatomy-of-a-Fall',
+        subscriptionStatus: 'required', subscriptionNote: 'Aluguel digital no Prime Video — R$ 14,90',
+        poster: '../assets/posters/anatomy_of_a_fall.jpg', backdrop: '../assets/backdrops/anatomy_of_a_fall_backdrop.jpg',
+        videoTeaser: null
+      }
+    };
+
+    // ====== FUNÇÕES DO MODAL "ONDE ASSISTIR" ======
+    let currentModalTitle = null;
+
+    function openWatchModal(titleId) {
+      const t = TITLES_CATALOG[titleId];
+      if (!t) { showToast('Título não encontrado'); return; }
+      currentModalTitle = titleId;
+
+      // Backdrop & Trailer
+      const backdrop = document.getElementById('modalBackdrop');
+      const trailerVideo = document.getElementById('modalTrailerVideo');
+      const playBtn = document.getElementById('modalPlayTrailerBtn');
+      backdrop.src = t.backdrop;
+      backdrop.classList.remove('hidden');
+      trailerVideo.classList.add('hidden');
+      trailerVideo.pause();
+      trailerVideo.removeAttribute('src');
+      playBtn.classList.toggle('hidden', !t.videoTeaser);
+
+      // Badges no backdrop
+      document.getElementById('modalResolutionBadge').textContent = t.resolution;
+      document.getElementById('modalClassBadge').innerHTML = getClassIndBadgeHtml(t.classification);
+
+      // Provider badge
+      document.getElementById('modalProviderBadge').innerHTML = getBrandAppTileHtml(t.provider.key) + '<span class="text-xs font-bold text-gray-900 tracking-wide">' + t.provider.name + '</span>';
+
+      // Type badge
+      document.getElementById('modalTypeBadge').textContent = t.type;
+
+      // Title, original title
+      document.getElementById('modalTitle').textContent = t.title;
+      document.getElementById('modalOriginalTitle').textContent = t.originalTitle;
+
+      // Rating, critic, duration, genre
+      document.getElementById('modalRatingVal').textContent = String(t.rating).replace('★', '').trim();
+      document.getElementById('modalCriticScore').textContent = t.criticScore;
+      document.getElementById('modalDuration').textContent = t.duration;
+      document.getElementById('modalGenre').textContent = t.genre;
+
+      // Synopsis
+      document.getElementById('modalSynopsis').textContent = t.synopsis;
+
+      // Subscription status
+      const subEl = document.getElementById('modalSubStatus');
+      if (t.subscriptionStatus === 'included') {
+        subEl.innerHTML = '<div class="sub-status-included flex items-center gap-3"><span class="text-[#0E7C5B] text-lg">✓</span><div><span class="text-xs font-bold text-[#0E7C5B] block">Incluso na sua Assinatura Ativa</span><span class="text-[11px] font-mono text-gray-600">' + t.subscriptionNote + '</span></div></div>';
+      } else {
+        subEl.innerHTML = '<div class="sub-status-required flex items-center gap-3"><span class="text-warning text-lg">⚠</span><div><span class="text-xs font-bold text-warning block">Requer Assinatura ou Aluguel</span><span class="text-[11px] font-mono text-gray-600">' + t.subscriptionNote + '</span></div></div>';
+      }
+
+      // Watch button com logo oficial da plataforma (mini PNG 20x20)
+      const watchBtn = document.getElementById('modalWatchBtn');
+      const watchText = document.getElementById('modalWatchBtnText');
+      const watchLogo = document.getElementById('modalWatchLogo');
+      watchBtn.href = t.watchUrl;
+      watchLogo.innerHTML = `<img src="../assets/logos/${t.provider.key}.png" alt="${t.provider.name}" class="w-5 h-5 rounded-[4px] object-cover mr-1.5 inline-block shadow-sm">`;
+      watchText.textContent = 'Assistir no ' + t.provider.name;
+
+      // Trailer button visibility
+      document.getElementById('modalTrailerBtn').classList.toggle('hidden', !t.videoTeaser);
+
+      // Reset watchlist button
+      const wlBtn = document.getElementById('modalWatchlistBtn');
+      wlBtn.textContent = '+ Minha Fila';
+      wlBtn.classList.remove('bg-emerald-100', 'border-[#0E7C5B]', 'text-[#0E7C5B]');
+
+      // Show modal
+      document.getElementById('watchModalOverlay').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeWatchModal() {
+      const overlay = document.getElementById('watchModalOverlay');
+      const trailerVideo = document.getElementById('modalTrailerVideo');
+      overlay.classList.remove('active');
+      trailerVideo.pause();
+      trailerVideo.removeAttribute('src');
+      document.body.style.overflow = '';
+      currentModalTitle = null;
+    }
+
+    function playModalTrailer() {
+      if (!currentModalTitle) return;
+      const t = TITLES_CATALOG[currentModalTitle];
+      if (!t || !t.videoTeaser) { showToast('Trailer não disponível'); return; }
+      const backdrop = document.getElementById('modalBackdrop');
+      const trailerVideo = document.getElementById('modalTrailerVideo');
+      const playBtn = document.getElementById('modalPlayTrailerBtn');
+
+      if (trailerVideo.classList.contains('hidden')) {
+        trailerVideo.src = t.videoTeaser;
+        trailerVideo.classList.remove('hidden');
+        backdrop.classList.add('hidden');
+        playBtn.classList.add('hidden');
+        trailerVideo.muted = false;
+        trailerVideo.volume = 0.85;
+        trailerVideo.play();
+        showToast('Reproduzindo trailer de ' + t.title);
+      } else {
+        trailerVideo.pause();
+        trailerVideo.classList.add('hidden');
+        backdrop.classList.remove('hidden');
+        playBtn.classList.remove('hidden');
+      }
+    }
+
+    function toggleModalWatchlist() {
+      const btn = document.getElementById('modalWatchlistBtn');
+      if (!currentModalTitle) return;
+      const t = TITLES_CATALOG[currentModalTitle];
+      if (btn.textContent.includes('+')) {
+        btn.textContent = '✓ Na Minha Fila';
+        btn.classList.add('bg-emerald-100', 'border-[#0E7C5B]', 'text-[#0E7C5B]');
+        showToast(t.title + ' adicionado à fila!');
+      } else {
+        btn.textContent = '+ Minha Fila';
+        btn.classList.remove('bg-emerald-100', 'border-[#0E7C5B]', 'text-[#0E7C5B]');
+        showToast(t.title + ' removido da fila.');
+      }
+    }
+
+    // Close modal on Escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeWatchModal();
+    });
+    function switchDashboardView(viewKey) {
+      const views = {
+        'descoberta': document.getElementById('view-descoberta'),
+        'financas': document.getElementById('view-financas'),
+        'comunidade': document.getElementById('view-comunidade'),
+      };
+      const tabBtns = {
+        'descoberta': document.getElementById('tab-btn-descoberta'),
+        'financas': document.getElementById('tab-btn-financas'),
+        'comunidade': document.getElementById('tab-btn-comunidade'),
+      };
+      const navLinks = {
+        'descoberta': document.getElementById('nav-descoberta'),
+        'financas': document.getElementById('nav-financas'),
+        'comunidade': document.getElementById('nav-comunidade'),
+      };
+
+      Object.keys(views).forEach(key => {
+        if (key === viewKey) views[key].classList.add('active');
+        else views[key].classList.remove('active');
+      });
+
+      Object.keys(tabBtns).forEach(key => {
+        const btn = tabBtns[key];
+        if (!btn) return;
+        if (key === viewKey) {
+          btn.className = 'tab-btn px-4 py-1.5 rounded-full text-xs font-semibold transition-all duration-300 flex items-center gap-2 cursor-pointer bg-[#0E7C5B] text-white shadow-[0_0_12px_rgba(0,229,153,0.3)]';
+        } else {
+          btn.className = 'tab-btn px-4 py-1.5 rounded-full text-xs font-semibold transition-all duration-300 flex items-center gap-2 cursor-pointer text-gray-500 hover:text-gray-900';
+        }
+      });
+
+      Object.keys(navLinks).forEach(key => {
+        const link = navLinks[key];
+        if (!link) return;
+        if (key === viewKey) {
+          link.className = 'nav-link w-full flex items-center justify-between px-3.5 py-3 rounded-xl bg-[#0E7C5B] text-white font-bold shadow-[0_0_15px_rgba(0,229,153,0.3)] transition-all text-left cursor-pointer';
+        } else {
+          link.className = 'nav-link w-full flex items-center justify-between px-3.5 py-3 rounded-xl text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-all text-left cursor-pointer';
+        }
+      });
+
+      const scrollable = document.querySelector('.overflow-y-auto');
+      if (scrollable) scrollable.scrollTop = 0;
+
+      const viewNames = {
+        'descoberta': 'Cinema & Catálogo',
+        'financas': 'Finanças & HUD',
+        'comunidade': 'Comunidade & Listas'
+      };
+      showToast('Visualização: ' + viewNames[viewKey]);
+    }
+
+    function handleHUDSlider(val) {
+      const display = document.getElementById('sliderHUDDisplay');
+      const hudVal = document.getElementById('budgetHUDVal');
+      const savingsVal = document.getElementById('savingsHUDVal');
+      const n = parseInt(val, 10);
+      if (display) display.textContent = 'R$ ' + n + ',00 / mês';
+      if (hudVal) hudVal.textContent = 'R$ ' + n + ',00';
+      if (n < 120) {
+        if (savingsVal) savingsVal.textContent = '+R$ 765,60';
+      } else {
+        if (savingsVal) savingsVal.textContent = '+R$ 526,80';
+      }
+    }
+
+    let activePauseData = {};
+    function openSeasonPauseModal(service, series, date) {
+      activePauseData = { service, series, date };
+      document.getElementById('modalServiceName').textContent = service;
+      document.getElementById('modalSeriesName').textContent = series;
+      document.getElementById('modalTargetDate').textContent = date;
+      document.getElementById('seasonPauseModal').classList.remove('hidden');
+    }
+    function closeSeasonPauseModal() {
+      document.getElementById('seasonPauseModal').classList.add('hidden');
+    }
+    function confirmSeasonPause() {
+      closeSeasonPauseModal();
+      showToast('Pausa agendada para ' + activePauseData.service + ' em ' + activePauseData.date);
+    }
+
+    function setFastChoiceTime(btn, timeVal) {
+      document.querySelectorAll('.time-choice-btn').forEach(b => {
+        b.className = 'time-choice-btn p-3 rounded-2xl bg-white hover:bg-gray-100 border border-gray-200 text-left transition-all cursor-pointer flex items-center gap-3';
+      });
+      btn.className = 'time-choice-btn p-3 rounded-2xl bg-emerald-50 text-[#0E7C5B] border border-[#0E7C5B] text-left transition-all cursor-pointer flex items-center gap-3';
+      showToast('Filtro ajustado para ' + timeVal);
+    }
+
+    function cloneCommunityList(btn, title) {
+      btn.innerHTML = '✓ Clonada para Minha Fila';
+      btn.className = 'w-full py-2 rounded-xl bg-emerald-100 text-[#0E7C5B] border border-[#0E7C5B] text-xs font-semibold text-[#0E7C5B] transition-all';
+      showToast('Lista "' + title + '" clonada!');
+    }
+
+    function toggleReaction(btn) {
+      const count = btn.querySelector('.count');
+      let val = parseInt(count.textContent, 10);
+      if (btn.classList.contains('active-reaction')) {
+        btn.classList.remove('active-reaction', 'bg-emerald-100 text-[#0E7C5B]', 'border-[#0E7C5B]', 'text-[#0E7C5B]');
+        count.textContent = val - 1;
+      } else {
+        btn.classList.add('active-reaction', 'bg-emerald-100 text-[#0E7C5B]', 'border-[#0E7C5B]', 'text-[#0E7C5B]');
+        count.textContent = val + 1;
+        showToast('Reação computada!');
+      }
+    }
+
+    function toggleWebWatchlist(btn, item) {
+      if (btn.textContent.includes('✓')) {
+        btn.textContent = '+ Salvar';
+        showToast(item + ' removido da fila.');
+      } else {
+        btn.textContent = '✓ Na Minha Fila';
+        showToast(item + ' adicionado à fila!');
+      }
+    }
+
+    let toastTimer = null;
+    function showToast(msg) {
+      const t = document.getElementById('toastNotification');
+      const m = document.getElementById('toastMessage');
+      if (!t || !m) return;
+      m.textContent = msg;
+      t.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
+      t.classList.add('translate-y-0', 'opacity-100');
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        t.classList.remove('translate-y-0', 'opacity-100');
+        t.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
+      }, 3000);
+    }
+
+    // Video Teaser Audio & Playback Controls
+    function toggleBillboardAudio(forceUnmute) {
+      const video = document.getElementById('billboardVideo');
+      const mutedIcon = document.getElementById('soundIconMuted');
+      const activeIcon = document.getElementById('soundIconActive');
+      if (!video) return;
+
+      if (forceUnmute || video.muted) {
+        video.muted = false;
+        video.volume = 0.85;
+        mutedIcon.classList.add('hidden');
+        activeIcon.classList.remove('hidden');
+        showToast('Áudio do teaser ativado');
+      } else {
+        video.muted = true;
+        mutedIcon.classList.remove('hidden');
+        activeIcon.classList.add('hidden');
+        showToast('Áudio do teaser silenciado');
+      }
+    }
+
+    function toggleBillboardPlay() {
+      const video = document.getElementById('billboardVideo');
+      const playingIcon = document.getElementById('playIconPlaying');
+      const pausedIcon = document.getElementById('playIconPaused');
+      if (!video) return;
+
+      if (video.paused) {
+        video.play();
+        playingIcon.classList.remove('hidden');
+        pausedIcon.classList.add('hidden');
+        showToast('Teaser reproduzindo');
+      } else {
+        video.pause();
+        playingIcon.classList.add('hidden');
+        pausedIcon.classList.remove('hidden');
+        showToast('Teaser pausado');
+      }
+    }
+  </script>
+</body>
+</html>

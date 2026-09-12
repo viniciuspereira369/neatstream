@@ -84,21 +84,22 @@ Todos os pares de cores foram rigorosamente auditados em relação aos seus fund
 
 ---
 
-### 2.4 Escala Tipográfica Padronizada
+### 2.4 Escala Tipográfica Padronizada (Unificação Plus Jakarta Sans)
 
-A tipografia é padronizada de forma definitiva em **Sora** (personalidade geométrica e precisão de fintech para títulos/display), **Inter** (máxima neutralidade e legibilidade para interfaces densas) e **IBM Plex Mono** (precisão monospace para métricas, moedas e horas):
+A tipografia do NeatStream é unificada em torno da família geométrica premium **Plus Jakarta Sans** (estilo *Apple TV / Linear / Revolut*), eliminando fontes genéricas (Inter) e serifas (Spectral) para criar uma experiência 100% modernista, elegante e calorosa, com suporte a OpenType Tabular Figures (`tnum`) para alinhamento numérico:
 
 | Token | Tamanho / Line Height | Família / Peso | Tracking | Uso Semântico |
 | :--- | :--- | :--- | :--- | :--- |
-| `display-lg` | 56px / 64px | Sora 700 | -0.02em | Hero principal da Landing Page |
-| `display` | 40px / 48px | Sora 700 | -0.01em | Títulos de seção do Dashboard Web |
-| `title` | 28px / 36px | Sora 600 | -0.01em | Header de tela mobile |
-| `heading` | 20px / 28px | Sora 600 | normal | Títulos de cards e destaques |
-| `body-lg` | 16px / 24px | Inter 400 | normal | Leitura mobile e sinopses |
-| `body` | 14px / 20px | Inter 400 | normal | UI densa, tabelas e itens de lista |
-| `caption` | 12px / 16px | Inter 500 | normal | Metadados, datas secundárias |
-| `label-caps` | 12px / 16px | Inter 600 | +0.08em | Badges em caixa alta (`ECONÔMETRO`, `STATUS`) |
-| `value` | 14px / 20px | IBM Plex Mono 500 | normal (`tnum`) | Moedas (R$), horas assistidas e contadores |
+| `display-lg` | 56px / 64px | Plus Jakarta Sans 800 (ExtraBold) | -0.03em | Hero principal da Landing Page |
+| `display` | 40px / 48px | Plus Jakarta Sans 700 (Bold) | -0.02em | Títulos de seção do Dashboard Web |
+| `editorial-quote` | 22px / 32px | Plus Jakarta Sans 400 Italic | normal | Manifestos, citações editoriais e destaques narrativos |
+| `title` | 28px / 36px | Plus Jakarta Sans 700 (Bold) | -0.02em | Header de tela mobile e títulos principais |
+| `heading` | 20px / 28px | Plus Jakarta Sans 600 (SemiBold) | -0.01em | Títulos de cards e destaques de catálogo |
+| `body-lg` | 16px / 24px | Plus Jakarta Sans 400 (Regular) | normal | Leitura mobile e sinopses de produções |
+| `body` | 14px / 20px | Plus Jakarta Sans 400 / 500 | normal | UI densa, dados operacionais e itens de lista |
+| `caption` | 12px / 16px | Plus Jakarta Sans 500 (Medium) | normal | Metadados, tags de gênero e datas secundárias |
+| `label-caps` | 11px / 16px | Plus Jakarta Sans 700 (Bold) | +0.08em | Micro-selos em caixa alta (`ECONÔMETRO`, `DISNEY+`, `MAX`) |
+| `value` / `tnum` | 14px / 20px | Plus Jakarta Sans 700 + `tnum` | normal | Moedas (R$), métricas financeiras e contadores dinâmicos |
 
 ---
 
@@ -208,6 +209,25 @@ Resolve visualmente a maior dúvida de descoberta de streaming:
 * *Success Toasts* possuem auto-dismiss de 4 segundos; *Danger Toasts* requerem dispensa explícita.
 * **Horário Silencioso de Push:** Proibição estrita de notificações financeiras entre 22h e 9h, reforçando o manifesto de tranquilidade mental.
 
+### 4.6 `TransactionEnrichmentModule` (Detecção Inteligente de Assinaturas)
+Resolve o problema clássico de extratos de cartão indecifráveis através de normalização e enriquecimento semântico:
+* **Entrada Bruta:** String bancária truncada (ex: `DISNEYPLUS BR R9201 SAO PAULO`).
+* **Saída Estruturada:** Card limpo com logotipo vetorial, Merchant Category Code (MCC: `4899 - Cabo e Outros Serviços de Pagamento`), status verificado e identificação clara do serviço.
+* **Métrica de Valor:** Economia média anual comprovada de **`R$ 526,80 / ano por usuário`** ao identificar e eliminar assinaturas duplicadas ou esquecidas.
+* **Benefício de UX:** Reduz o suporte ao cliente a zero ao eliminar a confusão de "que cobrança é essa?".
+
+### 4.7 `FinancialClarityCategories` & `NeatStreamIntelligence` (Clareza Financeira e IA)
+Módulo voltado a responder a questão fundamental do assinante: *"Para onde vai meu dinheiro?"*:
+* **Abas Sem Burocracia:** Navegação por categorias emocionais de streaming em vez de relatórios fiscais áridos (`Cinema Cult`, `Séries Premium`, `Reality & Esportes`, `Música`).
+* **Assistente Conversacional de Linguagem Natural:** O usuário pergunta diretamente *"Quanto economizo se pausar a Disney e a Apple por 3 meses?"* e recebe uma resposta formatada com botões de ação imediata.
+* **Rede de Confiança:** Integração garantida com mais de 45.000 instituições bancárias via Open Finance e criptografia AES-256.
+
+### 4.8 `FranchiseHubsStrip` & `TacticalTags` (Navegação por Hubs e Tags Táticas)
+Padrão de exploração visual dinâmica de catálogos:
+* **Faixa de Hubs de Franquias:** Pílulas de exploração no topo com logotipos e identidades de franquias consagradas (HBO, Max Originals, DC Universe, Harry Potter, Adult Swim, Showtime).
+* **Tags Táticas Luminescentes:** Chips de reação com microglow de alto contraste (`🔥 Intenso`, `✨ Aclamado`, `🧠 Psicológico`), elevando a taxa de engajamento e a rapidez de escolha.
+* **Badges de Conteúdo Ao Vivo:** Indicadores em tempo real para eventos esportivos transmitidos no Max e Paramount+.
+
 ---
 
 ## 5. Acessibilidade como Engenharia Verificável
@@ -223,7 +243,7 @@ Resolve visualmente a maior dúvida de descoberta de streaming:
 ### 6.1 Convenção de Nomenclatura Única
 A nomenclatura de tokens e classes segue estritamente o padrão de 4 níveis:
 `<categoria>/<propriedade>/<variante>/<estado>`
-Exemplos: `color/accent/mint/hover`, `radius/md`, `motion/duration/fast`.
+Exemplos: `color/accent/mint/hover`, `radius/md`, `motion/duration/fast`, `font/editorial`.
 
 ### 6.2 Matriz Do / Don't
 
@@ -233,19 +253,32 @@ Exemplos: `color/accent/mint/hover`, `radius/md`, `motion/duration/fast`.
 | **Logotipos de Streaming** | Manter a logo original da Netflix vermelha dentro de card escuro neutro. | Não aplicar filtros monocromáticos ou tingir a logo de verde menta. |
 | **Econômetro** | Usar escala progressiva (menta → âmbar → vermelho) conforme a meta é consumida. | Não alternar bruscamente entre verde e vermelho sem estágio intermediário. |
 | **Cancelamento** | Destacar a economia anual poupada e confirmar a data de vigência do plano pago. | Não criar modais com cronômetros de pressão ou botões confusos de desistência. |
-| **Watchlist** | Disponibilizar botão "+ Quero Assistir" em todos os pôsteres e heróis. | Não tratar a watchlist apenas como lista passiva sem cruzamento com assinaturas ativas. |
-| **Tipografia de Moeda** | Aplicar `IBM Plex Mono` com `tnum` em qualquer valor em `R$`. | Não utilizar fontes proporcionais para moedas em tabelas comparativas. |
+| **Detecção de Faturas** | Exibir o card estruturado com logotipo oficial e categoria legível. | Não exibir strings cifradas brutas (`DISNEYPLUS BR...`) diretamente para o usuário. |
+| **NeatStream Intelligence** | Responder perguntas financeiras em linguagem natural direta e amigável. | Não forçar o usuário a preencher planilhas manuais ou relatórios contábeis complexos. |
+| **Tipografia Primária** | Utilizar `Plus Jakarta Sans` em toda a interface com pesos 400 (corpo), 600 (botões/badges) e 800 (títulos com tracking negativo). | Não utilizar fontes genéricas como Inter ou misturar múltiplas famílias desconexas. |
+| **Tipografia de Moeda & Números** | Aplicar `Plus Jakarta Sans` com `tnum` (OpenType Tabular Figures) em qualquer valor em `R$`. | Não utilizar fontes proporcionais para moedas em tabelas comparativas. |
 
 ---
 
 ### 6.3 Registro de Versão (Changelog)
 
-* **v2.0.0 (Atual):**
+* **v2.2.0 (Atual):**
+  * **Unificação Tipográfica:** Migração completa e harmoniosa para a família **Plus Jakarta Sans** (estilo Apple TV / Linear), eliminando o Inter e adotando uma estética 100% modernista com OpenType Tabular Figures (`tnum`) para valores e métricas financeiras.
+  * **Modo Cinema Minimalista:** Redesign do Dashboard com foco em billboard 16:9 full-bleed, posters verticais 2:3 em alta resolução, HUD orçamentário compacto e leques visuais 3D de capas na comunidade.
+  * **Landing Page Cinemática:** Marquee contínuo de pôsteres com rolagem acelerada por hardware e simulador tátil de economia em tempo real.
+  * **Mobile Feed Estilo Letterboxd:** Feed imersivo em 2 colunas com micro-selos de plataforma e zero texto de rolagem.
+* **v2.1.0:**
+  * Integração da tipografia editorial de luxo **Spectral** para manifestos e momentos editoriais.
+  * Adição do módulo interativo de **Detecção Inteligente de Assinaturas** com foco exclusivo na economia média anual comprovada (`R$ 526,80 / ano`).
+  * Incorporação do modelo de clareza orçamentária e IA conversacional (**NeatStream Intelligence**, "Para onde vai meu dinheiro?").
+  * Implementação de Hubs de Franquias e chips táticos luminescentes para navegação de catálogo.
+  * Ampliação da Galeria Comparativa no Master Hub com novos comparativos documentados.
+* **v2.0.0:**
   * Resolução formal da colisão cromática Gold × Warning (`#FF9838`).
   * Especificação completa do tema claro com contraste auditado (WCAG AAA/AA).
   * Unificação semântica dos tokens no padrão W3C DTCG.
   * Padronização definitiva de tipografia (Sora + Inter + IBM Plex Mono).
   * Inclusão de tokens de motion, z-index, breakpoints, touch targets e rampa de data-viz.
-  * Especificação dos novos componentes de comunidade (`PlatformAvailabilityRow`, `ReviewCard`, `DelegationPanel` com desfazer de 7 dias, `ToastCenter`).
+  * Especificação dos componentes de comunidade (`PlatformAvailabilityRow`, `ReviewCard`, `DelegationPanel` com desfazer de 7 dias, `ToastCenter`).
   * Matriz universal de estados e regras Do/Don't.
 * **v1.0.0:** Release inicial de arquitetura e design tokens estáticos.

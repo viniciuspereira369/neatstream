@@ -1,499 +1,790 @@
 <!DOCTYPE html>
-<html class="dark" lang="pt-BR">
+<html lang="pt-BR" class="dark scroll-smooth">
 <head>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-  <title>NeatStream — O Hub Inteligente de Streaming e Assinaturas</title>
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@500;600;700;800&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet"/>
-
-  <script id="tailwind-config">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NeatStream — A Plataforma Definitiva de Gestão e Descoberta de Streaming</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet">
+  
+  <script>
     tailwind.config = {
-      darkMode: "class",
+      darkMode: 'class',
       theme: {
         extend: {
           colors: {
-            obsidian: {
-              DEFAULT: '#080C0A',
-              card: '#111714',
-              surface: '#151E19',
-              border: 'rgba(255, 255, 255, 0.08)',
-            },
-            mint: {
-              DEFAULT: '#00E599',
-              light: '#34F5B2',
-              glow: 'rgba(0, 229, 153, 0.25)',
-              dark: '#05DF85'
-            },
-            warning: {
-              DEFAULT: '#FF9838'
-            }
+            obsidian: '#080C0A',
+            'obsidian-card': '#111714',
+            'obsidian-surface': '#161F1B',
+            mint: '#00E599',
+            'mint-dark': '#00B377',
+            'mint-light': '#34F5B2',
+            gold: '#F5B84C',
+            warning: '#FF9838',
+            lavender: '#8B9BFF',
+            canvas: '#FAFBFC',
           },
           fontFamily: {
-            headline: ["'Sora'", "sans-serif"],
-            sans: ["'Inter'", "sans-serif"],
-            mono: ["'IBM Plex Mono'", "monospace"],
+            sans: ["'Plus Jakarta Sans'", "sans-serif"],
+            display: ["'Plus Jakarta Sans'", "sans-serif"],
+            headline: ["'Plus Jakarta Sans'", "sans-serif"],
+            mono: ["'Plus Jakarta Sans'", "sans-serif"],
+            editorial: ["'Plus Jakarta Sans'", "sans-serif"],
+            serif: ["'Plus Jakarta Sans'", "sans-serif"],
           }
-        },
-      },
+        }
+      }
     }
   </script>
 
   <style>
-    :root {
-      --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
-      --duration-fast: 150ms;
-      --duration-base: 250ms;
-    }
     body {
       background-color: #080C0A;
-      color: #9BA6B2;
-      font-family: 'Inter', sans-serif;
-      -webkit-font-smoothing: antialiased;
+      color: #FAFBFC;
+      font-family: 'Plus Jakarta Sans', sans-serif;
       overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
     }
-    :focus-visible { outline: 2px solid #00E599; outline-offset: 2px; }
-    .font-mono { font-feature-settings: "tnum" 1, "zero" 1; }
+    h1, h2, h3, h4, h5 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .font-editorial {
+      font-family: 'Plus Jakarta Sans', sans-serif; font-style: italic;
+    }
+    .font-mono { font-family: 'Plus Jakarta Sans', sans-serif; font-feature-settings: 'tnum' 1, 'zero' 1; font-variant-numeric: tabular-nums; }
 
-    /* Diffuse Emerald Glow (Direct Inspiration from Reference 2: Mintro) */
-    .hero-glow {
+    /* Ambient Diffuse Glows */
+    .hero-glow-top {
       position: absolute;
-      top: 20%;
+      top: -150px;
       left: 50%;
-      transform: translate(-50%, -50%);
-      width: 900px;
+      transform: translateX(-50%);
+      width: 1000px;
+      height: 700px;
+      background: radial-gradient(circle, rgba(0, 229, 153, 0.14) 0%, rgba(0, 229, 153, 0.03) 50%, transparent 75%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .hero-glow-right {
+      position: absolute;
+      top: 400px;
+      right: -200px;
+      width: 600px;
       height: 600px;
-      background: radial-gradient(circle, rgba(0, 229, 153, 0.15) 0%, rgba(5, 223, 133, 0.04) 50%, transparent 70%);
-      pointer-events-none;
+      background: radial-gradient(circle, rgba(139, 155, 255, 0.08) 0%, transparent 70%);
+      pointer-events: none;
       z-index: 0;
     }
 
-    /* Spotlight Card Effect (Padrão Linear & Vercel) */
-    .spotlight-card {
+    /* Marquee Animations (60fps Hardware-Accelerated) */
+    @keyframes marqueeScrollLeft {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    @keyframes marqueeScrollRight {
+      0% { transform: translateX(-50%); }
+      100% { transform: translateX(0); }
+    }
+
+    .marquee-track-left {
+      display: flex;
+      width: max-content;
+      animation: marqueeScrollLeft 38s linear infinite;
+      will-change: transform;
+    }
+    .marquee-track-right {
+      display: flex;
+      width: max-content;
+      animation: marqueeScrollRight 42s linear infinite;
+      will-change: transform;
+    }
+    .marquee-container:hover .marquee-track-left,
+    .marquee-container:hover .marquee-track-right {
+      animation-play-state: paused;
+    }
+
+    /* Glass & Card Sheen */
+    .glass-panel {
+      background: rgba(17, 23, 20, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .card-sheen {
       position: relative;
       background: #111714;
+      border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 1.5rem;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      overflow: hidden;
-      transition: transform var(--duration-base) var(--ease-spring), border-color var(--duration-base) ease, box-shadow var(--duration-base) ease;
-    }
-    .spotlight-card::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      border-radius: inherit;
-      background: radial-gradient(450px circle at var(--mouse-x, -999px) var(--mouse-y, -999px), rgba(0, 229, 153, 0.16), transparent 45%);
-      opacity: 0;
-      transition: opacity 300ms ease;
-      pointer-events: none;
-      z-index: 1;
-    }
-    .spotlight-card:hover::before {
-      opacity: 1;
-    }
-    .spotlight-card:hover {
-      border-color: rgba(0, 229, 153, 0.38);
-      transform: translateY(-4px);
-      box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.7), 0 0 28px rgba(0, 229, 153, 0.12);
-    }
-
-    .card-sheen {
-      background: #111714;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      transition: all var(--duration-base) var(--ease-spring);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .card-sheen:hover {
-      border-color: rgba(0, 229, 153, 0.3);
-      transform: translateY(-2px);
+      border-color: rgba(0, 229, 153, 0.35);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.7), 0 0 25px rgba(0, 229, 153, 0.1);
     }
 
-    /* Floating virtual card in perspective (Mintro & Apple HIG Style) */
-    .floating-card {
-      background: linear-gradient(145deg, rgba(16, 32, 24, 0.95) 0%, rgba(10, 18, 14, 0.98) 55%, rgba(6, 10, 8, 1) 100%);
-      border: 1px solid rgba(0, 229, 153, 0.35);
-      border-top: 1px solid rgba(255, 255, 255, 0.2);
-      backdrop-filter: blur(24px);
-      box-shadow: 0 2px 4px rgba(0,0,0,0.3), 0 12px 28px rgba(0,0,0,0.5), 0 35px 75px rgba(0,0,0,0.8), 0 0 45px rgba(0, 229, 153, 0.18);
-      transition: all 0.5s var(--ease-spring);
+    /* Interactive Streaming Toggle Card */
+    .sim-card {
+      transition: all 0.25s ease-out;
+      cursor: pointer;
+      user-select: none;
     }
-    .floating-card:hover {
-      transform: translateY(-6px) rotate(-1deg) scale(1.02);
-      border-color: rgba(0, 229, 153, 0.6);
-      box-shadow: 0 40px 90px rgba(0, 0, 0, 0.9), 0 0 60px rgba(0, 229, 153, 0.3);
+    .sim-card.active-stream {
+      border-color: rgba(0, 229, 153, 0.5);
+      background: rgba(0, 229, 153, 0.06);
+      box-shadow: 0 0 20px rgba(0, 229, 153, 0.15);
+    }
+    .sim-card.paused-stream {
+      border-color: rgba(255, 152, 56, 0.4);
+      background: rgba(255, 152, 56, 0.05);
+      opacity: 0.75;
     }
   </style>
 </head>
 
-<body class="antialiased min-h-screen flex flex-col relative selection:bg-mint/30">
-  <div class="hero-glow"></div>
+<body class="selection:bg-mint/30 relative min-h-screen flex flex-col">
+  <div class="hero-glow-top"></div>
+  <div class="hero-glow-right"></div>
 
-  <!-- Header / Navigation -->
-  <header class="sticky top-0 z-50 bg-[#080C0A]/85 backdrop-blur-xl border-b border-white/5">
+  <!-- Header -->
+  <header class="sticky top-0 z-50 bg-[#080C0A]/90 backdrop-blur-xl border-b border-white/8">
     <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
       <!-- Logo -->
-      <a href="#" class="flex items-center gap-3 group">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-mint-dark to-mint flex items-center justify-center text-obsidian font-extrabold shadow-[0_0_20px_rgba(0,229,153,0.4)]">
-          <span class="material-symbols-outlined text-2xl font-bold">play_circle</span>
+      <a href="landing.html" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-mint-dark to-mint flex items-center justify-center text-obsidian font-display font-black text-sm tracking-wider shadow-[0_0_20px_rgba(0,229,153,0.35)] group-hover:scale-105 transition-transform">
+          NS
         </div>
-        <span class="text-xl font-bold text-white tracking-tight font-headline">Neat<span class="text-mint">Stream</span></span>
+        <div>
+          <span class="text-xl font-bold text-white tracking-tight font-display">Neat<span class="text-mint">Stream</span></span>
+          <span class="hidden sm:inline-block text-[10px] font-mono text-gray-400 ml-2 px-2 py-0.5 rounded-full bg-white/5 border border-white/10">2026</span>
+        </div>
       </a>
 
-      <!-- Nav links -->
-      <nav class="hidden md:flex items-center gap-8 text-sm font-medium">
-        <a href="#como-funciona" class="text-gray-400 hover:text-white transition-colors">Como Funciona</a>
-        <a href="#vantagens" class="text-gray-400 hover:text-white transition-colors">Vantagens</a>
-        <a href="#seguranca" class="text-gray-400 hover:text-white transition-colors">Segurança</a>
+      <!-- Navigation Links -->
+      <nav class="hidden md:flex items-center gap-8 text-xs font-semibold uppercase tracking-wider text-gray-300">
+        <a href="#simulador" class="hover:text-mint transition-colors">Simulador</a>
+        <a href="#catalogo" class="hover:text-mint transition-colors">Catálogo</a>
+        <a href="#vantagens" class="hover:text-mint transition-colors">Vantagens</a>
+        <a href="../index.html" class="text-gray-400 hover:text-white transition-colors">Master Hub</a>
       </nav>
 
-      <!-- Action buttons -->
+      <!-- Action Buttons -->
       <div class="flex items-center gap-4">
-        <a href="dashboard_dark.html" class="text-sm font-semibold text-gray-300 hover:text-white transition-colors">Entrar</a>
-        <a href="dashboard_dark.html" class="bg-gradient-to-r from-mint to-mint-dark text-obsidian font-bold text-sm px-5 py-2.5 rounded-full shadow-[0_0_20px_rgba(0,229,153,0.35)] hover:brightness-110 active:scale-95 transition-all">
-          Começar Grátis
+        <a href="dashboard_dark.html" class="text-xs font-semibold text-gray-300 hover:text-white transition-colors">Entrar</a>
+        <a href="dashboard_dark.html" class="bg-gradient-to-r from-mint to-mint-dark text-obsidian font-display font-bold text-xs px-5 py-2.5 rounded-full shadow-[0_0_20px_rgba(0,229,153,0.35)] hover:brightness-110 active:scale-95 transition-all">
+          Abrir Dashboard
         </a>
       </div>
     </div>
   </header>
 
-  <!-- Hero Section -->
-  <main class="flex-grow relative z-10">
-    <section class="pt-20 pb-28 max-w-7xl mx-auto px-6">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+  <main class="flex-grow relative z-10 space-y-24 pb-28">
+
+    <!-- ==================================================== -->
+    <!-- SECTION 1: HERO COM MARQUEE CINEMÁTICO DE PÔSTERES   -->
+    <!-- ==================================================== -->
+    <section class="pt-12 md:pt-20 overflow-hidden relative">
+      <div class="max-w-7xl mx-auto px-6 text-center space-y-6">
         
-        <!-- Left: Copy & CTAs -->
-        <div class="lg:col-span-7 space-y-6">
-          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-mint/10 border border-mint/25 text-mint text-xs font-semibold">
+        <!-- Live Badge -->
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-mint/10 border border-mint/25 text-mint text-xs font-mono font-semibold">
+          <span class="w-2 h-2 rounded-full bg-mint animate-pulse"></span>
+          <span>Todas as Suas Assinaturas em Um Só Lugar</span>
+        </div>
+
+        <!-- Main Headline (Tight & Powerful) -->
+        <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold text-white tracking-tight leading-[1.08] font-display max-w-4xl mx-auto">
+          Cada Assinatura.<br/>
+          Cada Economia.<br/>
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-mint via-mint-light to-white">Zero Desperdício.</span>
+        </h1>
+
+        <!-- Short Poetic Subtitle -->
+        <p class="font-editorial italic text-base sm:text-xl text-emerald-200/80 max-w-2xl mx-auto">
+          "Quando tudo é especial, nada é verdadeiramente especial. Uma decisão limpa por vez."
+        </p>
+
+        <!-- CTA Buttons -->
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+          <a href="dashboard_dark.html" class="w-full sm:w-auto bg-gradient-to-r from-mint to-mint-dark text-obsidian font-display font-bold text-sm px-8 py-4 rounded-2xl flex items-center justify-center gap-2 shadow-[0_0_30px_rgba(0,229,153,0.4)] hover:brightness-110 active:scale-95 transition-all cursor-pointer">
+            <span>Começar a Economizar Agora</span>
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+          <a href="#simulador" class="w-full sm:w-auto bg-[#111714] border border-white/15 text-white font-semibold text-sm px-7 py-4 rounded-2xl flex items-center justify-center gap-2 hover:border-mint/40 transition-all">
+            Simular Minha Economia
+          </a>
+        </div>
+      </div>
+
+      <!-- MARQUEE DUPLO DE PÔSTERES EM ALTA DEFINIÇÃO -->
+      <div id="catalogo" class="marquee-container relative pt-14 pb-8 space-y-4">
+        <!-- Overlay Gradient Edges -->
+        <div class="absolute inset-y-0 left-0 w-24 md:w-48 bg-gradient-to-r from-[#080C0A] to-transparent z-20 pointer-events-none"></div>
+        <div class="absolute inset-y-0 right-0 w-24 md:w-48 bg-gradient-to-l from-[#080C0A] to-transparent z-20 pointer-events-none"></div>
+
+        <!-- Floating Glassmorphic Badges over Marquee -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 pointer-events-none flex flex-wrap items-center justify-center gap-3 w-full max-w-3xl px-4">
+          <div class="glass-panel px-4 py-2.5 rounded-2xl shadow-2xl flex items-center gap-2.5 border border-mint/40 animate-bounce">
+            <span class="w-2.5 h-2.5 rounded-full bg-mint animate-pulse"></span>
+            <span class="font-mono text-xs font-bold text-white">Média de Economia: <strong class="text-mint text-sm">R$ 526,80/ano</strong></span>
+          </div>
+          <div class="glass-panel px-4 py-2.5 rounded-2xl shadow-2xl flex items-center gap-2.5 border border-warning/40">
+            <span class="text-xs">⚡</span>
+            <span class="font-mono text-xs font-bold text-white">Pausa Automática Pós-Temporada</span>
+          </div>
+          <div class="glass-panel px-4 py-2.5 rounded-2xl shadow-2xl flex items-center gap-2.5 border border-lavender/40">
+            <span class="text-xs">🎬</span>
+            <span class="font-mono text-xs font-bold text-white">14 Títulos Salvos Já Pagos</span>
+          </div>
+        </div>
+
+        <!-- Track 1: Rolagem para a Esquerda -->
+        <div class="overflow-hidden">
+          <div class="marquee-track-left gap-4">
+            <!-- Poster 1: Duna 2 -->
+            <div class="w-36 sm:w-48 h-52 sm:h-72 rounded-2xl overflow-hidden relative group shrink-0 border border-white/10 shadow-xl cursor-pointer">
+              <img src="../assets/posters/dune2.jpg" alt="Duna 2" class="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+              <span class="absolute top-2.5 left-2.5 px-2 py-0.5 rounded text-[9px] font-mono bg-purple-900/80 text-purple-200 border border-purple-400/30">Max</span>
+              <div class="absolute bottom-3 left-3 right-3">
+                <p class="text-xs font-bold text-white font-display truncate">Duna: Parte 2</p>
+                <p class="text-[10px] text-gray-300 font-mono">★ 8.8 · Ficção</p>
+              </div>
+            </div>
+
+            <!-- Poster 2: O Urso -->
+            <div class="w-36 sm:w-48 h-52 sm:h-72 rounded-2xl overflow-hidden relative group shrink-0 border border-white/10 shadow-xl cursor-pointer">
+              <img src="../assets/posters/the_bear.jpg" alt="O Urso" class="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+              <span class="absolute top-2.5 left-2.5 px-2 py-0.5 rounded text-[9px] font-mono bg-blue-900/80 text-blue-200 border border-blue-400/30">Disney+</span>
+              <div class="absolute bottom-3 left-3 right-3">
+                <p class="text-xs font-bold text-white font-display truncate">O Urso</p>
+                <p class="text-[10px] text-gray-300 font-mono">★ 9.1 · Drama</p>
+              </div>
+            </div>
+
+            <!-- Poster 3: Ruptura (Severance) -->
+            <div class="w-36 sm:w-48 h-52 sm:h-72 rounded-2xl overflow-hidden relative group shrink-0 border border-white/10 shadow-xl cursor-pointer">
+              <img src="../assets/posters/severance.jpg" alt="Ruptura" class="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+              <span class="absolute top-2.5 left-2.5 px-2 py-0.5 rounded text-[9px] font-mono bg-gray-800 text-gray-200 border border-white/20">Apple TV+</span>
+              <div class="absolute bottom-3 left-3 right-3">
+                <p class="text-xs font-bold text-white font-display truncate">Ruptura</p>
+                <p class="text-[10px] text-gray-300 font-mono">★ 8.7 · Suspense</p>
+              </div>
+            </div>
+
+            <!-- Poster 4: Xógum -->
+            <div class="w-36 sm:w-48 h-52 sm:h-72 rounded-2xl overflow-hidden relative group shrink-0 border border-white/10 shadow-xl cursor-pointer">
+              <img src="../assets/posters/shogun.jpg" alt="Xógum" class="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+              <span class="absolute top-2.5 left-2.5 px-2 py-0.5 rounded text-[9px] font-mono bg-blue-900/80 text-blue-200 border border-blue-400/30">Disney+</span>
+              <div class="absolute bottom-3 left-3 right-3">
+                <p class="text-xs font-bold text-white font-display truncate">Xógum</p>
+                <p class="text-[10px] text-gray-300 font-mono">★ 8.9 · Épico</p>
+              </div>
+            </div>
+
+            <!-- Poster 5: Oppenheimer -->
+            <div class="w-36 sm:w-48 h-52 sm:h-72 rounded-2xl overflow-hidden relative group shrink-0 border border-white/10 shadow-xl cursor-pointer">
+              <img src="../assets/posters/oppenheimer.jpg" alt="Oppenheimer" class="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+              <span class="absolute top-2.5 left-2.5 px-2 py-0.5 rounded text-[9px] font-mono bg-indigo-950 text-indigo-200 border border-indigo-500/30">Prime Video</span>
+              <div class="absolute bottom-3 left-3 right-3">
+                <p class="text-xs font-bold text-white font-display truncate">Oppenheimer</p>
+                <p class="text-[10px] text-gray-300 font-mono">★ 8.9 · História</p>
+              </div>
+            </div>
+
+            <!-- Poster 6: Blade Runner -->
+            <div class="w-36 sm:w-48 h-52 sm:h-72 rounded-2xl overflow-hidden relative group shrink-0 border border-white/10 shadow-xl cursor-pointer">
+              <img src="../assets/posters/blade_runner_2049.jpg" alt="Blade Runner" class="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+              <span class="absolute top-2.5 left-2.5 px-2 py-0.5 rounded text-[9px] font-mono bg-purple-900/80 text-purple-200 border border-purple-400/30">Max</span>
+              <div class="absolute bottom-3 left-3 right-3">
+                <p class="text-xs font-bold text-white font-display truncate">Blade Runner 2049</p>
+                <p class="text-[10px] text-gray-300 font-mono">★ 8.5 · Sci-Fi</p>
+              </div>
+            </div>
+
+            <!-- DUPLICAÇÃO PARA LOOP PERFEITO -->
+            <div class="w-36 sm:w-48 h-52 sm:h-72 rounded-2xl overflow-hidden relative group shrink-0 border border-white/10 shadow-xl cursor-pointer">
+              <img src="../assets/posters/dune2.jpg" alt="Duna 2" class="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+              <span class="absolute top-2.5 left-2.5 px-2 py-0.5 rounded text-[9px] font-mono bg-purple-900/80 text-purple-200 border border-purple-400/30">Max</span>
+              <div class="absolute bottom-3 left-3 right-3">
+                <p class="text-xs font-bold text-white font-display truncate">Duna: Parte 2</p>
+                <p class="text-[10px] text-gray-300 font-mono">★ 8.8 · Ficção</p>
+              </div>
+            </div>
+            <div class="w-36 sm:w-48 h-52 sm:h-72 rounded-2xl overflow-hidden relative group shrink-0 border border-white/10 shadow-xl cursor-pointer">
+              <img src="../assets/posters/the_bear.jpg" alt="O Urso" class="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+              <span class="absolute top-2.5 left-2.5 px-2 py-0.5 rounded text-[9px] font-mono bg-blue-900/80 text-blue-200 border border-blue-400/30">Disney+</span>
+              <div class="absolute bottom-3 left-3 right-3">
+                <p class="text-xs font-bold text-white font-display truncate">O Urso</p>
+                <p class="text-[10px] text-gray-300 font-mono">★ 9.1 · Drama</p>
+              </div>
+            </div>
+            <div class="w-36 sm:w-48 h-52 sm:h-72 rounded-2xl overflow-hidden relative group shrink-0 border border-white/10 shadow-xl cursor-pointer">
+              <img src="../assets/posters/severance.jpg" alt="Ruptura" class="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+              <span class="absolute top-2.5 left-2.5 px-2 py-0.5 rounded text-[9px] font-mono bg-gray-800 text-gray-200 border border-white/20">Apple TV+</span>
+              <div class="absolute bottom-3 left-3 right-3">
+                <p class="text-xs font-bold text-white font-display truncate">Ruptura</p>
+                <p class="text-[10px] text-gray-300 font-mono">★ 8.7 · Suspense</p>
+              </div>
+            </div>
+            <div class="w-36 sm:w-48 h-52 sm:h-72 rounded-2xl overflow-hidden relative group shrink-0 border border-white/10 shadow-xl cursor-pointer">
+              <img src="../assets/posters/shogun.jpg" alt="Xógum" class="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+              <span class="absolute top-2.5 left-2.5 px-2 py-0.5 rounded text-[9px] font-mono bg-blue-900/80 text-blue-200 border border-blue-400/30">Disney+</span>
+              <div class="absolute bottom-3 left-3 right-3">
+                <p class="text-xs font-bold text-white font-display truncate">Xógum</p>
+                <p class="text-[10px] text-gray-300 font-mono">★ 8.9 · Épico</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Track 2: Rolagem para a Direita -->
+        <div class="overflow-hidden pt-2">
+          <div class="marquee-track-right gap-4">
+            <!-- Poster A: Arcane -->
+            <div class="w-36 sm:w-48 h-52 sm:h-72 rounded-2xl overflow-hidden relative group shrink-0 border border-white/10 shadow-xl cursor-pointer">
+              <img src="../assets/posters/arcane.jpg" alt="Arcane" class="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+              <span class="absolute top-2.5 left-2.5 px-2 py-0.5 rounded text-[9px] font-mono bg-red-950 text-red-300 border border-red-500/30">Netflix</span>
+              <div class="absolute bottom-3 left-3 right-3">
+                <p class="text-xs font-bold text-white font-display truncate">Arcane: T2</p>
+                <p class="text-[10px] text-gray-300 font-mono">★ 9.0 · Animação</p>
+              </div>
+            </div>
+
+            <!-- Poster B: Succession -->
+            <div class="w-36 sm:w-48 h-52 sm:h-72 rounded-2xl overflow-hidden relative group shrink-0 border border-white/10 shadow-xl cursor-pointer">
+              <img src="../assets/posters/succession.jpg" alt="Succession" class="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+              <span class="absolute top-2.5 left-2.5 px-2 py-0.5 rounded text-[9px] font-mono bg-purple-900/80 text-purple-200 border border-purple-400/30">Max</span>
+              <div class="absolute bottom-3 left-3 right-3">
+                <p class="text-xs font-bold text-white font-display truncate">Succession</p>
+                <p class="text-[10px] text-gray-300 font-mono">★ 8.9 · Corporativo</p>
+              </div>
+            </div>
+
+            <!-- Poster C: Stranger Things -->
+            <div class="w-36 sm:w-48 h-52 sm:h-72 rounded-2xl overflow-hidden relative group shrink-0 border border-white/10 shadow-xl cursor-pointer">
+              <img src="../assets/posters/stranger_things.jpg" alt="Stranger Things" class="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+              <span class="absolute top-2.5 left-2.5 px-2 py-0.5 rounded text-[9px] font-mono bg-red-950 text-red-300 border border-red-500/30">Netflix</span>
+              <div class="absolute bottom-3 left-3 right-3">
+                <p class="text-xs font-bold text-white font-display truncate">Stranger Things</p>
+                <p class="text-[10px] text-gray-300 font-mono">★ 8.7 · Aventura</p>
+              </div>
+            </div>
+
+            <!-- Poster D: Fallout -->
+            <div class="w-36 sm:w-48 h-52 sm:h-72 rounded-2xl overflow-hidden relative group shrink-0 border border-white/10 shadow-xl cursor-pointer">
+              <img src="../assets/posters/fallout.jpg" alt="Fallout" class="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+              <span class="absolute top-2.5 left-2.5 px-2 py-0.5 rounded text-[9px] font-mono bg-indigo-950 text-indigo-200 border border-indigo-500/30">Prime Video</span>
+              <div class="absolute bottom-3 left-3 right-3">
+                <p class="text-xs font-bold text-white font-display truncate">Fallout</p>
+                <p class="text-[10px] text-gray-300 font-mono">★ 8.5 · Pós-Apoc</p>
+              </div>
+            </div>
+
+            <!-- Poster E: The Last of Us -->
+            <div class="w-36 sm:w-48 h-52 sm:h-72 rounded-2xl overflow-hidden relative group shrink-0 border border-white/10 shadow-xl cursor-pointer">
+              <img src="../assets/posters/the_last_of_us.jpg" alt="The Last of Us" class="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+              <span class="absolute top-2.5 left-2.5 px-2 py-0.5 rounded text-[9px] font-mono bg-purple-900/80 text-purple-200 border border-purple-400/30">Max</span>
+              <div class="absolute bottom-3 left-3 right-3">
+                <p class="text-xs font-bold text-white font-display truncate">The Last of Us</p>
+                <p class="text-[10px] text-gray-300 font-mono">★ 8.8 · Sobrevivência</p>
+              </div>
+            </div>
+
+            <!-- DUPLICAÇÃO TRACK 2 -->
+            <div class="w-36 sm:w-48 h-52 sm:h-72 rounded-2xl overflow-hidden relative group shrink-0 border border-white/10 shadow-xl cursor-pointer">
+              <img src="../assets/posters/arcane.jpg" alt="Arcane" class="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+              <span class="absolute top-2.5 left-2.5 px-2 py-0.5 rounded text-[9px] font-mono bg-red-950 text-red-300 border border-red-500/30">Netflix</span>
+              <div class="absolute bottom-3 left-3 right-3">
+                <p class="text-xs font-bold text-white font-display truncate">Arcane: T2</p>
+                <p class="text-[10px] text-gray-300 font-mono">★ 9.0 · Animação</p>
+              </div>
+            </div>
+            <div class="w-36 sm:w-48 h-52 sm:h-72 rounded-2xl overflow-hidden relative group shrink-0 border border-white/10 shadow-xl cursor-pointer">
+              <img src="../assets/posters/succession.jpg" alt="Succession" class="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+              <span class="absolute top-2.5 left-2.5 px-2 py-0.5 rounded text-[9px] font-mono bg-purple-900/80 text-purple-200 border border-purple-400/30">Max</span>
+              <div class="absolute bottom-3 left-3 right-3">
+                <p class="text-xs font-bold text-white font-display truncate">Succession</p>
+                <p class="text-[10px] text-gray-300 font-mono">★ 8.9 · Corporativo</p>
+              </div>
+            </div>
+            <div class="w-36 sm:w-48 h-52 sm:h-72 rounded-2xl overflow-hidden relative group shrink-0 border border-white/10 shadow-xl cursor-pointer">
+              <img src="../assets/posters/stranger_things.jpg" alt="Stranger Things" class="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+              <span class="absolute top-2.5 left-2.5 px-2 py-0.5 rounded text-[9px] font-mono bg-red-950 text-red-300 border border-red-500/30">Netflix</span>
+              <div class="absolute bottom-3 left-3 right-3">
+                <p class="text-xs font-bold text-white font-display truncate">Stranger Things</p>
+                <p class="text-[10px] text-gray-300 font-mono">★ 8.7 · Aventura</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================================================== -->
+    <!-- SECTION 2: SIMULADOR VISUAL INTERATIVO DE ECONOMIA   -->
+    <!-- ==================================================== -->
+    <section id="simulador" class="max-w-7xl mx-auto px-6">
+      <div class="card-sheen p-6 sm:p-10 lg:p-12 relative overflow-hidden bg-gradient-to-br from-[#111714] via-[#0D1511] to-[#0A100D] border-mint/20">
+        
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-8 border-b border-white/10">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="px-3 py-1 rounded-full text-[10px] font-mono bg-mint/15 text-mint border border-mint/30 font-bold uppercase tracking-wider">Simulador Tátil em Tempo Real</span>
+              <span class="text-xs text-gray-400 font-mono">Clique para Pausar ou Ativar</span>
+            </div>
+            <h2 class="text-2xl sm:text-4xl font-extrabold text-white font-display tracking-tight mt-2">
+              Veja sua Economia Crescer na Prática
+            </h2>
+            <p class="text-xs sm:text-sm text-gray-400 max-w-xl mt-1">
+              Toque nos streamings abaixo para simular a rotação inteligente do NeatStream. Nós pausamos o serviço que você não está assistindo e reativamos quando sua série favorita voltar.
+            </p>
+          </div>
+
+          <!-- Live Result Badge -->
+          <div class="bg-[#080C0A] p-4 sm:p-5 rounded-2xl border border-mint/30 shadow-[0_0_30px_rgba(0,229,153,0.15)] flex items-center gap-5">
+            <div>
+              <span class="text-[10px] font-mono text-gray-400 uppercase tracking-widest block">Sua Economia Anual</span>
+              <div class="flex items-baseline gap-1 mt-0.5">
+                <span class="text-sm font-mono text-mint">R$</span>
+                <span id="simSavingsVal" class="text-3xl sm:text-4xl font-mono font-bold text-mint">526,80</span>
+                <span class="text-xs text-gray-400 font-mono">/ano</span>
+              </div>
+              <span id="simMonthlyVal" class="text-[11px] font-mono text-gray-400 block mt-1">Gasto mensal: <strong class="text-white">R$ 98,70</strong> / mês</span>
+            </div>
+            <div class="w-14 h-14 rounded-2xl bg-mint/10 border border-mint/30 flex items-center justify-center text-mint shrink-0">
+              <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cards Interativos de Streaming -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 pt-8">
+          <!-- Disney+ (Começa Pausado na Simulação) -->
+          <div onclick="toggleStreamSimulator(this, 'Disney+', 43.90)" class="sim-card paused-stream p-4 rounded-2xl border flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-blue-400">Disney+</span>
+                <span class="status-badge px-2 py-0.5 rounded text-[9px] font-mono bg-warning/20 text-warning border border-warning/30 font-bold">PAUSADO</span>
+              </div>
+              <p class="text-lg font-mono font-bold text-white mt-3">R$ 43,90<span class="text-xs text-gray-400 font-normal">/mês</span></p>
+              <p class="text-[11px] text-gray-400 mt-1">O Urso concluído</p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-mint">
+              <span>+R$ 526,80/ano</span>
+              <span>↻ Toque</span>
+            </div>
+          </div>
+
+          <!-- Netflix (Ativo) -->
+          <div onclick="toggleStreamSimulator(this, 'Netflix', 55.90)" class="sim-card active-stream p-4 rounded-2xl border flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-red-400">Netflix 4K</span>
+                <span class="status-badge px-2 py-0.5 rounded text-[9px] font-mono bg-mint/20 text-mint border border-mint/30 font-bold">ATIVO</span>
+              </div>
+              <p class="text-lg font-mono font-bold text-white mt-3">R$ 55,90<span class="text-xs text-gray-400 font-normal">/mês</span></p>
+              <p class="text-[11px] text-gray-400 mt-1">Uso intenso diário</p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-gray-400">
+              <span>Manter ativo</span>
+              <span>↻ Toque</span>
+            </div>
+          </div>
+
+          <!-- Max (Ativo) -->
+          <div onclick="toggleStreamSimulator(this, 'Max', 39.90)" class="sim-card active-stream p-4 rounded-2xl border flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-purple-400">Max (HBO)</span>
+                <span class="status-badge px-2 py-0.5 rounded text-[9px] font-mono bg-mint/20 text-mint border border-mint/30 font-bold">ATIVO</span>
+              </div>
+              <p class="text-lg font-mono font-bold text-white mt-3">R$ 39,90<span class="text-xs text-gray-400 font-normal">/mês</span></p>
+              <p class="text-[11px] text-gray-400 mt-1">Duna 2 assistido</p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-gray-400">
+              <span>Manter ativo</span>
+              <span>↻ Toque</span>
+            </div>
+          </div>
+
+          <!-- Apple TV+ (Pausado) -->
+          <div onclick="toggleStreamSimulator(this, 'Apple TV+', 21.90)" class="sim-card paused-stream p-4 rounded-2xl border flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-gray-200">Apple TV+</span>
+                <span class="status-badge px-2 py-0.5 rounded text-[9px] font-mono bg-warning/20 text-warning border border-warning/30 font-bold">PAUSADO</span>
+              </div>
+              <p class="text-lg font-mono font-bold text-white mt-3">R$ 21,90<span class="text-xs text-gray-400 font-normal">/mês</span></p>
+              <p class="text-[11px] text-gray-400 mt-1">Aguardando Ruptura T2</p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-mint">
+              <span>+R$ 262,80/ano</span>
+              <span>↻ Toque</span>
+            </div>
+          </div>
+
+          <!-- Prime Video (Pausado) -->
+          <div onclick="toggleStreamSimulator(this, 'Prime Video', 19.90)" class="sim-card paused-stream p-4 rounded-2xl border flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-sky-400">Prime Video</span>
+                <span class="status-badge px-2 py-0.5 rounded text-[9px] font-mono bg-warning/20 text-warning border border-warning/30 font-bold">PAUSADO</span>
+              </div>
+              <p class="text-lg font-mono font-bold text-white mt-3">R$ 19,90<span class="text-xs text-gray-400 font-normal">/mês</span></p>
+              <p class="text-[11px] text-gray-400 mt-1">Oppenheimer na fila</p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-mint">
+              <span>+R$ 238,80/ano</span>
+              <span>↻ Toque</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Simulator Summary Footnote -->
+        <div class="mt-8 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="flex items-center gap-3 text-xs text-gray-400 font-mono">
             <span class="w-2 h-2 rounded-full bg-mint animate-pulse"></span>
-            Todas as Suas Assinaturas em Um Só Lugar
+            <span>Inteligência NeatStream: <strong>0 filmes ou séries perdidos</strong> durante as rotações.</span>
           </div>
-
-          <h1 class="text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.1] font-headline">
-            Cada Assinatura.<br/>
-            Cada Economia.<br/>
-            <span class="text-transparent bg-clip-text bg-gradient-to-r from-mint via-mint-light to-white">Zero Desperdício.</span>
-          </h1>
-
-          <p class="text-lg text-gray-400 max-w-xl leading-relaxed">
-            Acompanhe quanto você gasta em streaming, descubra os melhores filmes e séries sem perder tempo e cancele serviços que não usa mais em um clique.
-          </p>
-
-          <div class="flex flex-col sm:flex-row items-center gap-4 pt-2">
-            <a href="dashboard_dark.html" class="w-full sm:w-auto bg-gradient-to-r from-mint to-mint-dark text-obsidian font-bold text-base px-8 py-4 rounded-2xl flex items-center justify-center gap-2 shadow-[0_0_30px_rgba(0,229,153,0.4)] hover:brightness-110 active:scale-95 transition-all cursor-pointer">
-              <span>Começar a Economizar</span>
-              <span class="material-symbols-outlined text-xl">arrow_forward</span>
-            </a>
-            <a href="#como-funciona" class="w-full sm:w-auto bg-[#111714] border border-white/10 text-white font-semibold text-base px-8 py-4 rounded-2xl flex items-center justify-center gap-2 hover:border-mint/40 transition-all cursor-pointer">
-              Ver Como Funciona
-            </a>
-          </div>
-
-          <!-- CRO Micro-Cópia Tranquilizadora (Redução de Fricção - Volume 5) -->
-          <div class="flex flex-wrap items-center gap-6 pt-2 text-xs text-gray-400">
-            <span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-mint text-sm">verified_user</span> Sem cartão de crédito</span>
-            <span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-mint text-sm">bolt</span> Cancele com 1 clique</span>
-            <span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-mint text-sm">lock</span> Criptografia de ponta a ponta</span>
-          </div>
-
-          <!-- Mini Metrics -->
-          <div class="pt-6 grid grid-cols-3 gap-6 border-t border-white/5">
-            <div>
-              <p class="font-mono text-2xl font-bold text-white tracking-tight">R$ 520+</p>
-              <p class="text-xs text-gray-400 mt-0.5">Economia média anual</p>
-            </div>
-            <div>
-              <p class="font-mono text-2xl font-bold text-mint tracking-tight">1 Toque</p>
-              <p class="text-xs text-gray-400 mt-0.5">Para cancelar serviços</p>
-            </div>
-            <div>
-              <p class="font-mono text-2xl font-bold text-white tracking-tight">100%</p>
-              <p class="text-xs text-gray-400 mt-0.5">Controle das suas contas</p>
-            </div>
-          </div>
+          <a href="dashboard_dark.html" class="text-xs font-mono font-bold text-mint hover:underline flex items-center gap-1">
+            Configurar meu plano no Dashboard &rarr;
+          </a>
         </div>
-
-        <!-- Right: Floating Virtual Hub Card in Perspective (Mintro Style) -->
-        <div class="lg:col-span-5 relative flex justify-center">
-          <div class="w-full max-w-[420px] relative">
-            <!-- Background Glow for Card -->
-            <div class="absolute -inset-4 bg-mint/20 rounded-3xl blur-3xl pointer-events-none"></div>
-
-            <!-- Virtual Card Representation (Luxurious Obsidian & Emerald Finish) -->
-            <div class="floating-card rounded-3xl p-7 text-white relative z-10 flex flex-col justify-between h-[280px]">
-              <!-- Card Header -->
-              <div class="flex items-start justify-between">
-                <div>
-                  <span class="text-[10px] font-mono uppercase tracking-widest text-mint font-bold block">HUB INTELIGENTE</span>
-                  <p class="text-2xl font-extrabold tracking-tight mt-0.5 font-headline text-white">NeatStream <span class="text-mint">Pass</span></p>
-                </div>
-                <!-- Holographic Chip & Contactless Symbol -->
-                <div class="flex items-center gap-2">
-                  <span class="material-symbols-outlined text-mint text-xl">contactless</span>
-                  <div class="w-11 h-8 rounded-lg bg-gradient-to-br from-amber-400/25 via-amber-300/10 to-transparent border border-amber-300/40 flex items-center justify-center shadow-inner">
-                    <span class="w-4 h-3 rounded-sm border border-amber-300/60 bg-amber-400/20"></span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Live Indicator on Card -->
-              <div class="space-y-2">
-                <div class="flex justify-between text-xs font-semibold text-gray-300">
-                  <span class="flex items-center gap-1.5">
-                    <span class="w-2 h-2 rounded-full bg-mint animate-pulse"></span>
-                    Econômetro em Tempo Real
-                  </span>
-                  <span class="font-mono text-white font-bold">R$ 142,60 <span class="text-gray-400 text-[10px]">/ R$ 180</span></span>
-                </div>
-                <div class="w-full h-2.5 bg-[#080C0A] rounded-full overflow-hidden p-0.5 flex gap-1 border border-white/10">
-                  <div class="h-full bg-mint rounded-full shadow-[0_0_12px_rgba(0,229,153,0.7)]" style="width: 79%;"></div>
-                </div>
-              </div>
-
-              <!-- Card Footer -->
-              <div class="flex items-end justify-between pt-2 border-t border-white/5">
-                <div>
-                  <span class="text-[9px] font-mono text-gray-400 uppercase tracking-wider block">TITULAR DA CONTA</span>
-                  <p class="font-mono text-xs font-bold tracking-wider text-gray-200 mt-0.5">LUCAS SILVA · •••• 8492</p>
-                </div>
-                <div class="bg-mint/15 border border-mint/30 text-mint text-[11px] font-bold px-3 py-1.5 rounded-xl shadow-md flex items-center gap-1">
-                  <span class="w-1.5 h-1.5 rounded-full bg-mint"></span>
-                  4 Conectados
-                </div>
-              </div>
-            </div>
-
-            <!-- Floating Mini Badge Below Card (Warning Disambiguado #FF9838) -->
-            <div class="mt-4 card-sheen rounded-2xl p-4 flex items-center justify-between shadow-xl border border-warning/25 bg-warning/5">
-              <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-warning/15 border border-warning/30 flex items-center justify-center text-warning">
-                  <span class="material-symbols-outlined text-[20px]">warning</span>
-                </div>
-                <div>
-                  <p class="text-xs font-bold text-white">Disney+ sem uso recente</p>
-                  <p class="text-[11px] text-warning font-mono font-semibold">Economize R$ 43,90/mês</p>
-                </div>
-              </div>
-              <a href="dashboard_dark.html" class="text-xs font-bold text-white bg-warning hover:bg-warning/90 px-3.5 py-1.5 rounded-lg transition-all shadow-sm">
-                Cancelar
-              </a>
-            </div>
-
-          </div>
-        </div>
-
       </div>
     </section>
 
-    <!-- Bento Grid Section de Elite (Padrão Apple & Linear - Volume 2 e 7) -->
-    <section id="vantagens" class="py-24 border-t border-white/5 bg-[#080C0A]">
-      <div class="max-w-7xl mx-auto px-6 space-y-16">
-        
-        <div class="text-center max-w-2xl mx-auto space-y-3">
-          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-mint/10 border border-mint/20 text-mint text-xs font-mono font-semibold">
-            <span class="material-symbols-outlined text-xs">grid_view</span>
-            BENTO GRID ARQUITETURA MODULAR
-          </div>
-          <h2 class="text-3xl lg:text-4xl font-extrabold text-white tracking-tight font-headline">Tudo o que você precisa para dominar seus streamings</h2>
-          <p class="text-gray-400 text-sm">Quatro módulos desenhados sob a regra de ouro do Refactoring UI, com spotlight dinâmico no cursor e aceleração fluida.</p>
-        </div>
+    <!-- ==================================================== -->
+    <!-- SECTION 3: BENTO GRID VISUAL (SUBSTITUI TEXTOS LONGOS)-->
+    <!-- ==================================================== -->
+    <section id="vantagens" class="max-w-7xl mx-auto px-6 space-y-8">
+      <div class="text-center space-y-2">
+        <span class="text-xs font-mono text-mint font-semibold uppercase tracking-wider">[03] Engenharia &amp; Experiência</span>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white font-display tracking-tight">
+          Feito Para Quem Ama Cinema e Detesta Desperdício
+        </h2>
+      </div>
 
-        <!-- 12-Column Asymmetric Bento Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Bento 1: Pausa Automática Pós-Temporada -->
+        <div class="card-sheen p-6 flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 rounded-2xl bg-amber-500/10 border border-warning/30 flex items-center justify-center text-warning mb-5">
+              <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+              </svg>
+            </div>
+            <h3 class="text-lg font-bold font-display text-white">Pausa Automática Pós-Temporada</h3>
+            <p class="text-xs text-gray-400 mt-2 leading-relaxed">
+              Terminou a temporada da sua série? O NeatStream agenda a pausa da assinatura automaticamente, eliminando renovações por esquecimento.
+            </p>
+          </div>
           
-          <!-- Bento Card 1: Controle Financeiro (7 Colunas) -->
-          <div class="spotlight-card md:col-span-7 p-8 flex flex-col justify-between relative group">
-            <div class="space-y-4">
-              <div class="flex items-center justify-between">
-                <div class="w-12 h-12 rounded-2xl bg-mint/10 border border-mint/25 flex items-center justify-center text-mint">
-                  <span class="material-symbols-outlined text-2xl">account_balance_wallet</span>
-                </div>
-                <span class="text-[10px] font-mono uppercase tracking-wider text-mint px-2.5 py-1 rounded-full bg-mint/10 border border-mint/20 font-bold">Tempo Real</span>
-              </div>
-              <h3 class="text-2xl font-bold text-white font-headline">1. Auditoria Automática de Custos</h3>
-              <p class="text-sm text-gray-400 leading-relaxed max-w-md">
-                Acompanhe exatamente o custo por hora assistida de cada catálogo. O algoritmo do NeatStream identifica imediatamente plataformas que custam mais de R$ 10,00/h ou com zero horas no ciclo.
-              </p>
+          <!-- Mini UI Graphic -->
+          <div class="mt-6 p-3 rounded-xl bg-[#080C0A] border border-white/10 space-y-2 font-mono text-[11px]">
+            <div class="flex justify-between items-center">
+              <span class="text-gray-300">O Urso · Ep. 10/10</span>
+              <span class="text-mint font-bold">✓ Concluído</span>
             </div>
-
-            <!-- Mini Visualizer inside Bento -->
-            <div class="mt-6 p-4 rounded-2xl bg-[#080C0A] border border-white/5 space-y-3">
-              <div class="flex justify-between items-center text-xs font-mono">
-                <span class="text-gray-400">Eficiência de Consumo</span>
-                <span class="text-mint font-bold">84% Otimizado</span>
-              </div>
-              <div class="h-2 w-full bg-white/5 rounded-full overflow-hidden flex gap-1">
-                <div class="h-full bg-mint rounded-full" style="width: 55%;" title="Netflix"></div>
-                <div class="h-full bg-[#8B9BFF] rounded-full" style="width: 25%;" title="Max"></div>
-                <div class="h-full bg-warning rounded-full" style="width: 20%;" title="Disney+ (Alerta)"></div>
-              </div>
-              <div class="flex items-center justify-between text-[11px] text-gray-500 font-mono">
-                <span>Netflix (R$ 1,33/h)</span>
-                <span>Max (R$ 1,94/h)</span>
-                <span class="text-warning">Disney+ (Sem uso)</span>
-              </div>
+            <div class="w-full bg-white/10 h-1.5 rounded-full overflow-hidden">
+              <div class="bg-mint h-full w-full"></div>
             </div>
-
-            <div class="mt-6 pt-4 border-t border-white/5 flex items-center justify-between">
-              <span class="text-xs text-gray-400">Economia média anual comprovada:</span>
-              <span class="font-mono text-lg font-bold text-mint">R$ 526,80</span>
-            </div>
+            <span class="text-warning text-[10px] block">Disney+ pausado em 18/Set (R$ 43,90 poupados)</span>
           </div>
-
-          <!-- Bento Card 2: Cancelamento em 1 Toque (5 Colunas) -->
-          <div class="spotlight-card md:col-span-5 p-8 flex flex-col justify-between relative group">
-            <div class="space-y-4">
-              <div class="w-12 h-12 rounded-2xl bg-[#8B9BFF]/10 border border-[#8B9BFF]/25 flex items-center justify-center text-[#8B9BFF]">
-                <span class="material-symbols-outlined text-2xl">touch_app</span>
-              </div>
-              <h3 class="text-2xl font-bold text-white font-headline">2. Cancelamento em 1 Toque</h3>
-              <p class="text-sm text-gray-400 leading-relaxed">
-                Sem labirintos de retenção, telefonemas ou páginas escondidas. Você cancela ou pausa qualquer serviço com 1 toque e restaura quando quiser.
-              </p>
-            </div>
-
-            <div class="my-6 p-4 rounded-2xl bg-[#080C0A] border border-white/5 flex items-center justify-between">
-              <div class="flex items-center gap-3">
-                <span class="material-symbols-outlined text-coral">cancel</span>
-                <div>
-                  <p class="text-xs font-bold text-white">Disney+ Premium</p>
-                  <p class="text-[10px] text-gray-500 font-mono">Protocolo instantâneo</p>
-                </div>
-              </div>
-              <span class="text-xs font-bold text-mint bg-mint/10 border border-mint/25 px-2.5 py-1 rounded-lg">Sucesso</span>
-            </div>
-
-            <div class="pt-4 border-t border-white/5 flex items-center justify-between">
-              <span class="text-xs text-gray-400">Fricção burocrática:</span>
-              <span class="font-mono text-sm font-bold text-white">Zero barreiras</span>
-            </div>
-          </div>
-
-          <!-- Bento Card 3: O Que Assistir Hoje (4 Colunas) -->
-          <div class="spotlight-card md:col-span-4 p-8 flex flex-col justify-between relative group">
-            <div class="space-y-4">
-              <div class="w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/25 flex items-center justify-center text-amber-400">
-                <span class="material-symbols-outlined text-2xl">local_fire_department</span>
-              </div>
-              <h3 class="text-xl font-bold text-white font-headline">3. O Que Assistir Hoje</h3>
-              <p class="text-sm text-gray-400 leading-relaxed">
-                Chega de perder 30 minutos rolando feeds infinitos. Recomendações baseadas na avaliação real de quem já assistiu, com indicação imediata de onde está disponível.
-              </p>
-            </div>
-
-            <div class="mt-6 p-3.5 rounded-2xl bg-[#080C0A] border border-white/5 flex items-center gap-3">
-              <div class="w-9 h-12 rounded-lg bg-surface flex items-center justify-center border border-white/10 text-mint font-bold text-xs">
-                9.8
-              </div>
-              <div class="text-xs">
-                <p class="font-bold text-white">O Urso (The Bear)</p>
-                <p class="text-[11px] text-mint">Disponível no seu Disney+</p>
-              </div>
-            </div>
-
-            <div class="mt-6 pt-4 border-t border-white/5 flex items-center justify-between">
-              <span class="text-xs text-gray-400">Tempo economizado:</span>
-              <span class="font-mono text-sm font-bold text-white">25 min / dia</span>
-            </div>
-          </div>
-
-          <!-- Bento Card 4: Governança de IA com 7 Dias (8 Colunas) -->
-          <div class="spotlight-card md:col-span-8 p-8 flex flex-col justify-between relative group">
-            <div class="space-y-4">
-              <div class="flex items-center justify-between">
-                <div class="w-12 h-12 rounded-2xl bg-mint/10 border border-mint/25 flex items-center justify-center text-mint">
-                  <span class="material-symbols-outlined text-2xl">smart_toy</span>
-                </div>
-                <span class="text-[10px] font-mono uppercase tracking-wider text-white px-2.5 py-1 rounded-full bg-white/10 border border-white/15 font-semibold">Nível 3 de Autonomia</span>
-              </div>
-              <h3 class="text-2xl font-bold text-white font-headline">4. Piloto Automático com Janela de 7 Dias</h3>
-              <p class="text-sm text-gray-400 leading-relaxed max-w-lg">
-                Autorize o assistente de IA a pausar ou cancelar assinaturas ociosas automaticamente antes da data de renovação. Se você mudar de ideia, tem <strong>7 dias inteiros para desfazer qualquer ação com 1 clique</strong>.
-              </p>
-            </div>
-
-            <div class="mt-6 p-4 rounded-2xl bg-[#080C0A] border border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-              <div class="flex items-center gap-3">
-                <div class="w-8 h-8 rounded-full bg-mint/15 flex items-center justify-center text-mint">
-                  <span class="material-symbols-outlined text-[18px]">history</span>
-                </div>
-                <div>
-                  <p class="text-xs font-bold text-white">Disney+ pausada pela IA em 02/Out</p>
-                  <p class="text-[10px] text-gray-400 font-mono">Restam 5 dias para reverter sem custo</p>
-                </div>
-              </div>
-              <button class="text-xs font-bold text-mint bg-mint/10 hover:bg-mint hover:text-obsidian border border-mint/30 px-3 py-1.5 rounded-xl transition-all cursor-pointer">
-                Desfazer Ação
-              </button>
-            </div>
-
-            <div class="mt-6 pt-4 border-t border-white/5 flex items-center justify-between">
-              <span class="text-xs text-gray-400">Garantia de controle:</span>
-              <span class="font-mono text-sm font-bold text-mint">100% Reversível</span>
-            </div>
-          </div>
-
         </div>
 
+        <!-- Bento 2: Anti-Fadiga em 1 Toque -->
+        <div class="card-sheen p-6 flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 rounded-2xl bg-mint/10 border border-mint/30 flex items-center justify-center text-mint mb-5">
+              <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+            </div>
+            <h3 class="text-lg font-bold font-display text-white">Decisão Anti-Fadiga em 1 Toque</h3>
+            <p class="text-xs text-gray-400 mt-2 leading-relaxed">
+              Diga apenas quanto tempo você tem e o clima da sua noite. Nosso algoritmo cirúrgico indica a obra perfeita com deep link direto.
+            </p>
+          </div>
+
+          <!-- Mini UI Graphic -->
+          <div class="mt-6 p-3 rounded-xl bg-[#080C0A] border border-white/10 space-y-2 font-mono text-[11px]">
+            <div class="flex gap-2">
+              <span class="px-2 py-0.5 rounded bg-mint/15 text-mint border border-mint/30">⚡ 30 minutos</span>
+              <span class="px-2 py-0.5 rounded bg-white/10 text-gray-300">🔥 Intenso</span>
+            </div>
+            <div class="p-2 rounded-lg bg-[#111714] border border-white/10 flex items-center justify-between">
+              <span class="text-white font-bold text-xs">O Urso — T3 E4</span>
+              <span class="text-mint font-bold text-[10px]">Play ▶</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bento 3: Open Finance & Privacidade Total -->
+        <div class="card-sheen p-6 flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 rounded-2xl bg-indigo-500/10 border border-lavender/30 flex items-center justify-center text-lavender mb-5">
+              <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+            </div>
+            <h3 class="text-lg font-bold font-display text-white">Open Finance &amp; Privacidade</h3>
+            <p class="text-xs text-gray-400 mt-2 leading-relaxed">
+              Conexão 100% segura regulada pelo Banco Central. Telemetria de extrato sem compartilhamento de dados com redes sociais ou anunciantes.
+            </p>
+          </div>
+
+          <!-- Mini UI Graphic -->
+          <div class="mt-6 p-3 rounded-xl bg-[#080C0A] border border-white/10 space-y-2 font-mono text-[11px]">
+            <div class="flex justify-between items-center text-[10px] text-gray-400">
+              <span>Criptografia Ponta a Ponta</span>
+              <span class="text-mint font-bold">AES-256</span>
+            </div>
+            <div class="flex items-center gap-2 text-white font-bold text-xs">
+              <span class="w-2 h-2 rounded-full bg-mint animate-pulse"></span>
+              <span>Nubank, Itaú, BB, Inter, Bradesco</span>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- Trust Bar: Consumer Security & Privacy -->
-    <section id="seguranca" class="py-14 border-t border-white/5 bg-[#080C0A]">
-      <div class="max-w-7xl mx-auto px-6 flex flex-wrap items-center justify-between gap-6 text-gray-400 text-xs font-mono">
-        <div class="flex items-center gap-2">
-          <span class="material-symbols-outlined text-mint text-lg">shield</span>
-          <span>Segurança e Privacidade Total</span>
-        </div>
-        <div class="flex items-center gap-2">
-          <span class="material-symbols-outlined text-mint text-lg">lock</span>
-          <span>Conexão 100% Criptografada</span>
-        </div>
-        <div class="flex items-center gap-2">
-          <span class="material-symbols-outlined text-mint text-lg">verified_user</span>
-          <span>Seus Dados Nunca São Vendidos</span>
-        </div>
-        <div class="flex items-center gap-2">
-          <span class="material-symbols-outlined text-mint text-lg">visibility</span>
-          <span>Apenas Leitura de Assinaturas</span>
+    <!-- ==================================================== -->
+    <!-- SECTION 4: CALL TO ACTION CINEMÁTICO                 -->
+    <!-- ==================================================== -->
+    <section class="max-w-7xl mx-auto px-6">
+      <div class="relative rounded-3xl overflow-hidden p-8 sm:p-14 text-center border border-mint/30 shadow-[0_0_50px_rgba(0,229,153,0.12)] bg-gradient-to-b from-[#111714] to-[#080C0A]">
+        <div class="max-w-2xl mx-auto space-y-5">
+          <h2 class="text-3xl sm:text-5xl font-extrabold text-white font-display tracking-tight">
+            Pare de Pagar por Streamings que Você Não Usa.
+          </h2>
+          <p class="text-sm text-gray-400 leading-relaxed font-sans">
+            Junte-se a cinéfilos e espectadores que já economizam mais de R$ 500 por ano sem perder um único episódio ou lançamento.
+          </p>
+          <div class="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
+            <a href="dashboard_dark.html" class="w-full sm:w-auto bg-gradient-to-r from-mint to-mint-dark text-obsidian font-display font-bold text-sm px-8 py-4 rounded-2xl shadow-[0_0_25px_rgba(0,229,153,0.4)] hover:brightness-110 active:scale-95 transition-all cursor-pointer">
+              Acessar NeatStream Gratuitamente
+            </a>
+            <a href="../index.html" class="w-full sm:w-auto px-6 py-4 rounded-2xl bg-white/5 border border-white/10 hover:border-white/25 text-white text-xs font-mono font-semibold transition-all">
+              Ver Master Studio Hub
+            </a>
+          </div>
         </div>
       </div>
     </section>
+
   </main>
 
   <!-- Footer -->
-  <footer class="border-t border-white/5 bg-[#060807] py-12">
-    <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
+  <footer class="bg-[#050806] border-t border-white/8 py-12 text-xs text-gray-500 font-mono">
+    <div class="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-6">
       <div class="flex items-center gap-3">
-        <div class="w-8 h-8 rounded-lg bg-mint text-obsidian flex items-center justify-center font-black text-sm">
-          N
-        </div>
-        <span class="text-sm font-bold text-white">NeatStream Inc. · Todos os direitos reservados.</span>
+        <span class="font-display font-bold text-white text-sm">Neat<span class="text-mint">Stream</span></span>
+        <span>&middot; Plataforma 2026</span>
+        <span>&middot; FEA-USP Framework</span>
       </div>
-      <div class="flex items-center gap-6 text-xs text-gray-400">
-        <a href="dashboard_dark.html" class="hover:text-mint transition-colors">Dashboard</a>
-        <a href="../mobile/carteira_dark.html" class="hover:text-mint transition-colors">App Mobile</a>
-        <a href="#" class="hover:text-mint transition-colors">Termos de Uso</a>
-        <a href="#" class="hover:text-mint transition-colors">Privacidade</a>
+      <div class="flex items-center gap-6">
+        <a href="dashboard_dark.html" class="hover:text-white transition-colors">Dashboard Escuro</a>
+        <a href="dashboard_light.html" class="hover:text-white transition-colors">Dashboard Claro</a>
+        <a href="../index.html" class="hover:text-white transition-colors">Master Hub</a>
       </div>
     </div>
   </footer>
 
-  <!-- Script: Spotlight Hover Effect (Linear & Vercel Style) -->
+  <!-- Interactive Simulator Client Script -->
   <script>
-    document.querySelectorAll('.spotlight-card').forEach(card => {
-      card.addEventListener('mousemove', e => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        card.style.setProperty('--mouse-x', `${x}px`);
-        card.style.setProperty('--mouse-y', `${y}px`);
+    const streamPrices = {
+      'Disney+': 43.90,
+      'Netflix': 55.90,
+      'Max': 39.90,
+      'Apple TV+': 21.90,
+      'Prime Video': 19.90
+    };
+
+    const streamStatus = {
+      'Disney+': false,   // Pausado (false)
+      'Netflix': true,    // Ativo (true)
+      'Max': true,        // Ativo (true)
+      'Apple TV+': false, // Pausado (false)
+      'Prime Video': false// Pausado (false)
+    };
+
+    function toggleStreamSimulator(card, name, price) {
+      streamStatus[name] = !streamStatus[name];
+      const isNowActive = streamStatus[name];
+
+      const badge = card.querySelector('.status-badge');
+      if (isNowActive) {
+        card.classList.remove('paused-stream');
+        card.classList.add('active-stream');
+        if (badge) {
+          badge.className = 'status-badge px-2 py-0.5 rounded text-[9px] font-mono bg-mint/20 text-mint border border-mint/30 font-bold';
+          badge.textContent = 'ATIVO';
+        }
+      } else {
+        card.classList.remove('active-stream');
+        card.classList.add('paused-stream');
+        if (badge) {
+          badge.className = 'status-badge px-2 py-0.5 rounded text-[9px] font-mono bg-warning/20 text-warning border border-warning/30 font-bold';
+          badge.textContent = 'PAUSADO';
+        }
+      }
+
+      calculateSimulatorValues();
+    }
+
+    function calculateSimulatorValues() {
+      let activeMonthly = 0;
+      let pausedMonthly = 0;
+
+      Object.keys(streamStatus).forEach(name => {
+        if (streamStatus[name]) {
+          activeMonthly += streamPrices[name];
+        } else {
+          pausedMonthly += streamPrices[name];
+        }
       });
-      card.addEventListener('mouseleave', () => {
-        card.style.setProperty('--mouse-x', `-999px`);
-        card.style.setProperty('--mouse-y', `-999px`);
-      });
-    });
+
+      const yearlySavings = pausedMonthly * 12;
+
+      const savingsElem = document.getElementById('simSavingsVal');
+      const monthlyElem = document.getElementById('simMonthlyVal');
+
+      if (savingsElem) {
+        // Animate counter roll
+        savingsElem.textContent = yearlySavings.toFixed(2).replace('.', ',');
+      }
+      if (monthlyElem) {
+        monthlyElem.innerHTML = 'Gasto mensal: <strong class="text-white">R$ ' + activeMonthly.toFixed(2).replace('.', ',') + '</strong> / mês';
+      }
+    }
   </script>
 </body>
 </html>

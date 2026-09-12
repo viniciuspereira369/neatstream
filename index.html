@@ -8,8 +8,8 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@500;600;700;800&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet">
   
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -47,10 +47,12 @@
             }
           },
           fontFamily: {
-            headline: ["'Sora'", "sans-serif"],
-            display: ["'Sora'", "sans-serif"],
-            sans: ["'Inter'", "sans-serif"],
-            mono: ["'IBM Plex Mono'", "monospace"],
+            sans: ["'Plus Jakarta Sans'", "sans-serif"],
+            display: ["'Plus Jakarta Sans'", "sans-serif"],
+            headline: ["'Plus Jakarta Sans'", "sans-serif"],
+            mono: ["'Plus Jakarta Sans'", "sans-serif"],
+            editorial: ["'Plus Jakarta Sans'", "sans-serif"],
+            serif: ["'Plus Jakarta Sans'", "sans-serif"],
           }
         }
       }
@@ -61,11 +63,11 @@
     body {
       background-color: #080C0A;
       color: #E8EDF2;
-      font-family: 'Inter', sans-serif;
+      font-family: 'Plus Jakarta Sans', sans-serif;
       overflow-x: hidden;
     }
     :focus-visible { outline: 2px solid #00E599; outline-offset: 2px; }
-    .font-mono { font-feature-settings: "tnum" 1, "zero" 1; }
+    .font-mono { font-family: 'Plus Jakarta Sans', sans-serif; font-feature-settings: 'tnum' 1, 'zero' 1; font-variant-numeric: tabular-nums; }
     
     /* Presentation Backdrop Ambient Lighting (Inspired by References) */
     .studio-glow {
@@ -129,7 +131,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-family: 'IBM Plex Mono', monospace;
+      font-family: 'Plus Jakarta Sans', sans-serif; font-feature-settings: 'tnum' 1, 'zero' 1; font-variant-numeric: tabular-nums;
       font-size: 12px;
       font-weight: 600;
       color: #E8EDF2;
@@ -222,7 +224,7 @@
             <h1 class="font-bold text-lg text-white tracking-tight">NeatStream</h1>
             <span class="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-mint/15 text-mint border border-mint/30">Refinamento 2026</span>
           </div>
-          <p class="text-xs text-gray-400 font-mono">Inspirado em 7 Referências Visuais</p>
+          <p class="text-xs text-gray-400 font-mono">Hub Unificado de Streaming &amp; Gestão Financeira Inteligente · Edição 2026</p>
         </div>
       </div>
 
@@ -262,13 +264,13 @@
         <div class="space-y-2 max-w-2xl">
           <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-mint/10 text-mint text-xs font-mono font-semibold border border-mint/20">
             <span class="material-symbols-outlined text-xs">auto_awesome</span>
-            Paleta Obsidian &amp; Electric Mint · Padrão 2026
+            Paleta Obsidian &amp; Electric Mint · Gestão Financeira &amp; Streaming em Tempo Real
           </div>
           <h2 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight">
             Navegue pelo Ecossistema Interativo do NeatStream
           </h2>
           <p class="text-sm text-gray-400 leading-relaxed">
-            Experimente o app no simulador de smartphone com <strong>Floating Capsule Dock</strong>, visualização de consumo, conexão segura e confirmação de cancelamento.
+            Experimente a convergência entre entretenimento e finanças: <strong>Detecção Inteligente de Assinaturas</strong>, <strong>NeatStream Intelligence</strong> ("Para onde vai meu dinheiro?"), <strong>Tipografia Editorial</strong> de alto prestígio e <strong>Curadoria Anti-Fadiga</strong> com economia anual garantida.
           </p>
         </div>
 
@@ -470,7 +472,7 @@
               <img src="screenshots/mobile_hoje.png" alt="Print NeatStream Hoje" class="w-full h-auto rounded-xl object-contain"/>
             </div>
             <div class="text-xs text-gray-400 space-y-1 bg-[#080C0A] p-3 rounded-xl border border-white/5">
-              <p><strong class="text-mint">Como Implementamos:</strong> Spotlight único de *O Urso* com badge `9.1 ★`, ambient glow difuso, 3 alternativas em bento cards e Floating Capsule Dock ativa.</p>
+              <p><strong class="text-mint">Como Implementamos:</strong> Spotlight único de *O Urso* com badge `9.1 `, ambient glow difuso, 3 alternativas em bento cards e Floating Capsule Dock ativa.</p>
             </div>
           </div>
         </div>
@@ -631,7 +633,7 @@
               <span class="px-2.5 py-0.5 rounded-full bg-mint/15 text-mint font-mono font-bold text-xs">Comparativo 6</span>
               <h3 class="text-xl font-bold text-white">Comunidade &amp; Onde Assistir vs. Social Movie App</h3>
             </div>
-            <p class="text-xs text-gray-400 mt-1">Incorporação de: Floating Dock "Onde Assistir Agora" com redirecionamento direto, reações emocionais comunitárias (🔥 Intenso, ✨ Inspirador), prova social de amigos e Roleta de Escolha Rápida.</p>
+            <p class="text-xs text-gray-400 mt-1">Incorporação de: Floating Dock "Onde Assistir Agora" com redirecionamento direto, reações emocionais comunitárias (Intenso, ✨ Inspirador), prova social de amigos e Roleta de Escolha Rápida.</p>
           </div>
           <span class="px-3 py-1 rounded-full bg-mint/10 text-mint text-xs font-bold border border-mint/20 self-start md:self-auto">
             100% Adequado ao Padrão
@@ -663,7 +665,150 @@
               <img src="screenshots/mobile_hoje.png" alt="Print NeatStream Onde Assistir" class="w-full h-auto rounded-xl object-contain"/>
             </div>
             <div class="text-xs text-gray-400 space-y-1 bg-[#080C0A] p-3 rounded-xl border border-white/5">
-              <p><strong class="text-mint">Como Implementamos:</strong> Dock flutuante "Onde Assistir Agora" com logo da Disney+, reações emocionais (`🔥 Intenso`, `✨ Inspirador`), badge social ("14 amigos recomendam") e modal interativo da Roleta de Escolha Rápida.</p>
+              <p><strong class="text-mint">Como Implementamos:</strong> Dock flutuante "Onde Assistir Agora" com logo da Disney+, reações emocionais (`Intenso`, `✨ Inspirador`), badge social ("14 amigos recomendam") e modal interativo da Roleta de Escolha Rápida.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PAR 7: Enriquecimento Bancário & Clareza Orçamentária -->
+      <section class="spotlight-card rounded-3xl p-6 md:p-8 space-y-6">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/5 pb-4">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="px-2.5 py-0.5 rounded-full bg-mint/15 text-mint font-mono font-bold text-xs">Comparativo 7</span>
+              <h3 class="text-xl font-bold text-white">Detecção Inteligente de Transações &amp; Clareza Financeira</h3>
+            </div>
+            <p class="text-xs text-gray-400 mt-1">Arquitetura proprietária de enriquecimento de faturas bancárias em tempo real, inteligência artificial orçamentária e estética tipográfica editorial de alto padrão.</p>
+          </div>
+          <span class="px-3 py-1 rounded-full bg-mint/10 text-mint text-xs font-bold border border-mint/20 self-start md:self-auto">
+            100% Adequado ao Padrão
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+          <!-- Coluna Esquerda: Pilares de Engenharia Financeira -->
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-gray-400 uppercase tracking-wider font-mono">Pilares de Engenharia Financeira</span>
+              <span class="text-[11px] text-gray-500 font-mono">Normalização · Categorias · Editorial</span>
+            </div>
+            <div class="rounded-2xl overflow-hidden border border-white/10 bg-[#080C0A] p-4 space-y-4 shadow-2xl">
+              <div class="p-3 bg-white/5 rounded-xl border border-white/5 space-y-1">
+                <div class="flex items-center justify-between">
+                  <span class="font-bold text-xs text-white">1. Normalização e Enriquecimento Semântico</span>
+                  <span class="font-mono text-[10px] text-mint">Estruturação de Fatura</span>
+                </div>
+                <p class="text-[11px] text-gray-400">Transformação de strings cifradas de faturas bancárias (<code class="text-gray-300">DISNEYPLUS R8K29...</code>) em perfis corporativos legíveis com categoria, logotipo vetorial e status verificado.</p>
+              </div>
+              <div class="p-3 bg-white/5 rounded-xl border border-white/5 space-y-1">
+                <div class="flex items-center justify-between">
+                  <span class="font-bold text-xs text-white">2. Clareza Orçamentária e Categorias</span>
+                  <span class="font-mono text-[10px] text-mint">45.000+ Bancos Conectados</span>
+                </div>
+                <p class="text-[11px] text-gray-400">"Para onde vai meu dinheiro?" — Interface sem tabelas áridas, categorias visuais em pílulas e assistente que responde dúvidas orçamentárias em linguagem natural.</p>
+              </div>
+              <div class="p-3 bg-white/5 rounded-xl border border-white/5 space-y-1">
+                <div class="flex items-center justify-between">
+                  <span class="font-bold text-xs text-white">3. Tom Editorial e Manifesto</span>
+                  <span class="font-mono text-[10px] text-mint">Spectral Serif · Sofisticação</span>
+                </div>
+                <p class="text-[11px] text-gray-400">Sofisticação editorial de alto prestígio, aspas em serif itálico, contraste monocromático refinado e narrativa que valoriza a tranquilidade financeira.</p>
+              </div>
+            </div>
+            <div class="text-xs text-gray-400 space-y-1 bg-[#080C0A] p-3 rounded-xl border border-white/5">
+              <p><strong class="text-white">Padrões Aplicados:</strong> Conversão visual de faturas confusas para cartões estruturados, economia média anual em destaque comercial, abas por categoria e tipografia serifada para manifestos.</p>
+            </div>
+          </div>
+
+          <!-- Coluna Direita: Implementação no NeatStream -->
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-mint uppercase tracking-wider font-mono">Implementação no NeatStream</span>
+              <a href="web/landing.html#enrichment-section" target="_blank" class="text-[11px] text-mint hover:underline font-mono">Ver na Landing ↗</a>
+            </div>
+            <div class="rounded-2xl overflow-hidden border border-mint/30 bg-[#080C0A] p-4 space-y-4 shadow-[0_0_30px_rgba(0,229,153,0.15)]">
+              <div class="p-3 bg-mint/5 border border-mint/20 rounded-xl space-y-2">
+                <div class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-mint text-sm">flash_on</span>
+                  <h5 class="text-xs font-bold text-white">Detecção Inteligente de Assinaturas</h5>
+                </div>
+                <p class="text-[11px] text-gray-300">Comparador dinâmico na Landing Page com visualização de string bruta vs. card tratado e foco exclusivo na economia média anual de R$ 526,80.</p>
+              </div>
+              <div class="p-3 bg-[#111714] border border-white/5 rounded-xl space-y-2">
+                <div class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-mint text-sm">psychology</span>
+                  <h5 class="text-xs font-bold text-white">NeatStream Intelligence &amp; Categorias Visuais</h5>
+                </div>
+                <p class="text-[11px] text-gray-300">Widget "Para Onde Seu Dinheiro Realmente Vai?" com abas por gênero e simulação do assistente de IA respondendo perguntas em linguagem natural.</p>
+              </div>
+              <div class="p-3 bg-[#111714] border border-white/5 rounded-xl space-y-2">
+                <div class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-mint text-sm">menu_book</span>
+                  <h5 class="text-xs font-bold text-white">Tipografia Editorial Spectral</h5>
+                </div>
+                <p class="text-[11px] text-gray-300">Citações e manifestos estilizados com a fonte <code class="text-mint">Spectral</code> em itálico com aspas luxuosas no Hero da Landing e no card principal do Mobile Hoje.</p>
+              </div>
+            </div>
+            <div class="text-xs text-gray-400 space-y-1 bg-[#080C0A] p-3 rounded-xl border border-white/5">
+              <p><strong class="text-mint">Onde Visualizar:</strong> Disponível em <a href="web/landing.html" class="text-mint hover:underline">web/landing.html</a>, <a href="web/dashboard_dark.html" class="text-mint hover:underline">web/dashboard_dark.html</a> e <a href="mobile/hoje.html" class="text-mint hover:underline">mobile/hoje.html</a>.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PAR 8: Curadoria de Streaming e Hubs de Franquias vs. Mobbin Collection -->
+      <section class="spotlight-card rounded-3xl p-6 md:p-8 space-y-6">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/5 pb-4">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="px-2.5 py-0.5 rounded-full bg-mint/15 text-mint font-mono font-bold text-xs">Comparativo 8</span>
+              <h3 class="text-xl font-bold text-white">Hubs de Franquias &amp; Tags Táticas vs. Coleção Mobbin</h3>
+            </div>
+            <p class="text-xs text-gray-400 mt-1">Incorporação de: Telas reais do HBO Max, Paramount+, Prime Video e Riot Mobile (League of Legends) inspecionadas diretamente via Chrome DevTools no Mobbin.</p>
+          </div>
+          <span class="px-3 py-1 rounded-full bg-mint/10 text-mint text-xs font-bold border border-mint/20 self-start md:self-auto">
+            100% Adequado ao Padrão
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+          <!-- Coluna Esquerda: Print Mobbin -->
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-gray-400 uppercase tracking-wider font-mono">Captura Real do Mobbin (12 Telas)</span>
+              <span class="text-[11px] text-gray-500 font-mono">HBO Max · Paramount+ · Riot</span>
+            </div>
+            <div class="rounded-2xl overflow-hidden border border-white/10 bg-[#080C0A] p-2 shadow-2xl">
+              <img src="screenshots/mobbin_collection.png" alt="Captura do Mobbin via Chrome DevTools" class="w-full h-auto rounded-xl object-cover max-h-[360px]"/>
+            </div>
+            <div class="text-xs text-gray-400 space-y-1 bg-[#080C0A] p-3 rounded-xl border border-white/5">
+              <p><strong class="text-white">Padrões Identificados no Mobbin:</strong> Faixa de marcas e hubs de franquias (HBO, Max Originals, DC, Harry Potter), banners de conteúdo ao vivo (UEFA Champions League, Premiere) e chips táticos bioluminescentes do Riot Mobile.</p>
+            </div>
+          </div>
+
+          <!-- Coluna Direita: Implementação no NeatStream -->
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-mint uppercase tracking-wider font-mono">Implementação no NeatStream</span>
+              <a href="mobile/hoje.html" target="_blank" class="text-[11px] text-mint hover:underline font-mono">Ver no Mobile Hoje ↗</a>
+            </div>
+            <div class="rounded-2xl overflow-hidden border border-mint/30 bg-[#080C0A] p-4 space-y-3 shadow-[0_0_30px_rgba(0,229,153,0.15)]">
+              <div class="p-3 bg-[#111714] border border-white/5 rounded-xl space-y-1">
+                <span class="font-bold text-xs text-white">1. Faixa de Hubs de Franquias (HBO Max / Paramount+)</span>
+                <p class="text-[11px] text-gray-300">Pílulas de exploração rápida com marcas oficiais: HBO, Max Originals, DC Universe, Harry Potter, Adult Swim e Showtime no topo de Descoberta.</p>
+              </div>
+              <div class="p-3 bg-[#111714] border border-white/5 rounded-xl space-y-1">
+                <span class="font-bold text-xs text-white">2. Tags Táticas Luminescentes (Riot Mobile)</span>
+                <p class="text-[11px] text-gray-300">Badges de alto contraste com microglow: <code class="text-mint">Intenso</code>, <code class="text-purple-400">Aclamado</code>, <code class="text-amber-400"> Top 10 Brasil</code>.</p>
+              </div>
+              <div class="p-3 bg-[#111714] border border-white/5 rounded-xl space-y-1">
+                <span class="font-bold text-xs text-white">3. Faixa de Ecossistema de Provedores na Web</span>
+                <p class="text-[11px] text-gray-300">Barra contínua com logos e contadores de títulos de Max, Disney+, Paramount+, Netflix, Prime Video e Apple TV+ na Landing Page.</p>
+              </div>
+            </div>
+            <div class="text-xs text-gray-400 space-y-1 bg-[#080C0A] p-3 rounded-xl border border-white/5">
+              <p><strong class="text-mint">Resultado:</strong> O NeatStream agrega as melhores práticas dos maiores apps de streaming mundiais sem herdar a fadiga de escolha.</p>
             </div>
           </div>
         </div>
@@ -778,7 +923,7 @@
 
     // Modal Tokens
     function toggleTokensModal() {
-      alert("Design Tokens NeatStream v2.0.0 (DTCG Standard):\n• Fundo Obsidian: #080C0A (Surface: #111714)\n• Acento Primário: Electric Mint (#00E599)\n• Warning Disambiguado: #FF9838 (ícone triângulo + alerta)\n• Gamificação Gold: #F5B84C (borda dupla + troféu/estrela)\n• Tipografia: Sora (Display) / Inter (UI/Body) / IBM Plex Mono (tnum)\n• Estados: Ativo, Pausado, Ocioso/Cancelado\n• Acessibilidade: Contraste WCAG AA/AAA auditado par a par.");
+      alert("Design Tokens NeatStream v2.1.0 (DTCG Standard):\n• Fundo Obsidian: #080C0A (Surface: #111714)\n• Acento Primário: Electric Mint (#00E599)\n• Warning Disambiguado: #FF9838 (ícone triângulo + alerta)\n• Gamificação Gold: #F5B84C (borda dupla + troféu/estrela)\n• Tipografia: Sora (Display) / Spectral (Editorial Serif) / Inter (UI) / IBM Plex Mono (tnum)\n• Detecção Inteligente de Assinaturas: Sincronização Open Finance 100% segura\n• Inteligência Financeira: Perguntas orçamentárias em linguagem natural\n• Curadoria Anti-Fadiga: Hubs de Franquias & Chips Táticos\n• Acessibilidade: Contraste WCAG AA/AAA auditado par a par.");
     }
 
     // Initialize

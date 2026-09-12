@@ -1,17 +1,18 @@
 # NeatStream — Hub Unificado de Streaming & Gestão Financeira Inteligente
 
 > **Documentação Completa da Plataforma, Design System & Ecossistema de Telas (Padrão 2026)**  
-> *Inspirado em 7 referências de classe mundial de UX/UI, streaming e fintechs.*
+> *Ecossistema Completo de Interfaces: Web Landing, Dashboards de Gestão, Aplicativo Mobile e Design System Proprietário.*
 
 ---
 
 ## 1. Visão Geral da Plataforma
 
-O **NeatStream** é uma plataforma concebida para transformar a forma como as pessoas consomem entretenimento audiovisual e gerenciam suas finanças de streaming. O produto atua em três frentes complementares:
+O **NeatStream** é uma plataforma concebida para transformar a forma como as pessoas consomem entretenimento audiovisual e gerenciam suas finanças de streaming. O produto atua em quatro frentes complementares:
 
 1. **Gestão e Cancelamento Assistido de Assinaturas:** Mapeamento unificado de todos os serviços contratados (Netflix, Max, Disney+, Apple TV+, Prime Video etc.), identificação imediata de serviços ociosos ou pouco utilizados e cancelamento em 1 clique, sem labirintos ou formulários exaustivos.
-2. **Controle Financeiro com o "Econômetro":** Ferramenta visual que calcula em tempo real o gasto mensal consolidado versus o teto financeiro estabelecido pelo usuário, calculando métricas de custo por hora assistida e estimativa de economia anual.
-3. **Recomendações Comunitárias Neutras & Anti-Fadiga de Decisão:** Sistema de curadoria limpa e orgânica, baseado em avaliações reais de outros usuários e amigos, sem viés de algoritmo de retenção das grandes plataformas. A filosofia visual do app combate a sobrecarga mental: *"quando tudo é especial, nada é verdadeiramente"*, oferecendo recomendações cirúrgicas e mecânicas rápidas como a **Roleta de Escolha**.
+2. **Detecção Inteligente de Assinaturas em Tempo Real:** Conexão via Open Finance convertendo faturas indecifráveis (`DISNEYPLUS R8K29...`) em cartões estruturados com logotipo oficial e identificação clara de consumo.
+3. **Controle Financeiro & IA Orçamentária (NeatStream Intelligence):** Ferramenta visual que responde *"Para onde vai meu dinheiro?"*, categoriza gastos por gênero e disponibiliza o assistente *NeatStream Intelligence* para consultas orçamentárias em linguagem natural.
+4. **Curadoria Cinematográfica Neutra & Hubs de Franquias:** Sistema de curadoria limpa e orgânica com pílulas de franquias consagradas (HBO, Max Originals, DC Universe, Harry Potter), tags táticas de alto contraste (`🔥 Intenso`, `✨ Aclamado`) e a **Roleta de Escolha** para eliminar a fadiga de decisão.
 
 ---
 
@@ -23,14 +24,16 @@ O **NeatStream** é uma plataforma concebida para transformar a forma como as pe
 
 ---
 
-## 3. Design System & Identidade Visual 2026 (v2.0.0)
+## 3. Design System & Identidade Visual 2026 (v2.2.0)
 
-A linguagem visual do NeatStream segue as especificações do **W3C DTCG** e as tendências mais sofisticadas de interfaces dark mode com estética bio-luminescente e tema claro de alto contraste (WCAG AAA/AA):
+A linguagem visual do NeatStream segue as especificações do **W3C DTCG** e a estética *"Cinematic FinTech"* (Apple TV+/A24 rich media + Linear/Revolut compact indicators):
 
-### 3.1. Tipografia Oficial
-* **Headlines & Display:** `Sora` (pesos 600, 700) — Tipografia geométrica moderna que une personalidade tecnológica e precisão de fintech.
-* **Interface & Corpo de Texto:** `Inter` (pesos 400, 500, 600) — Tipografia neutra com máxima legibilidade em alta densidade de informação.
-* **Métricas Financeiras & Badges:** `IBM Plex Mono` (pesos 500, 600, 700 com `tnum`) — Fonte monospace de precisão tabular para valores em reais, horas assistidas e porcentagens.
+### 3.1. Tipografia Oficial (100% Modernista — Plus Jakarta Sans)
+* **Família Única e Unificada:** `Plus Jakarta Sans` (pesos 300, 400, 500, 600, 700, 800 + itálico).
+* **Headlines & Display:** `Plus Jakarta Sans` ExtraBold (700, 800) com tracking negativo (`tracking-tight` / `-0.03em`) para títulos de alto impacto.
+* **Corpo de Texto & UI:** `Plus Jakarta Sans` Regular / Medium (400, 500) com altura de linha relaxada para máxima legibilidade.
+* **Métricas Financeiras & Badges:** `Plus Jakarta Sans` SemiBold / Bold com OpenType Tabular Figures (`font-feature-settings: 'tnum' 1, 'zero' 1; font-variant-numeric: tabular-nums;`) garantindo alinhamento vertical estrito para valores monetários (`R$ 142,60`), economia anual e notas.
+* **Manifestos & Citações:** `Plus Jakarta Sans` em itálico suave, eliminando a ruptura visual de serifas heterogêneas.
 
 ### 3.2. Paleta Cromática & Resolução de Conflitos
 * **Fundo Base:** Obsidian `#080C0A` (grafite ultra-profundo que evita a dureza do preto puro `#000000`) no tema escuro e Canvas `#FAFBFC` no tema claro.
@@ -40,16 +43,16 @@ A linguagem visual do NeatStream segue as especificações do **W3C DTCG** e as 
 * **Acento Gamificação (Gold):** `#F5B84C` (dark) / `#A16207` (light) — acompanhado de ícones de estrela/troféu para selos e conquistas.
 * **Acento Comunidade (Lavender):** `#8B9BFF` (dark) / `#4F46E5` (light) — para notas neutras de filmes e séries.
 
-### 3.3. Componentes Assinatura
-1. **Floating Capsule Dock:** Barra de navegação inferior em formato de cápsula arredondada (`rounded-full`) que flutua a 24px da borda inferior, com vidro escuro translúcido (`backdrop-blur-xl`), sombra de profundidade e a aba ativa destacada em pílula sólida de verde menta com ícone e rótulo em contraste.
-2. **Minimalist Bar Chart (Tempo Assistido):** Gráfico de 6 colunas verticais com bordas arredondadas no topo (`rounded-t-lg`), altura explícita em pixels, com o mês atual destacado em neon `#00E599` e seletor rápido de intervalos em pílula (`[1M] [3M] [6M] [Ano]`).
-3. **Barra de Alocação Segmentada:** Divisão proporcional das despesas em cores distintas por serviço com cálculo em tempo real do valor ainda disponível até a meta mensal.
-4. **Cartão Virtual "NeatStream Pass":** Card tridimensional em gradiente esmeralda escovado com micro-bordas metálicas, chip EMV dourado, ondas de aproximação sem fio e indicador pulsante do Econômetro.
-5. **Dock "Onde Assistir Agora" & PlatformAvailabilityRow:** Grade compacta e linha de disponibilidade identificando os 4 estados do catálogo (Incluído, Aluguel, Indisponível na Região ou Deixando o catálogo) com deep link direto.
-6. **Botão Estratégico de Watchlist ("+ Quero Assistir"):** Integrado em todos os cards e heróis cinematográficos, alimentando a inteligência que recomenda qual assinatura manter.
-7. **SubscriptionCard de 3 Estados:** Visualização explícita entre Ativo, Pausado e Cancelado, com data da próxima fatura e acessibilidade `tnum`.
-8. **DelegationPanel (Governança de IA):** Trilha de auditoria das decisões automáticas da IA com janela de reversão (Desfazer em 7 dias).
-9. **Roleta de Escolha Rápida:** Modal interativo para quebra de paralisia de escolha com botões rápidos de Pular (`✕`), Assistir (`▶`) ou Salvar (`🔖`).
+### 3.3. Componentes Assinatura & Modo Cinema
+1. **Marquee Duplo Contínuo (Landing Page):** Trilhos horizontais opostos com posters verticais 2:3 oficiais em alta definição (`assets/posters/`) e aceleração suave por hardware.
+2. **Simulador Tátil de Rotação de Streaming:** Controle interativo de ativação/pausa com recálculo animado de economia média anual (**R$ 526,80/ano**).
+3. **Billboard Cinemático 16:9 Full-Bleed com Vídeo:** Experiência imersiva no Dashboard com reprodução em loop contínuo de teaser oficial (`assets/videos/dune2_teaser.mp4`), iluminação atmosférica, fallback estático e controles táteis de áudio (unmute) e play/pause.
+4. **Player de Vídeo Mobile Nativo:** Hero imersivo no app mobile com loop de teaser de série (`assets/videos/the_bear_teaser.mp4`) e controle flutuante de mute/unmute.
+5. **HUD Orçamentário Compacto:** Medidor radial e slider de limite mensal com barras de bateria visual para cada streaming conectado.
+6. **Feed Mobile Estilo Letterboxd / MUBI:** Grade contínua em 2 colunas com micro-selos nos cantos dos posters (`MAX`, `DISNEY+`, `APPLE`, `NETFLIX`, `PRIME`), notas (`★ 9.1`) e posters oficiais 2:3.
+7. **Leques 3D de Posters Sobrepostos:** Curadorias comunitárias apresentadas em leques tridimensionais expansivos com posters oficiais de catálogo.
+8. **Floating Capsule Dock:** Barra de navegação inferior flutuante em vidro fosco (`backdrop-blur-xl`).
+9. **SubscriptionCard com Pausa em 1 Toque:** Gestão visual de ciclo de cobrança e celebração de economia anual.
 
 ---
 
@@ -59,20 +62,30 @@ A linguagem visual do NeatStream segue as especificações do **W3C DTCG** e as 
 Projeto App Transformação Digital/
 ├── index.html                    # Master Studio Hub (Emulador Mobile/Desktop + Galeria Comparativa)
 ├── tokens.json                   # Especificações JSON de tokens de design
-├── DESIGN_SYSTEM.md              # Manual de diretrizes de design e identidade visual
+├── DESIGN_SYSTEM.md              # Manual de diretrizes de design e identidade visual (v2.1.0)
 ├── README.md                     # Documentação completa da plataforma (este arquivo)
 │
+├── assets/                       # Mídias Oficiais Locais (Zero Dependência Externa)
+│   ├── posters/                  # 12 Pôsteres Oficiais Verticais 2:3 em Alta Definição (TMDB Key-Art)
+│   │   ├── dune2.jpg, the_bear.jpg, severance.jpg, shogun.jpg, oppenheimer.jpg, arcane.jpg
+│   │   └── succession.jpg, stranger_things.jpg, fallout.jpg, blade_runner_2049.jpg, the_last_of_us.jpg, anatomy_of_a_fall.jpg
+│   ├── backdrops/                # 12 Backdrops Cinemáticos 16:9 Widescreen para Billboard e Modais
+│   │   └── dune2_backdrop.jpg, the_bear_backdrop.jpg, severance_backdrop.jpg ...
+│   └── videos/                   # Teasers de Vídeo em Loop Otimizados para Web (H.264 / AAC +faststart)
+│       ├── dune2_teaser.mp4      # Teaser de Duna: Parte 2 (Billboard Web, 720p 20s)
+│       └── the_bear_teaser.mp4   # Teaser de O Urso (Hero Mobile, 720p 18s)
+│
 ├── mobile/                       # Aplicação Mobile
-│   ├── carteira_dark.html        # Carteira & Econômetro (Modo Escuro com Gráfico de 6 Meses)
+│   ├── carteira_dark.html        # Carteira & Econômetro (Modo Escuro com Gráfico de 6 Meses e Sincronização)
 │   ├── carteira_light.html       # Carteira & Econômetro (Variação Modo Claro)
-│   ├── hoje.html                 # Descoberta Cinematográfica, Dock Onde Assistir & Roleta
+│   ├── hoje.html                 # Descoberta Cinematográfica, Hero com Vídeo, Feed 2 Colunas Letterboxd
 │   ├── celebracao.html           # Fluxo de Cancelamento Assistido em 1 Toque com Economia Anual
-│   └── onboarding.html           # Onboarding Seguro com Pôsteres 3D e Foco em Privacidade
+│   └── onboarding.html           # Onboarding Seguro com Pôsteres Oficiais 3D e Rede de 45.000+ Bancos
 │
 ├── web/                          # Aplicação Web Desktop
-│   ├── landing.html              # Landing Page Comercial de Alta Conversão estilo Mintro
-│   ├── dashboard_dark.html       # Painel Web de Gestão e Catálogo Unificado (Modo Escuro)
-│   └── dashboard_light.html      # Painel Web de Gestão (Modo Claro)
+│   ├── landing.html              # Landing Page Comercial com Marquee Oficial, Detecção Inteligente e Simulador
+│   ├── dashboard_dark.html       # Painel Web de Gestão, Billboard com Vídeo e Catálogo Top 10 (Modo Escuro)
+│   └── dashboard_light.html      # Painel Web de Gestão com Billboard de Vídeo (Modo Claro)
 │
 ├── references/                   # As 7 Referências Visuais de Inspiração
 │   ├── ref1_sports_app.png       # Referência 1: Sports Gaming App (Floating Dock)
@@ -83,7 +96,8 @@ Projeto App Transformação Digital/
 │   ├── ref6_inox_art.png         # Referência 6: iNox Movie Streaming App (Dribbble / Kretya)
 │   └── ref7_social_movie_art.png # Referência 7: Social Movie App (Dribbble / Artspire)
 │
-└── screenshots/                  # Prints em Alta Definição Capturados Via Playwright
+└── screenshots/                  # Prints em Alta Definição Capturados
+    ├── mobbin_collection.png     # Captura da Coleção Mobbin (12 Telas HBO Max/Paramount/Riot)
     ├── master_index.png          # Print Geral do Master Hub
     ├── mobile_carteira_dark.png  # Print da Carteira & Econômetro
     ├── mobile_hoje.png           # Print da Descoberta Hoje
@@ -95,7 +109,7 @@ Projeto App Transformação Digital/
 
 ---
 
-## 5. Mapeamento e Análise Frente às 7 Referências Visuais
+## 5. Mapeamento e Análise Frente às Referências
 
 | Comparativo | Referência de Inspiração | Elementos-Chave Incorporados | Tela do NeatStream | Status de Adequação |
 | :--- | :--- | :--- | :--- | :--- |
@@ -105,7 +119,9 @@ Projeto App Transformação Digital/
 | **4. Alívio de Cancelamento** | **Princípios Comerciais de Conversão** | Exibição destacada da economia anual gerada (`R$ 526,80 / ano`); redução visual do gasto mensal no Econômetro; confirmação de vigência contratual transparente sem atrito. | `mobile/celebracao.html` | **100% Conforme** |
 | **5. Catálogo & Streaming** | **Ref 6: iNox Streaming App** (*Kretya / Dribbble*) | Pílulas de categorias horizontais no topo (`[Todos] [Séries] [Filmes] [Em Alta] [Mais Votados]`); hero cinematográfico imersivo com radial vignette suave; paginação por pontos; pôsteres angulados em 3D no onboarding. | `mobile/hoje.html` e `mobile/onboarding.html` | **100% Conforme** |
 | **6. Comunidade & Decisão** | **Ref 7: Social Movie App** (*Artspire / Dribbble*) | Dock 2x2 "Onde Assistir Agora" com logos dos serviços e botão de abertura direta; tags emocionais da comunidade (`🔥 Intenso`, `✨ Aclamado`, `🧠 Psicológico`); badge de amigos recomendando; modal interativo de Roleta de Escolha Rápida. | `mobile/hoje.html` | **100% Conforme** |
-| **7. Master Hub Central** | **Apresentação Executiva & Interativa** | Emulador com chassis de smartphone realista (Dynamic Island, relógio ao vivo, status bar) e galeria comparativa completa lado a lado com todas as 7 referências e prints reais. | `index.html` | **100% Conforme** |
+| **7. Enriquecimento & Orçamento** | **Padrões de Alta Performance** | Detecção inteligente de assinaturas, abas sem burocracia e assistente NeatStream Intelligence; tipografia editorial de alto luxo. | `web/landing.html`, `web/dashboard_dark.html`, `mobile/carteira_dark.html` | **100% Conforme** |
+| **8. Hubs de Franquias & Tags** | **Mobbin Collection (HBO Max, Paramount+, Riot)** | Hubs de franquias consagradas (HBO, DC, Harry Potter); chips táticos luminescentes com microglow; faixa de marcas agregadas. | `mobile/hoje.html`, `web/landing.html` | **100% Conforme** |
+| **9. Master Hub Central** | **Apresentação Executiva & Interativa** | Emulador com chassis de smartphone realista (Dynamic Island, relógio ao vivo, status bar) e galeria comparativa completa lado a lado com todas as referências e prints reais. | `index.html` | **100% Conforme** |
 
 ---
 
