@@ -469,16 +469,36 @@
   <div id="mobileWatchSheetCard">
     <div class="sheet-drag-pill"></div>
     <!-- Backdrop -->
-    <div class="sheet-backdrop-wrap mt-2">
+    <div class="sheet-backdrop-wrap mt-2 group relative">
       <img id="sheetBackdrop" src="" alt="Backdrop">
-      <video id="sheetTrailerVideo" class="hidden" muted loop playsinline></video>
-      <div class="sheet-backdrop-gradient"></div>
+      <video id="sheetTrailerVideo" class="hidden cursor-pointer" muted loop playsinline ondblclick="toggleSheetFullscreen()" title="Clique duplo para tela cheia"></video>
+      <div id="sheetBackdropGradient" class="sheet-backdrop-gradient transition-opacity duration-300"></div>
       <button id="sheetPlayTrailerBtn" onclick="playSheetTrailer()" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 w-14 h-14 rounded-full bg-mint/85 backdrop-blur-sm border-2 border-white/30 text-obsidian flex items-center justify-center shadow-[0_0_25px_rgba(0,229,153,0.5)] active:scale-90 transition-all" title="Reproduzir Trailer">
         <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
       </button>
-      <div class="absolute bottom-3 left-4 z-10 flex items-center gap-2">
+      <div id="sheetBackdropBadges" class="absolute bottom-3 left-4 z-10 flex items-center gap-2 transition-opacity duration-300">
         <span id="sheetResolutionBadge" class="px-2 py-0.5 rounded-full text-[9px] font-mono bg-black/70 backdrop-blur-md text-white border border-white/20 font-bold"></span>
         <span id="sheetClassBadge"></span>
+      </div>
+      <!-- Controles Flutuantes do Trailer Mobile -->
+      <div id="sheetVideoControls" class="hidden absolute inset-0 z-20 pointer-events-none flex flex-col justify-between p-3 transition-opacity duration-300">
+        <div class="flex justify-between items-center pointer-events-auto">
+          <div class="px-2.5 py-1 rounded-full bg-black/70 backdrop-blur-md border border-white/15 text-[10px] font-mono text-mint flex items-center gap-1.5 shadow-lg">
+            <span class="w-1.5 h-1.5 rounded-full bg-mint animate-pulse"></span>
+            <span>Trailer</span>
+          </div>
+          <button onclick="toggleSheetFullscreen()" class="px-2.5 py-1 rounded-lg bg-black/80 text-white text-[11px] font-semibold backdrop-blur-md border border-white/20 flex items-center gap-1 shadow-lg active:scale-95 transition-all" title="Ver em Tela Cheia">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15"/></svg>
+            <span>Tela Cheia</span>
+          </button>
+        </div>
+        <div class="flex items-center justify-between pointer-events-auto bg-black/80 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/15 shadow-xl">
+          <span class="text-[10px] font-mono text-gray-300">Toque duplo p/ tela cheia</span>
+          <button onclick="toggleSheetFullscreen()" class="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-mint text-obsidian text-[11px] font-bold active:scale-95 shadow-md">
+            <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15"/></svg>
+            <span>Tela Cheia</span>
+          </button>
+        </div>
       </div>
     </div>
 
@@ -515,12 +535,16 @@
           <span id="sheetWatchLogo" class="inline-flex items-center"></span>
           <span id="sheetWatchBtnText">Assistir Agora</span>
         </a>
-        <div class="flex gap-2.5">
-          <button id="sheetTrailerBtn" onclick="playSheetTrailer()" class="flex-1 py-3 rounded-2xl bg-white/10 text-white text-xs font-semibold flex items-center justify-center gap-2 active:scale-95 transition-all border border-white/10">
+        <div class="flex gap-2">
+          <button id="sheetTrailerBtn" onclick="playSheetTrailer()" class="flex-1 py-3 rounded-2xl bg-white/10 text-white text-xs font-semibold flex items-center justify-center gap-1.5 active:scale-95 transition-all border border-white/10">
             <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-            Trailer
+            <span id="sheetTrailerBtnText">Trailer</span>
           </button>
-          <button id="sheetWatchlistBtn" onclick="toggleSheetWatchlist()" class="flex-1 py-3 rounded-2xl bg-white/10 text-white text-xs font-mono flex items-center justify-center gap-2 active:scale-95 transition-all border border-white/10">
+          <button id="sheetFullscreenBtn" onclick="playSheetTrailer(true)" class="hidden py-3 px-4 rounded-2xl bg-mint/15 text-mint text-xs font-bold flex items-center justify-center gap-1.5 active:scale-95 transition-all border border-mint/30 shadow-[0_0_12px_rgba(0,229,153,0.15)]" title="Assistir em Tela Cheia">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15"/></svg>
+            <span>Tela Cheia</span>
+          </button>
+          <button id="sheetWatchlistBtn" onclick="toggleSheetWatchlist()" class="flex-1 py-3 rounded-2xl bg-white/10 text-white text-xs font-mono flex items-center justify-center gap-1.5 active:scale-95 transition-all border border-white/10">
             + Minha Fila
           </button>
         </div>
@@ -664,12 +688,19 @@
       const backdrop = document.getElementById('sheetBackdrop');
       const trailer = document.getElementById('sheetTrailerVideo');
       const playBtn = document.getElementById('sheetPlayTrailerBtn');
+      const badges = document.getElementById('sheetBackdropBadges');
+      const gradient = document.getElementById('sheetBackdropGradient');
+      const controls = document.getElementById('sheetVideoControls');
+
       backdrop.src = t.backdrop;
       backdrop.classList.remove('hidden');
       trailer.classList.add('hidden');
       trailer.pause();
       trailer.removeAttribute('src');
       playBtn.classList.toggle('hidden', !t.videoTeaser);
+      if (badges) badges.classList.remove('opacity-0');
+      if (gradient) gradient.classList.remove('opacity-0');
+      if (controls) controls.classList.add('hidden');
 
       document.getElementById('sheetResolutionBadge').textContent = t.resolution;
       document.getElementById('sheetClassBadge').innerHTML = getClassIndBadgeHtml(t.classification);
@@ -698,7 +729,11 @@
       document.getElementById('sheetWatchBtnText').textContent = 'Assistir no ' + t.provider.name;
       watchBtn.href = t.watchUrl;
 
-      document.getElementById('sheetTrailerBtn').classList.toggle('hidden', !t.videoTeaser);
+      const hasTrailer = !!t.videoTeaser;
+      document.getElementById('sheetTrailerBtn').classList.toggle('hidden', !hasTrailer);
+      document.getElementById('sheetFullscreenBtn').classList.toggle('hidden', !hasTrailer);
+      const trailerBtnText = document.getElementById('sheetTrailerBtnText');
+      if (trailerBtnText) trailerBtnText.textContent = 'Trailer';
 
       const wlBtn = document.getElementById('sheetWatchlistBtn');
       wlBtn.textContent = '+ Minha Fila';
@@ -711,38 +746,128 @@
 
     function closeMobileWatchSheet() {
       const trailer = document.getElementById('sheetTrailerVideo');
+      const backdrop = document.getElementById('sheetBackdrop');
+      const playBtn = document.getElementById('sheetPlayTrailerBtn');
+      const badges = document.getElementById('sheetBackdropBadges');
+      const gradient = document.getElementById('sheetBackdropGradient');
+      const controls = document.getElementById('sheetVideoControls');
+
+      if (document.fullscreenElement) {
+        try { document.exitFullscreen(); } catch (e) {}
+      }
+
       trailer.pause();
+      trailer.classList.add('hidden');
       trailer.removeAttribute('src');
+      if (backdrop) backdrop.classList.remove('hidden');
+      if (playBtn) playBtn.classList.remove('hidden');
+      if (badges) badges.classList.remove('opacity-0');
+      if (gradient) gradient.classList.remove('opacity-0');
+      if (controls) controls.classList.add('hidden');
+      const trailerBtnText = document.getElementById('sheetTrailerBtnText');
+      if (trailerBtnText) trailerBtnText.textContent = 'Trailer';
+
       document.getElementById('mobileWatchSheetOverlay').classList.remove('active');
       document.getElementById('mobileWatchSheetCard').classList.remove('active');
       document.body.style.overflow = '';
       currentSheetTitle = null;
     }
 
-    function playSheetTrailer() {
+    function playSheetTrailer(goFullscreen = false) {
       if (!currentSheetTitle) return;
       const t = TITLES_CATALOG[currentSheetTitle];
       if (!t || !t.videoTeaser) { showToast('Trailer não disponível'); return; }
       const backdrop = document.getElementById('sheetBackdrop');
       const trailer = document.getElementById('sheetTrailerVideo');
       const playBtn = document.getElementById('sheetPlayTrailerBtn');
+      const badges = document.getElementById('sheetBackdropBadges');
+      const gradient = document.getElementById('sheetBackdropGradient');
+      const controls = document.getElementById('sheetVideoControls');
+      const trailerBtnText = document.getElementById('sheetTrailerBtnText');
+
+      if (goFullscreen) {
+        if (trailer.classList.contains('hidden') || !trailer.src.includes(t.videoTeaser)) {
+          trailer.src = t.videoTeaser;
+          trailer.classList.remove('hidden');
+          backdrop.classList.add('hidden');
+          playBtn.classList.add('hidden');
+          if (badges) badges.classList.add('opacity-0');
+          if (gradient) gradient.classList.add('opacity-0');
+          if (controls) controls.classList.remove('hidden');
+          trailer.muted = false;
+          trailer.volume = 0.85;
+          trailer.play().catch(() => {});
+        }
+        toggleSheetFullscreen(true);
+        showToast('Trailer em tela cheia');
+        if (trailerBtnText) trailerBtnText.textContent = 'Pausar';
+        return;
+      }
 
       if (trailer.classList.contains('hidden')) {
         trailer.src = t.videoTeaser;
         trailer.classList.remove('hidden');
         backdrop.classList.add('hidden');
         playBtn.classList.add('hidden');
+        if (badges) badges.classList.add('opacity-0');
+        if (gradient) gradient.classList.add('opacity-0');
+        if (controls) controls.classList.remove('hidden');
         trailer.muted = false;
         trailer.volume = 0.85;
-        trailer.play();
+        trailer.play().catch(() => {});
         showToast('Reproduzindo trailer');
+        if (trailerBtnText) trailerBtnText.textContent = 'Pausar';
       } else {
         trailer.pause();
         trailer.classList.add('hidden');
         backdrop.classList.remove('hidden');
         playBtn.classList.remove('hidden');
+        if (badges) badges.classList.remove('opacity-0');
+        if (gradient) gradient.classList.remove('opacity-0');
+        if (controls) controls.classList.add('hidden');
+        if (trailerBtnText) trailerBtnText.textContent = 'Trailer';
       }
     }
+
+    function toggleSheetFullscreen(forceState) {
+      const video = document.getElementById('sheetTrailerVideo');
+      if (!video) return;
+
+      if (video.classList.contains('hidden')) {
+        playSheetTrailer(false);
+      }
+
+      const isFs = !!(document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement);
+
+      if (forceState === true || (!isFs && forceState !== false)) {
+        video.controls = true;
+        const req = video.requestFullscreen || video.webkitRequestFullscreen || video.mozRequestFullScreen || video.msRequestFullscreen || video.webkitEnterFullscreen;
+        if (req) {
+          try {
+            const p = req.call(video);
+            if (p && p.catch) p.catch(() => {});
+          } catch (e) {}
+        }
+      } else {
+        const exit = document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen || document.msExitFullscreen;
+        if (exit) {
+          try {
+            const p = exit.call(document);
+            if (p && p.catch) p.catch(() => {});
+          } catch (e) {}
+        }
+      }
+    }
+
+    ['fullscreenchange', 'webkitfullscreenchange', 'mozfullscreenchange', 'MSFullscreenChange'].forEach(evt => {
+      document.addEventListener(evt, () => {
+        const video = document.getElementById('sheetTrailerVideo');
+        const isFs = !!(document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement);
+        if (video) {
+          video.controls = isFs;
+        }
+      });
+    });
 
     function toggleSheetWatchlist() {
       const btn = document.getElementById('sheetWatchlistBtn');

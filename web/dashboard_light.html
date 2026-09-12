@@ -1022,20 +1022,48 @@
   <div id="watchModalOverlay" onclick="if(event.target===this)closeWatchModal()">
     <div id="watchModalCard">
       <!-- Backdrop Cinemático 16:9 -->
-      <div class="modal-backdrop-wrap">
+      <div class="modal-backdrop-wrap group">
         <img id="modalBackdrop" src="" alt="Backdrop">
-        <video id="modalTrailerVideo" class="hidden" muted loop playsinline></video>
-        <div class="modal-backdrop-gradient"></div>
+        <video id="modalTrailerVideo" class="hidden cursor-pointer" muted loop playsinline ondblclick="toggleTrailerFullscreen()" title="Clique duplo para tela cheia"></video>
+        <div id="modalBackdropGradient" class="modal-backdrop-gradient transition-opacity duration-300"></div>
         <button onclick="closeWatchModal()" class="modal-close-btn" title="Fechar">
           <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
         </button>
         <button id="modalPlayTrailerBtn" onclick="playModalTrailer()" class="modal-play-trailer-btn" title="Reproduzir Trailer">
           <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
         </button>
-        <!-- Badges sobre o backdrop -->
-        <div class="absolute bottom-4 left-5 z-10 flex items-center gap-2">
+        <!-- Badges sobre o backdrop (ocultados durante trailer para visão livre) -->
+        <div id="modalBackdropBadges" class="absolute bottom-4 left-5 z-10 flex items-center gap-2 transition-opacity duration-300">
           <span id="modalResolutionBadge" class="px-2.5 py-1 rounded-full text-[10px] font-mono bg-black/70 backdrop-blur-md text-white border border-white/20 font-bold"></span>
           <span id="modalClassBadge"></span>
+        </div>
+        <!-- Controles Flutuantes do Trailer Ativo (Visão Ampla e Tela Cheia) -->
+        <div id="modalVideoControls" class="hidden absolute inset-0 z-20 pointer-events-none flex flex-col justify-between p-4 transition-opacity duration-300">
+          <div class="flex justify-between items-center pointer-events-auto">
+            <div class="px-3 py-1 rounded-full bg-black/75 backdrop-blur-md border border-white/15 text-[11px] font-mono text-mint flex items-center gap-2 shadow-lg">
+              <span class="w-2 h-2 rounded-full bg-mint animate-pulse"></span>
+              <span>Trailer Oficial</span>
+            </div>
+            <button onclick="toggleTrailerFullscreen()" class="px-3.5 py-1.5 rounded-xl bg-black/80 hover:bg-black text-white hover:text-mint text-xs font-semibold backdrop-blur-md border border-white/20 flex items-center gap-1.5 shadow-xl transition-all cursor-pointer group" title="Ver em Tela Cheia (F)">
+              <svg class="w-3.5 h-3.5 group-hover:scale-110 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15"/></svg>
+              <span>Tela Cheia</span>
+            </button>
+          </div>
+          <div class="flex items-center justify-between pointer-events-auto bg-black/80 backdrop-blur-md px-3.5 py-2 rounded-xl border border-white/15 shadow-2xl">
+            <div class="flex items-center gap-2">
+              <button onclick="toggleTrailerPlayPause()" class="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors cursor-pointer" id="videoPlayPauseBtn" title="Play / Pausar">
+                <svg id="videoPlayPauseIcon" class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+              </button>
+              <button onclick="toggleTrailerMute()" class="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors cursor-pointer" id="videoMuteBtn" title="Áudio">
+                <svg id="videoMuteIcon" class="w-4 h-4 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+              </button>
+              <span class="text-[11px] font-mono text-gray-300 ml-1 hidden sm:inline">Clique duplo para tela cheia</span>
+            </div>
+            <button onclick="toggleTrailerFullscreen()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-mint text-obsidian text-xs font-bold hover:brightness-110 active:scale-95 transition-all shadow-[0_0_15px_rgba(0,229,153,0.4)] cursor-pointer">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15"/></svg>
+              <span>Ver em Tela Cheia</span>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -1077,8 +1105,12 @@
             <span id="modalWatchBtnText">Assistir Agora</span>
           </a>
           <button id="modalTrailerBtn" onclick="playModalTrailer()" class="px-5 py-3.5 rounded-2xl bg-gray-100 hover:bg-gray-200 text-gray-800 text-sm font-semibold transition-all flex items-center justify-center gap-2 cursor-pointer border border-gray-200">
-            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-            Trailer
+            <svg id="modalTrailerBtnIcon" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            <span id="modalTrailerBtnText">Trailer</span>
+          </button>
+          <button id="modalFullscreenTrailerBtn" onclick="playModalTrailer(true)" class="hidden px-5 py-3.5 rounded-2xl bg-emerald-50 hover:bg-emerald-100 text-[#0E7C5B] border border-emerald-200 text-sm font-bold backdrop-blur-md transition-all flex items-center justify-center gap-2 cursor-pointer shadow-sm hover:shadow active:scale-[0.97]" title="Assistir Trailer em Tela Cheia">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15"/></svg>
+            <span>Tela Cheia</span>
           </button>
           <button id="modalWatchlistBtn" onclick="toggleModalWatchlist()" class="px-5 py-3.5 rounded-2xl bg-gray-100 hover:bg-gray-200 text-gray-800 text-sm transition-all cursor-pointer border border-gray-200 font-mono">
             + Minha Fila
@@ -1287,12 +1319,19 @@
       const backdrop = document.getElementById('modalBackdrop');
       const trailerVideo = document.getElementById('modalTrailerVideo');
       const playBtn = document.getElementById('modalPlayTrailerBtn');
+      const badges = document.getElementById('modalBackdropBadges');
+      const gradient = document.getElementById('modalBackdropGradient');
+      const controls = document.getElementById('modalVideoControls');
+
       backdrop.src = t.backdrop;
       backdrop.classList.remove('hidden');
       trailerVideo.classList.add('hidden');
       trailerVideo.pause();
       trailerVideo.removeAttribute('src');
       playBtn.classList.toggle('hidden', !t.videoTeaser);
+      if (badges) badges.classList.remove('opacity-0', 'pointer-events-none');
+      if (gradient) gradient.classList.remove('opacity-0');
+      if (controls) controls.classList.add('hidden');
 
       // Badges no backdrop
       document.getElementById('modalResolutionBadge').textContent = t.resolution;
@@ -1333,8 +1372,12 @@
       watchLogo.innerHTML = `<img src="../assets/logos/${t.provider.key}.png" alt="${t.provider.name}" class="w-5 h-5 rounded-[4px] object-cover mr-1.5 inline-block shadow-sm">`;
       watchText.textContent = 'Assistir no ' + t.provider.name;
 
-      // Trailer button visibility
-      document.getElementById('modalTrailerBtn').classList.toggle('hidden', !t.videoTeaser);
+      // Trailer buttons visibility
+      const hasTrailer = !!t.videoTeaser;
+      document.getElementById('modalTrailerBtn').classList.toggle('hidden', !hasTrailer);
+      document.getElementById('modalFullscreenTrailerBtn').classList.toggle('hidden', !hasTrailer);
+      const trailerBtnText = document.getElementById('modalTrailerBtnText');
+      if (trailerBtnText) trailerBtnText.textContent = 'Trailer';
 
       // Reset watchlist button
       const wlBtn = document.getElementById('modalWatchlistBtn');
@@ -1349,37 +1392,170 @@
     function closeWatchModal() {
       const overlay = document.getElementById('watchModalOverlay');
       const trailerVideo = document.getElementById('modalTrailerVideo');
+      const backdrop = document.getElementById('modalBackdrop');
+      const playBtn = document.getElementById('modalPlayTrailerBtn');
+      const badges = document.getElementById('modalBackdropBadges');
+      const gradient = document.getElementById('modalBackdropGradient');
+      const controls = document.getElementById('modalVideoControls');
+
+      if (document.fullscreenElement) {
+        try { document.exitFullscreen(); } catch (e) {}
+      }
+
       overlay.classList.remove('active');
       trailerVideo.pause();
+      trailerVideo.classList.add('hidden');
       trailerVideo.removeAttribute('src');
+      if (backdrop) backdrop.classList.remove('hidden');
+      if (playBtn) playBtn.classList.remove('hidden');
+      if (badges) badges.classList.remove('opacity-0', 'pointer-events-none');
+      if (gradient) gradient.classList.remove('opacity-0');
+      if (controls) controls.classList.add('hidden');
+      const trailerBtnText = document.getElementById('modalTrailerBtnText');
+      if (trailerBtnText) trailerBtnText.textContent = 'Trailer';
       document.body.style.overflow = '';
       currentModalTitle = null;
     }
 
-    function playModalTrailer() {
+    function playModalTrailer(goFullscreen = false) {
       if (!currentModalTitle) return;
       const t = TITLES_CATALOG[currentModalTitle];
       if (!t || !t.videoTeaser) { showToast('Trailer não disponível'); return; }
       const backdrop = document.getElementById('modalBackdrop');
       const trailerVideo = document.getElementById('modalTrailerVideo');
       const playBtn = document.getElementById('modalPlayTrailerBtn');
+      const badges = document.getElementById('modalBackdropBadges');
+      const gradient = document.getElementById('modalBackdropGradient');
+      const controls = document.getElementById('modalVideoControls');
+      const trailerBtnText = document.getElementById('modalTrailerBtnText');
+
+      if (goFullscreen) {
+        if (trailerVideo.classList.contains('hidden') || !trailerVideo.src.includes(t.videoTeaser)) {
+          trailerVideo.src = t.videoTeaser;
+          trailerVideo.classList.remove('hidden');
+          backdrop.classList.add('hidden');
+          playBtn.classList.add('hidden');
+          if (badges) badges.classList.add('opacity-0', 'pointer-events-none');
+          if (gradient) gradient.classList.add('opacity-0');
+          if (controls) controls.classList.remove('hidden');
+          trailerVideo.muted = false;
+          trailerVideo.volume = 0.85;
+          trailerVideo.play().catch(() => {});
+        }
+        toggleTrailerFullscreen(true);
+        showToast('Trailer em tela cheia');
+        if (trailerBtnText) trailerBtnText.textContent = 'Pausar Trailer';
+        return;
+      }
 
       if (trailerVideo.classList.contains('hidden')) {
         trailerVideo.src = t.videoTeaser;
         trailerVideo.classList.remove('hidden');
         backdrop.classList.add('hidden');
         playBtn.classList.add('hidden');
+        // Remove restricted view overlays so video has 100% unobstructed visibility
+        if (badges) badges.classList.add('opacity-0', 'pointer-events-none');
+        if (gradient) gradient.classList.add('opacity-0');
+        if (controls) controls.classList.remove('hidden');
         trailerVideo.muted = false;
         trailerVideo.volume = 0.85;
-        trailerVideo.play();
+        trailerVideo.play().catch(() => {});
         showToast('Reproduzindo trailer de ' + t.title);
+        if (trailerBtnText) trailerBtnText.textContent = 'Pausar Trailer';
       } else {
         trailerVideo.pause();
         trailerVideo.classList.add('hidden');
         backdrop.classList.remove('hidden');
         playBtn.classList.remove('hidden');
+        if (badges) badges.classList.remove('opacity-0', 'pointer-events-none');
+        if (gradient) gradient.classList.remove('opacity-0');
+        if (controls) controls.classList.add('hidden');
+        if (trailerBtnText) trailerBtnText.textContent = 'Trailer';
       }
     }
+
+    function toggleTrailerPlayPause() {
+      const video = document.getElementById('modalTrailerVideo');
+      const icon = document.getElementById('videoPlayPauseIcon');
+      if (!video) return;
+      if (video.paused) {
+        video.play().catch(() => {});
+        if (icon) icon.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
+        const trailerBtnText = document.getElementById('modalTrailerBtnText');
+        if (trailerBtnText) trailerBtnText.textContent = 'Pausar Trailer';
+      } else {
+        video.pause();
+        if (icon) icon.innerHTML = '<polygon points="5 3 19 12 5 21 5 3"></polygon>';
+        const trailerBtnText = document.getElementById('modalTrailerBtnText');
+        if (trailerBtnText) trailerBtnText.textContent = 'Retomar Trailer';
+      }
+    }
+
+    function toggleTrailerMute() {
+      const video = document.getElementById('modalTrailerVideo');
+      const icon = document.getElementById('videoMuteIcon');
+      if (!video) return;
+      video.muted = !video.muted;
+      if (icon) {
+        if (video.muted) {
+          icon.innerHTML = '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line>';
+          showToast('Áudio desativado');
+        } else {
+          icon.innerHTML = '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>';
+          showToast('Áudio ativado');
+        }
+      }
+    }
+
+    function toggleTrailerFullscreen(forceState) {
+      const video = document.getElementById('modalTrailerVideo');
+      if (!video) return;
+
+      if (video.classList.contains('hidden')) {
+        playModalTrailer(false);
+      }
+
+      const isFs = !!(document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement);
+
+      if (forceState === true || (!isFs && forceState !== false)) {
+        video.controls = true;
+        const req = video.requestFullscreen || video.webkitRequestFullscreen || video.mozRequestFullScreen || video.msRequestFullscreen || video.webkitEnterFullscreen;
+        if (req) {
+          try {
+            const p = req.call(video);
+            if (p && p.catch) p.catch(() => {});
+          } catch (e) {}
+        }
+      } else {
+        const exit = document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen || document.msExitFullscreen;
+        if (exit) {
+          try {
+            const p = exit.call(document);
+            if (p && p.catch) p.catch(() => {});
+          } catch (e) {}
+        }
+      }
+    }
+
+    function handleFullscreenChange() {
+      const video = document.getElementById('modalTrailerVideo');
+      const isFs = !!(document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement);
+      if (video) {
+        video.controls = isFs;
+      }
+      const fsBtn = document.getElementById('modalFullscreenTrailerBtn');
+      if (fsBtn) {
+        if (isFs) {
+          fsBtn.innerHTML = `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 9L4 4m0 0v5m0-5h5m6 6l5 5m0 0v-5m0 5h-5M9 15l-5 5m0 0h5m-5 0v-5m11-5l5-5m0 0h-5m5 0v5"/></svg><span>Sair da Tela Cheia</span>`;
+        } else {
+          fsBtn.innerHTML = `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15"/></svg><span>Tela Cheia</span>`;
+        }
+      }
+    }
+
+    ['fullscreenchange', 'webkitfullscreenchange', 'mozfullscreenchange', 'MSFullscreenChange'].forEach(evt => {
+      document.addEventListener(evt, handleFullscreenChange);
+    });
 
     function toggleModalWatchlist() {
       const btn = document.getElementById('modalWatchlistBtn');
@@ -1396,9 +1572,25 @@
       }
     }
 
-    // Close modal on Escape key
+    // Teclado inteligente: Escape fecha modal, 'f'/'F' alterna tela cheia do trailer, 'Espaço' pausa/retoma
     document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape') closeWatchModal();
+      if (e.key === 'Escape') {
+        if (!document.fullscreenElement) {
+          closeWatchModal();
+        }
+      } else if ((e.key === 'f' || e.key === 'F') && currentModalTitle) {
+        const trailerVideo = document.getElementById('modalTrailerVideo');
+        if (trailerVideo && !trailerVideo.classList.contains('hidden')) {
+          e.preventDefault();
+          toggleTrailerFullscreen();
+        }
+      } else if (e.code === 'Space' && currentModalTitle) {
+        const trailerVideo = document.getElementById('modalTrailerVideo');
+        if (trailerVideo && !trailerVideo.classList.contains('hidden') && e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+          e.preventDefault();
+          toggleTrailerPlayPause();
+        }
+      }
     });
     function switchDashboardView(viewKey) {
       const views = {
