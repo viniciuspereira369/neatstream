@@ -436,21 +436,25 @@
       </div>
 
       <!-- Right Actions -->
-      <div class="flex items-center gap-4">
+      <div class="flex items-center gap-3">
         <!-- Compact HUD Quick Badge -->
-        <div onclick="switchDashboardView('financas')" class="hidden 2xl:flex items-center gap-3 bg-[#0F1512] px-3.5 py-1.5 rounded-full border border-[#0E7C5B]/30 cursor-pointer hover:border-[#0E7C5B] transition-all">
+        <div onclick="switchDashboardView('financas')" class="hidden 2xl:flex items-center gap-3 bg-gray-50 px-3.5 py-1.5 rounded-full border border-gray-200 cursor-pointer hover:border-[#0E7C5B]/40 transition-all">
           <span class="w-2 h-2 rounded-full bg-mint animate-pulse"></span>
           <span class="font-mono text-xs text-gray-900">R$ 142,60 <span class="text-gray-500">/ R$ 140</span></span>
-          <span class="text-[10px] font-mono text-[#0E7C5B] bg-emerald-50 text-[#0E7C5B] px-2 py-0.5 rounded-full font-bold">+R$ 526/ano</span>
+          <span class="text-[10px] font-mono text-[#0E7C5B] bg-emerald-50 px-2 py-0.5 rounded-full font-bold">+R$ 526/ano</span>
         </div>
 
-        <a href="dashboard_dark.html" title="Alternar para Modo Escuro" class="flex items-center gap-1.5 text-xs bg-[#0F1512] px-3 py-1.5 rounded-full border border-gray-200 hover:border-[#0E7C5B]/30 text-gray-500 hover:text-gray-900 transition-all">
-          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
-            <circle cx="12" cy="12" r="5"></circle>
-            <line x1="12" y1="1" x2="12" y2="3"></line>
-            <line x1="12" y1="21" x2="12" y2="23"></line>
+        <!-- Vertical Divider -->
+        <div class="h-5 w-px bg-gray-200 hidden sm:block"></div>
+
+        <!-- Minimalist Theme Switcher Button (34x34) -->
+        <a href="dashboard_dark.html" 
+           title="Alternar para Modo Escuro" 
+           aria-label="Alternar para Modo Escuro"
+           class="w-[34px] h-[34px] rounded-full bg-gray-100 hover:bg-gray-200 border border-gray-200 hover:border-[#0E7C5B]/50 text-gray-600 hover:text-[#0E7C5B] flex items-center justify-center transition-all duration-200 hover:scale-105 active:scale-95 shadow-sm cursor-pointer">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
           </svg>
-          <span>Escuro</span>
         </a>
       </div>
     </header>
