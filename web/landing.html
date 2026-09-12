@@ -225,21 +225,6 @@
         <div class="absolute inset-y-0 left-0 w-24 md:w-48 bg-gradient-to-r from-[#080C0A] to-transparent z-20 pointer-events-none"></div>
         <div class="absolute inset-y-0 right-0 w-24 md:w-48 bg-gradient-to-l from-[#080C0A] to-transparent z-20 pointer-events-none"></div>
 
-        <!-- Floating Glassmorphic Badges over Marquee -->
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 pointer-events-none flex flex-wrap items-center justify-center gap-3 w-full max-w-3xl px-4">
-          <div class="glass-panel px-4 py-2.5 rounded-2xl shadow-2xl flex items-center gap-2.5 border border-mint/40 animate-bounce">
-            <span class="w-2.5 h-2.5 rounded-full bg-mint animate-pulse"></span>
-            <span class="font-mono text-xs font-bold text-white">Média de Economia: <strong class="text-mint text-sm">R$ 526,80/ano</strong></span>
-          </div>
-          <div class="glass-panel px-4 py-2.5 rounded-2xl shadow-2xl flex items-center gap-2.5 border border-warning/40">
-            <span class="text-xs">⚡</span>
-            <span class="font-mono text-xs font-bold text-white">Pausa Automática Pós-Temporada</span>
-          </div>
-          <div class="glass-panel px-4 py-2.5 rounded-2xl shadow-2xl flex items-center gap-2.5 border border-lavender/40">
-            <span class="text-xs">🎬</span>
-            <span class="font-mono text-xs font-bold text-white">14 Títulos Salvos Já Pagos</span>
-          </div>
-        </div>
 
         <!-- Track 1: Rolagem para a Esquerda -->
         <div class="overflow-hidden">
@@ -438,6 +423,108 @@
             </div>
           </div>
         </div>
+      </div>
+    </section>
+
+    <!-- ==================================================== -->
+    <!-- KPI STRIP: PILARES CENTRAIS DE ECONOMIA E INTELIGÊNCIA -->
+    <!-- ==================================================== -->
+    <section class="max-w-7xl mx-auto px-6 relative z-20">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <!-- Card 1: Econômetro Inteligente (Média de Economia) -->
+        <div class="card-sheen p-6 sm:p-7 flex flex-col justify-between bg-gradient-to-b from-[#111714] to-[#0B100D] border border-white/10 hover:border-mint/40 transition-all duration-300 shadow-xl group">
+          <div>
+            <div class="flex items-center justify-between gap-3 mb-4">
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-mint/10 border border-mint/25 text-mint text-[10px] font-mono font-bold uppercase tracking-wider">
+                <span class="w-1.5 h-1.5 rounded-full bg-mint animate-pulse"></span>
+                Econômetro Ativo
+              </span>
+              <span class="text-[10px] font-mono text-gray-500 font-semibold uppercase tracking-wider">Métrica Oficial</span>
+            </div>
+
+            <div class="space-y-1">
+              <span class="text-xs text-gray-400 font-medium block">Média Real de Economia</span>
+              <div class="flex items-baseline gap-1.5 font-mono">
+                <span class="text-xl font-bold text-mint">R$</span>
+                <span class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">526,80</span>
+                <span class="text-xs text-gray-400 font-mono">/ ano</span>
+              </div>
+            </div>
+
+            <p class="text-xs text-gray-400 mt-3 leading-relaxed">
+              Economia líquida obtida por assinante eliminando a sobreposição de faturas e cancelando meses mortos sem consumo ativo.
+            </p>
+          </div>
+
+          <div class="mt-6 pt-4 border-t border-white/8 flex items-center justify-between text-[11px] font-mono">
+            <span class="text-gray-400">Eficiência média</span>
+            <span class="px-2 py-0.5 rounded bg-mint/15 text-mint font-bold border border-mint/30">+38% ao ano</span>
+          </div>
+        </div>
+
+        <!-- Card 2: Bateria de Streamings (Pausa Automática) -->
+        <div class="card-sheen p-6 sm:p-7 flex flex-col justify-between bg-gradient-to-b from-[#111714] to-[#0B100D] border border-white/10 hover:border-warning/40 transition-all duration-300 shadow-xl group">
+          <div>
+            <div class="flex items-center justify-between gap-3 mb-4">
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-warning/10 border border-warning/25 text-warning text-[10px] font-mono font-bold uppercase tracking-wider">
+                <span class="w-1.5 h-1.5 rounded-full bg-warning"></span>
+                Gestão de Ociosidade
+              </span>
+              <div class="flex items-center gap-1.5 bg-[#080C0A] px-2 py-0.5 rounded-lg border border-white/10">
+                <img src="../assets/logos/disney.png" alt="Disney+" class="w-4 h-4 rounded object-cover">
+                <span class="text-[9px] font-mono text-warning font-bold">PAUSADO</span>
+              </div>
+            </div>
+
+            <div class="space-y-1">
+              <span class="text-xs text-gray-400 font-medium block">Inteligência Pós-Temporada</span>
+              <h3 class="text-2xl sm:text-3xl font-extrabold text-white font-display tracking-tight">
+                Pausa Automática
+              </h3>
+            </div>
+
+            <p class="text-xs text-gray-400 mt-3 leading-relaxed">
+              Maratonou sua série? O NeatStream agenda a pausa temporária do streaming assim que o último episódio termina, cortando a inércia.
+            </p>
+          </div>
+
+          <div class="mt-6 pt-4 border-t border-white/8 flex items-center justify-between text-[11px] font-mono">
+            <span class="text-gray-400">Prevenção de ociosidade</span>
+            <span class="px-2 py-0.5 rounded bg-warning/15 text-warning font-bold border border-warning/30">R$ 43,90 poupados/mês</span>
+          </div>
+        </div>
+
+        <!-- Card 3: Radar de Catálogo (Títulos Salvos Já Pagos) -->
+        <div class="card-sheen p-6 sm:p-7 flex flex-col justify-between bg-gradient-to-b from-[#111714] to-[#0B100D] border border-white/10 hover:border-lavender/40 transition-all duration-300 shadow-xl group">
+          <div>
+            <div class="flex items-center justify-between gap-3 mb-4">
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-lavender/10 border border-lavender/25 text-lavender text-[10px] font-mono font-bold uppercase tracking-wider">
+                <span class="w-1.5 h-1.5 rounded-full bg-lavender"></span>
+                Radar de Catálogo
+              </span>
+              <span class="text-[10px] font-mono text-gray-500 font-semibold uppercase tracking-wider">Cross-Catalog</span>
+            </div>
+
+            <div class="space-y-1">
+              <span class="text-xs text-gray-400 font-medium block">Watchlist Inteligente</span>
+              <div class="flex items-baseline gap-2 font-mono">
+                <span class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">14 Títulos</span>
+                <span class="text-xs text-lavender font-mono font-semibold">Salvos Já Pagos</span>
+              </div>
+            </div>
+
+            <p class="text-xs text-gray-400 mt-3 leading-relaxed">
+              O sistema cruza sua lista com suas assinaturas ativas. Assista primeiro ao que já está quitado antes de contratar outro streaming.
+            </p>
+          </div>
+
+          <div class="mt-6 pt-4 border-t border-white/8 flex items-center justify-between text-[11px] font-mono">
+            <span class="text-gray-400">Desperdício evitado</span>
+            <span class="px-2 py-0.5 rounded bg-lavender/15 text-lavender font-bold border border-lavender/30">Zero aluguéis duplicados</span>
+          </div>
+        </div>
+
       </div>
     </section>
 
