@@ -132,125 +132,340 @@
   </header>
 
   <!-- Main Content -->
-  <main class="max-w-[440px] mx-auto px-4 pt-3 space-y-5">
+  <main class="max-w-[440px] mx-auto px-4 pt-3 space-y-4">
 
-    <!-- 1. VISUAL RADIAL GAUGE CARD (REVOLUT / APPLE FITNESS STYLE) -->
-    <section class="wallet-card p-5 bg-gradient-to-br from-[#111714] to-[#0A100D] border-mint/25 space-y-4">
-      <div class="flex items-center justify-between">
-        <div>
-          <span class="text-[10px] font-mono text-gray-400 uppercase tracking-widest block">Gasto Mensal Total</span>
-          <div class="flex items-baseline gap-1 mt-0.5">
-            <span class="text-sm font-mono text-white">R$</span>
-            <span class="text-3xl font-mono font-black text-white">142,60</span>
-            <span class="text-xs font-mono text-gray-400">/ R$ 140 teto</span>
-          </div>
+    <!-- 0. CONEXÃO BANCÁRIA OPEN FINANCE (TELA 1 BRIDGE) -->
+    <div class="flex items-center justify-between px-3.5 py-2 rounded-2xl bg-[#111714] border border-white/10 shadow-sm">
+      <div class="flex items-center gap-2.5">
+        <div class="w-7 h-7 rounded-lg bg-[#820AD1] border border-white/15 flex items-center justify-center p-1 shrink-0 overflow-hidden shadow-sm">
+          <img src="../assets/logos/nubank.png" alt="Nubank" class="w-full h-full object-contain">
         </div>
-        <!-- Savings Highlight -->
-        <div class="text-right">
-          <span class="text-[10px] font-mono text-mint uppercase tracking-widest block font-bold">Economia Anual</span>
-          <span class="text-xl font-mono font-bold text-mint">+R$ 526,80</span>
+        <div>
+          <span class="text-xs font-bold text-white font-display">Nubank · Cartão Principal</span>
+          <span class="text-[9px] font-mono text-gray-400 block -mt-0.5">Conexão Segura · Open Finance</span>
         </div>
       </div>
+      <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-mono bg-mint/15 text-mint border border-mint/25">
+        <span class="w-1.5 h-1.5 rounded-full bg-mint animate-pulse"></span>
+        <span>Ativo</span>
+      </span>
+    </div>
 
-      <!-- Concentric Allocation Bar -->
-      <div class="space-y-1.5 pt-1">
-        <div class="w-full h-3 bg-[#080C0A] rounded-full overflow-hidden flex gap-1 p-0.5 border border-white/10">
-          <div class="h-full bg-red-500 rounded-full" style="width: 39%;" title="Netflix (R$ 55,90)"></div>
-          <div class="h-full bg-purple-500 rounded-full" style="width: 24%;" title="Max (R$ 39,90)"></div>
-          <div class="h-full bg-blue-400 rounded-full" style="width: 22%;" title="Disney+ (R$ 43,90)"></div>
-          <div class="h-full bg-gray-400 rounded-full" style="width: 15%;" title="Apple TV+ (R$ 21,90)"></div>
+    <!-- 1. CARD DE ALERTA VERMELHO/ÂMBAR (CANÔNICO SEÇÃO 6.1.3) -->
+    <section class="wallet-card p-4 bg-gradient-to-r from-amber-950/70 via-[#1C140E] to-[#121614] border border-amber-500/50 shadow-[0_0_25px_rgba(255,152,56,0.15)] relative overflow-hidden">
+      <div class="absolute -top-10 -right-10 w-28 h-28 bg-amber-500/10 rounded-full blur-2xl pointer-events-none"></div>
+      <div class="flex items-start gap-3">
+        <div class="w-9 h-9 rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-warning shrink-0 mt-0.5">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+            <line x1="12" y1="9" x2="12" y2="13"></line>
+            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+          </svg>
         </div>
-        <div class="flex justify-between text-[10px] font-mono text-gray-400 pt-0.5">
-          <span class="flex items-center gap-1.5"><span class="brand-app-tile brand-app-tile-netflix w-3.5 h-3.5 rounded-[3px]"><img src="../assets/logos/netflix.png" alt="Netflix" class="w-full h-full object-cover"></span>Netflix</span>
-          <span class="flex items-center gap-1.5"><span class="brand-app-tile brand-app-tile-max w-3.5 h-3.5 rounded-[3px]"><img src="../assets/logos/max.png" alt="Max" class="w-full h-full object-cover"></span>Max</span>
-          <span class="flex items-center gap-1.5 text-warning"><span class="brand-app-tile brand-app-tile-disney w-3.5 h-3.5 rounded-[3px]"><img src="../assets/logos/disney.png" alt="Disney+" class="w-full h-full object-cover"></span>Disney+ (Ocioso)</span>
-          <span class="flex items-center gap-1.5"><span class="brand-app-tile brand-app-tile-apple w-3.5 h-3.5 rounded-[3px]"><img src="../assets/logos/apple.png" alt="Apple TV+" class="w-full h-full object-cover"></span>Apple</span>
+        <div class="flex-1">
+          <div class="flex items-center gap-2">
+            <span class="px-2 py-0.5 rounded text-[9px] font-mono bg-amber-500/20 text-warning border border-amber-500/30 font-bold uppercase tracking-wider">Alerta de Ociosidade</span>
+            <span class="text-[10px] font-mono text-gray-400">Detecção 48d</span>
+          </div>
+          <p class="text-xs font-semibold text-white mt-1.5 leading-snug">
+            Você tem <strong class="text-warning">1 assinatura inativa há 48 dias</strong> gerando desperdício de <strong class="text-white">R$ 34,90/mês</strong>.
+          </p>
+          <div class="mt-3 flex items-center gap-2.5">
+            <button onclick="openConfirmModal('Disney+ Standard', 34.90, 'Pausar no Fim do Ciclo', 48)" class="px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:brightness-110 text-obsidian text-xs font-bold font-mono shadow-md transition-all cursor-pointer flex items-center gap-1">
+              <span>Pausar no Fim do Ciclo</span>
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+            <span class="text-[11px] font-mono text-mint font-bold">+R$ 418,80/ano</span>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- 2. STREAMING CARDS STACK WITH 1-TAP PAUSE ACTIONS -->
+    <!-- 2. DASHBOARD FINANCEIRO & ECONÔMETRO (TELA 2: DONUT CHART + SLIDER 6.1.3) -->
+    <section class="wallet-card p-5 bg-gradient-to-br from-[#111714] to-[#0A100D] border-mint/25 space-y-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <span class="text-[10px] font-mono text-gray-400 uppercase tracking-widest block">Dashboard Financeiro</span>
+          <h2 class="text-base font-bold font-display text-white mt-0.5">Econômetro &amp; Orçamento</h2>
+        </div>
+        <div class="text-right">
+          <span class="text-[10px] font-mono text-mint uppercase tracking-widest block font-bold">Economia Anual</span>
+          <span id="headerYearlySavings" class="text-lg font-mono font-bold text-mint">+R$ 526,80</span>
+        </div>
+      </div>
+
+      <!-- GRÁFICO DE ROSCA / DONUT CHART (SEÇÃO 6.1.3) -->
+      <div class="flex items-center justify-center py-2 relative">
+        <div class="relative w-44 h-44 flex items-center justify-center">
+          <svg class="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+            <!-- Fundo da Rosca -->
+            <circle cx="50" cy="50" r="36" fill="none" stroke="#141C18" stroke-width="12"></circle>
+            <!-- Arc 1: Netflix 35% (R$ 55,90) -->
+            <circle cx="50" cy="50" r="36" fill="none" stroke="#E50914" stroke-width="12" stroke-dasharray="78.3 226.2" stroke-dashoffset="0" class="transition-all duration-700"></circle>
+            <!-- Arc 2: Disney+ 27% (R$ 43,90) -->
+            <circle id="donutArcDisney" cx="50" cy="50" r="36" fill="none" stroke="#FF9838" stroke-width="12" stroke-dasharray="61.5 226.2" stroke-dashoffset="-78.3" class="transition-all duration-700"></circle>
+            <!-- Arc 3: Max 25% (R$ 39,90) -->
+            <circle cx="50" cy="50" r="36" fill="none" stroke="#0022B8" stroke-width="12" stroke-dasharray="55.9 226.2" stroke-dashoffset="-139.8" class="transition-all duration-700"></circle>
+            <!-- Arc 4: Apple TV+ 13% (R$ 21,90) -->
+            <circle cx="50" cy="50" r="36" fill="none" stroke="#6B7280" stroke-width="12" stroke-dasharray="30.5 226.2" stroke-dashoffset="-195.7" class="transition-all duration-700"></circle>
+          </svg>
+          <!-- Centro Informativo da Rosca -->
+          <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+            <span class="text-[9px] font-mono text-gray-400 uppercase tracking-wider">Gasto Mensal</span>
+            <span id="donutCenterTotal" class="font-mono text-2xl font-black text-white tracking-tight">R$ 161,60</span>
+            <span class="text-[10px] font-mono text-mint font-bold">4 ativas</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Legenda Percentual com Brand Squircles -->
+      <div class="grid grid-cols-2 gap-2 pt-1 border-t border-white/8 text-[10px] font-mono">
+        <div class="flex items-center gap-1.5 text-gray-300">
+          <span class="brand-app-tile brand-app-tile-netflix w-4 h-4 rounded-[4px] p-0.5"><img src="../assets/logos/netflix.png" alt="Netflix"></span>
+          <span>Netflix: <strong class="text-white">35%</strong> (R$ 55,90)</span>
+        </div>
+        <div class="flex items-center gap-1.5 text-warning">
+          <span class="brand-app-tile brand-app-tile-disney w-4 h-4 rounded-[4px] p-0.5"><img src="../assets/logos/disney.png" alt="Disney+"></span>
+          <span>Disney+: <strong class="text-warning">27%</strong> (Ocioso)</span>
+        </div>
+        <div class="flex items-center gap-1.5 text-gray-300">
+          <span class="brand-app-tile brand-app-tile-max w-4 h-4 rounded-[4px] p-0.5"><img src="../assets/logos/max.png" alt="Max"></span>
+          <span>Max: <strong class="text-white">25%</strong> (R$ 39,90)</span>
+        </div>
+        <div class="flex items-center gap-1.5 text-gray-300">
+          <span class="brand-app-tile brand-app-tile-apple w-4 h-4 rounded-[4px] p-0.5"><img src="../assets/logos/apple.png" alt="Apple TV+"></span>
+          <span>Apple TV+: <strong class="text-white">13%</strong> (R$ 21,90)</span>
+        </div>
+      </div>
+
+      <!-- CONTROLE DESLIZANTE / SLIDER (SEÇÃO 6.1.3: TETO DE GASTOS) -->
+      <div class="space-y-2 pt-3 border-t border-white/8">
+        <div class="flex items-center justify-between text-xs font-mono">
+          <span class="text-gray-300 flex items-center gap-1.5">
+            <svg class="w-3.5 h-3.5 text-mint" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
+            Teto de Gastos Mensal:
+          </span>
+          <span id="sliderDisplayVal" class="font-bold text-mint">R$ 140,00</span>
+        </div>
+        <input type="range" min="80" max="250" step="10" value="140" id="budgetRangeSlider" oninput="updateBudgetSlider(this.value)" class="w-full h-2 bg-black/60 rounded-lg appearance-none cursor-pointer accent-[#00E599]">
+        <div id="budgetFeedback" class="flex items-center justify-between text-[10px] font-mono pt-0.5 text-warning">
+          <span>⚠️ Gasto excede teto em R$ 21,60</span>
+          <span class="text-gray-400">Meta: R$ 140/mês</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. PAINEL DE GESTÃO E CANCELAMENTO RÁPIDO (TELA 3 DA SEÇÃO 6.1.3) -->
     <section class="space-y-3">
       <div class="flex items-center justify-between px-1">
-        <span class="text-xs font-mono text-gray-400 uppercase tracking-wider font-semibold">4 Assinaturas Conectadas</span>
+        <div>
+          <h3 class="text-xs font-mono text-gray-400 uppercase tracking-wider font-semibold">Painel de Gestão e Cancelamento</h3>
+          <span class="text-[10px] text-gray-500 font-mono">Ações rápidas em 1 toque</span>
+        </div>
         <span class="text-[10px] font-mono text-mint font-bold">Open Finance</span>
       </div>
 
-      <!-- Card 1: Disney+ (Ocioso com Ação de Pausa em 1 Toque) -->
-      <div class="wallet-card p-4 bg-gradient-to-r from-amber-950/40 via-[#141E18] to-[#111714] border-warning/40 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-          <div class="brand-app-tile brand-app-tile-disney w-11 h-11 rounded-2xl shrink-0" title="Disney+">
-            <img src="../assets/logos/disney.png" alt="Disney+" class="w-full h-full object-cover">
-          </div>
-          <div>
-            <div class="flex items-center gap-2">
-              <h4 class="text-xs font-bold text-white font-display">Disney+ Standard</h4>
-              <span class="px-1.5 py-0.2 rounded text-[8px] font-mono bg-warning/20 text-warning border border-warning/30 font-bold">OCIOSO</span>
+      <!-- Card 1: Disney+ (Ocioso há 48 dias) -->
+      <div class="wallet-card p-4 bg-gradient-to-r from-amber-950/30 via-[#141E18] to-[#111714] border-warning/40 space-y-3" id="stream-card-disney">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="brand-app-tile brand-app-tile-disney w-11 h-11 rounded-2xl shrink-0" title="Disney+">
+              <img src="../assets/logos/disney.png" alt="Disney+" class="w-full h-full object-cover">
             </div>
-            <p class="text-xs font-mono font-bold text-white mt-0.5">R$ 43,90<span class="text-[10px] text-gray-400 font-normal">/mês</span></p>
+            <div>
+              <div class="flex items-center gap-2">
+                <h4 class="text-xs font-bold text-white font-display">Disney+ Standard</h4>
+                <span class="status-tag px-1.5 py-0.2 rounded text-[8px] font-mono bg-warning/20 text-warning border border-warning/30 font-bold">INATIVO 48D</span>
+              </div>
+              <p class="text-xs font-mono font-bold text-white mt-0.5">R$ 43,90<span class="text-[10px] text-gray-400 font-normal">/mês</span></p>
+            </div>
+          </div>
+          <div class="text-right">
+            <span class="text-[10px] font-mono text-gray-400 block">Fim do Ciclo</span>
+            <span class="text-xs font-mono text-gray-200 font-bold">28 Set 2026</span>
           </div>
         </div>
-        <button onclick="showToast('Pausa pós-temporada de O Urso agendada!')" class="px-3 py-2 rounded-xl bg-warning hover:bg-warning/90 text-obsidian text-[11px] font-bold shadow-md transition-all cursor-pointer">
-          Pausar
-        </button>
+
+        <!-- Botões de Ação Rápida Seção 6.1.3 -->
+        <div class="grid grid-cols-2 gap-2 pt-1 border-t border-white/8">
+          <button onclick="openConfirmModal('Disney+ Standard', 43.90, 'Pausar no Fim do Ciclo')" class="py-2 px-2.5 rounded-xl bg-warning/15 hover:bg-warning text-warning hover:text-obsidian border border-warning/30 text-[11px] font-bold font-mono transition-all text-center cursor-pointer">
+            Pausar no Fim do Ciclo
+          </button>
+          <button onclick="openConfirmModal('Disney+ Standard', 43.90, 'Cancelar Assinatura')" class="py-2 px-2.5 rounded-xl bg-red-500/10 hover:bg-red-600 text-red-400 hover:text-white border border-red-500/25 text-[11px] font-bold font-mono transition-all text-center cursor-pointer">
+            Cancelar Assinatura
+          </button>
+        </div>
       </div>
 
-      <!-- Card 2: Netflix 4K -->
-      <div class="wallet-card p-4 bg-[#111714] border-white/10 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-          <div class="brand-app-tile brand-app-tile-netflix w-11 h-11 rounded-2xl shrink-0" title="Netflix">
-            <img src="../assets/logos/netflix.png" alt="Netflix" class="w-full h-full object-cover">
-          </div>
-          <div>
-            <div class="flex items-center gap-2">
-              <h4 class="text-xs font-bold text-white font-display">Netflix Premium 4K</h4>
-              <span class="px-1.5 py-0.2 rounded text-[8px] font-mono bg-mint/20 text-mint border border-mint/30 font-bold">ATIVO</span>
+      <!-- Card 2: Netflix Premium 4K -->
+      <div class="wallet-card p-4 bg-[#111714] border-white/10 space-y-3" id="stream-card-netflix">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="brand-app-tile brand-app-tile-netflix w-11 h-11 rounded-2xl shrink-0" title="Netflix">
+              <img src="../assets/logos/netflix.png" alt="Netflix" class="w-full h-full object-cover">
             </div>
-            <p class="text-xs font-mono font-bold text-white mt-0.5">R$ 55,90<span class="text-[10px] text-gray-400 font-normal">/mês</span></p>
+            <div>
+              <div class="flex items-center gap-2">
+                <h4 class="text-xs font-bold text-white font-display">Netflix Premium 4K</h4>
+                <span class="status-tag px-1.5 py-0.2 rounded text-[8px] font-mono bg-mint/20 text-mint border border-mint/30 font-bold">ATIVO · USO ALTO</span>
+              </div>
+              <p class="text-xs font-mono font-bold text-white mt-0.5">R$ 55,90<span class="text-[10px] text-gray-400 font-normal">/mês</span></p>
+            </div>
+          </div>
+          <div class="text-right">
+            <span class="text-[10px] font-mono text-gray-400 block">Fim do Ciclo</span>
+            <span class="text-xs font-mono text-gray-200 font-bold">14 Out 2026</span>
           </div>
         </div>
-        <span class="text-[10px] font-mono text-mint font-bold px-2 py-1 bg-mint/10 rounded-lg">Uso Alto</span>
+
+        <div class="grid grid-cols-2 gap-2 pt-1 border-t border-white/8">
+          <button onclick="openConfirmModal('Netflix Premium 4K', 55.90, 'Pausar no Fim do Ciclo')" class="py-2 px-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 text-[11px] font-bold font-mono transition-all text-center cursor-pointer">
+            Pausar no Fim do Ciclo
+          </button>
+          <button onclick="openConfirmModal('Netflix Premium 4K', 55.90, 'Cancelar Assinatura')" class="py-2 px-2.5 rounded-xl bg-red-500/10 hover:bg-red-600 text-red-400 hover:text-white border border-red-500/25 text-[11px] font-bold font-mono transition-all text-center cursor-pointer">
+            Cancelar Assinatura
+          </button>
+        </div>
       </div>
 
-      <!-- Card 3: Max -->
-      <div class="wallet-card p-4 bg-[#111714] border-white/10 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-          <div class="brand-app-tile brand-app-tile-max w-11 h-11 rounded-2xl shrink-0" title="Max">
-            <img src="../assets/logos/max.png" alt="Max" class="w-full h-full object-cover">
-          </div>
-          <div>
-            <div class="flex items-center gap-2">
-              <h4 class="text-xs font-bold text-white font-display">Max (HBO)</h4>
-              <span class="px-1.5 py-0.2 rounded text-[8px] font-mono bg-purple-500/20 text-purple-300 border border-purple-400/30 font-bold">ATIVO</span>
+      <!-- Card 3: Max HBO -->
+      <div class="wallet-card p-4 bg-[#111714] border-white/10 space-y-3" id="stream-card-max">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="brand-app-tile brand-app-tile-max w-11 h-11 rounded-2xl shrink-0" title="Max">
+              <img src="../assets/logos/max.png" alt="Max" class="w-full h-full object-cover">
             </div>
-            <p class="text-xs font-mono font-bold text-white mt-0.5">R$ 39,90<span class="text-[10px] text-gray-400 font-normal">/mês</span></p>
+            <div>
+              <div class="flex items-center gap-2">
+                <h4 class="text-xs font-bold text-white font-display">Max (HBO)</h4>
+                <span class="status-tag px-1.5 py-0.2 rounded text-[8px] font-mono bg-purple-500/20 text-purple-300 border border-purple-400/30 font-bold">ATIVO · MODERADO</span>
+              </div>
+              <p class="text-xs font-mono font-bold text-white mt-0.5">R$ 39,90<span class="text-[10px] text-gray-400 font-normal">/mês</span></p>
+            </div>
+          </div>
+          <div class="text-right">
+            <span class="text-[10px] font-mono text-gray-400 block">Fim do Ciclo</span>
+            <span class="text-xs font-mono text-gray-200 font-bold">03 Out 2026</span>
           </div>
         </div>
-        <span class="text-[10px] font-mono text-purple-300 font-bold px-2 py-1 bg-purple-500/10 rounded-lg">Moderado</span>
+
+        <div class="grid grid-cols-2 gap-2 pt-1 border-t border-white/8">
+          <button onclick="openConfirmModal('Max (HBO)', 39.90, 'Pausar no Fim do Ciclo')" class="py-2 px-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 text-[11px] font-bold font-mono transition-all text-center cursor-pointer">
+            Pausar no Fim do Ciclo
+          </button>
+          <button onclick="openConfirmModal('Max (HBO)', 39.90, 'Cancelar Assinatura')" class="py-2 px-2.5 rounded-xl bg-red-500/10 hover:bg-red-600 text-red-400 hover:text-white border border-red-500/25 text-[11px] font-bold font-mono transition-all text-center cursor-pointer">
+            Cancelar Assinatura
+          </button>
+        </div>
       </div>
 
       <!-- Card 4: Apple TV+ -->
-      <div class="wallet-card p-4 bg-[#111714] border-white/10 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-          <div class="brand-app-tile brand-app-tile-apple w-11 h-11 rounded-2xl shrink-0" title="Apple TV+">
-            <img src="../assets/logos/apple.png" alt="Apple TV+" class="w-full h-full object-cover">
-          </div>
-          <div>
-            <div class="flex items-center gap-2">
-              <h4 class="text-xs font-bold text-white font-display">Apple TV+</h4>
-              <span class="px-1.5 py-0.2 rounded text-[8px] font-mono bg-white/10 text-gray-300 border border-white/20 font-bold">ANUAL</span>
+      <div class="wallet-card p-4 bg-[#111714] border-white/10 space-y-3" id="stream-card-apple">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="brand-app-tile brand-app-tile-apple w-11 h-11 rounded-2xl shrink-0" title="Apple TV+">
+              <img src="../assets/logos/apple.png" alt="Apple TV+" class="w-full h-full object-cover">
             </div>
-            <p class="text-xs font-mono font-bold text-white mt-0.5">R$ 21,90<span class="text-[10px] text-gray-400 font-normal">/mês eq.</span></p>
+            <div>
+              <div class="flex items-center gap-2">
+                <h4 class="text-xs font-bold text-white font-display">Apple TV+</h4>
+                <span class="status-tag px-1.5 py-0.2 rounded text-[8px] font-mono bg-white/10 text-gray-300 border border-white/20 font-bold">PLANO ANUAL</span>
+              </div>
+              <p class="text-xs font-mono font-bold text-white mt-0.5">R$ 21,90<span class="text-[10px] text-gray-400 font-normal">/mês eq.</span></p>
+            </div>
+          </div>
+          <div class="text-right">
+            <span class="text-[10px] font-mono text-gray-400 block">Renovação</span>
+            <span class="text-xs font-mono text-gray-200 font-bold">Dez 2026</span>
           </div>
         </div>
-        <span class="text-[10px] font-mono text-gray-400 font-bold px-2 py-1 bg-white/5 rounded-lg">Até Dez/26</span>
+
+        <div class="grid grid-cols-2 gap-2 pt-1 border-t border-white/8">
+          <button onclick="openConfirmModal('Apple TV+', 21.90, 'Pausar no Fim do Ciclo')" class="py-2 px-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 text-[11px] font-bold font-mono transition-all text-center cursor-pointer">
+            Pausar no Fim do Ciclo
+          </button>
+          <button onclick="openConfirmModal('Apple TV+', 21.90, 'Cancelar Assinatura')" class="py-2 px-2.5 rounded-xl bg-red-500/10 hover:bg-red-600 text-red-400 hover:text-white border border-red-500/25 text-[11px] font-bold font-mono transition-all text-center cursor-pointer">
+            Cancelar Assinatura
+          </button>
+        </div>
       </div>
     </section>
 
   </main>
 
+  <!-- MODAL DE CONFIRMAÇÃO (SEÇÃO 6.1.3: ECONOMIA EM 12 MESES) -->
+  <div id="confirmActionModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-end sm:items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+    <div class="w-full max-w-sm bg-[#111714] border border-white/15 rounded-3xl p-5 shadow-[0_20px_50px_rgba(0,0,0,0.8)] transform translate-y-8 transition-transform duration-300 space-y-4" id="confirmModalCard">
+      <!-- Topo Modal -->
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div id="modalBrandTile" class="brand-app-tile brand-app-tile-disney w-9 h-9 rounded-xl">
+            <img id="modalBrandImg" src="../assets/logos/disney.png" alt="Streaming" class="w-full h-full object-cover">
+          </div>
+          <div>
+            <h3 id="modalStreamName" class="text-xs font-bold text-white font-display">Disney+ Standard</h3>
+            <span id="modalActionBadge" class="text-[9px] font-mono text-warning font-semibold">Pausa no Fim do Ciclo</span>
+          </div>
+        </div>
+        <button onclick="closeConfirmModal()" class="w-7 h-7 rounded-full bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white flex items-center justify-center text-xs cursor-pointer">
+          ✕
+        </button>
+      </div>
+
+      <!-- Demonstração da Economia Projetada em 12 Meses (6.1.3) -->
+      <div class="p-4 rounded-2xl bg-[#080C0A] border border-mint/30 shadow-[0_0_20px_rgba(0,229,153,0.1)] text-center space-y-1">
+        <span class="text-[9px] font-mono text-gray-400 uppercase tracking-widest block">Economia Projetada em 12 Meses</span>
+        <div class="flex items-baseline justify-center gap-1">
+          <span class="text-sm font-mono text-mint font-bold">R$</span>
+          <span id="modalYearlySavings" class="text-3xl font-mono font-black text-mint">418,80</span>
+          <span class="text-xs font-mono text-gray-400">/ano</span>
+        </div>
+        <p id="modalMonthlyBreakdown" class="text-[10px] font-mono text-gray-400 pt-1 border-t border-white/10">
+          Você poupará <strong class="text-white">R$ 34,90 a cada mês</strong> sem cobrança de multas.
+        </p>
+      </div>
+
+      <!-- Bloco de Orientação e Deep Link de Cancelamento Assistido -->
+      <div id="modalAssistBlock" class="hidden p-3.5 rounded-2xl bg-[#080C0A] border border-red-500/25 space-y-2.5 text-left">
+        <div class="flex items-center gap-1.5 text-red-400 text-xs font-bold font-mono">
+          <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span>Orientação de Cancelamento em 3 Passos</span>
+        </div>
+        <ol class="text-[11px] text-gray-300 space-y-1.5 pl-4 list-decimal font-sans leading-relaxed">
+          <li>Toque no botão abaixo para abrir a <strong>página oficial de cancelamento</strong> da plataforma.</li>
+          <li>Confirme o encerramento do plano no painel da operadora de streaming.</li>
+          <li>Retorne ao NeatStream e confirme abaixo para atualizar seu Econômetro.</li>
+        </ol>
+
+        <!-- Deep Link Direto Oficial -->
+        <a id="modalOfficialCancelLink" href="#" target="_blank" rel="noopener noreferrer" class="w-full py-2.5 px-3 rounded-xl bg-red-500/15 hover:bg-red-500/25 border border-red-500/35 text-red-300 hover:text-white text-xs font-bold font-mono flex items-center justify-between transition-all no-underline mt-2 active:scale-95 shadow-lg">
+          <div class="flex items-center gap-2 min-w-0">
+            <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse shrink-0"></span>
+            <span id="modalOfficialCancelText" class="truncate">Abrir Cancelamento Oficial</span>
+          </div>
+          <svg class="w-3.5 h-3.5 shrink-0 text-red-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
+      </div>
+
+      <!-- Explicação Transparente -->
+      <p id="modalExplanation" class="text-[11px] text-gray-400 leading-relaxed text-center">
+        Seu acesso permanecerá liberado até a data da renovação. O NeatStream alertará você assim que novas temporadas forem adicionadas.
+      </p>
+
+      <!-- Botões de Decisão -->
+      <div class="space-y-2 pt-1">
+        <button id="modalConfirmBtn" onclick="executeSubscriptionAction()" class="w-full py-3 rounded-2xl bg-gradient-to-r from-mint to-mint-dark text-obsidian text-xs font-bold font-mono shadow-[0_0_20px_rgba(0,229,153,0.3)] hover:brightness-110 active:scale-95 transition-all cursor-pointer">
+          Confirmar e Garantir Economia
+        </button>
+        <button onclick="closeConfirmModal()" class="w-full py-2 rounded-2xl bg-transparent hover:bg-white/5 text-gray-400 hover:text-white text-xs font-semibold transition-colors cursor-pointer">
+          Manter Assinatura Ativa
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Floating Mobile Dock Glass -->
-  <div class="fixed bottom-4 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-[390px] z-50">
+  <div class="fixed bottom-4 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-[390px] z-40">
     <nav class="dock-glass rounded-2xl p-2 flex items-center justify-around text-xs">
       <a href="hoje.html" class="flex flex-col items-center gap-1 text-gray-400 hover:text-white px-3 py-1 transition-colors">
         <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -289,6 +504,8 @@
 
   <script>
     let toastTimer = null;
+    let pendingAction = null;
+
     function showToast(msg) {
       const t = document.getElementById('toastNotification');
       const m = document.getElementById('toastMessage');
@@ -301,6 +518,145 @@
         t.classList.remove('translate-y-0', 'opacity-100');
         t.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
       }, 2500);
+    }
+
+    // Mapeamento Oficial de Deep Links de Cancelamento
+    function getOfficialCancelInfo(serviceName) {
+      const s = (serviceName || '').toLowerCase();
+      if (s.includes('netflix')) return { key: 'netflix', name: 'Netflix', url: 'https://www.netflix.com/cancelplan' };
+      if (s.includes('disney')) return { key: 'disney', name: 'Disney+', url: 'https://www.disneyplus.com/account/billing' };
+      if (s.includes('max') || s.includes('hbo')) return { key: 'max', name: 'Max', url: 'https://auth.max.com/subscription' };
+      if (s.includes('apple')) return { key: 'apple', name: 'Apple TV+', url: 'https://tv.apple.com/settings' };
+      if (s.includes('prime') || s.includes('amazon')) return { key: 'prime', name: 'Prime Video', url: 'https://www.amazon.com.br/gp/video/settings' };
+      return { key: 'streaming', name: serviceName, url: 'https://www.google.com/search?q=' + encodeURIComponent('cancelar assinatura ' + serviceName) };
+    }
+
+    // Modal de Confirmação e Cancelamento Assistido da Seção 6.1.3
+    function openConfirmModal(serviceName, monthlyPrice, actionType, idleDays = 0) {
+      pendingAction = { serviceName, monthlyPrice, actionType };
+      const modal = document.getElementById('confirmActionModal');
+      const card = document.getElementById('confirmModalCard');
+      const isCancel = actionType.toLowerCase().includes('cancelar');
+      const target = getOfficialCancelInfo(serviceName);
+      
+      document.getElementById('modalStreamName').textContent = serviceName;
+      const badge = document.getElementById('modalActionBadge');
+      const assistBlock = document.getElementById('modalAssistBlock');
+      const officialLink = document.getElementById('modalOfficialCancelLink');
+      const officialText = document.getElementById('modalOfficialCancelText');
+      const confirmBtn = document.getElementById('modalConfirmBtn');
+      const explanation = document.getElementById('modalExplanation');
+      
+      const yearly = (monthlyPrice * 12).toFixed(2).replace('.', ',');
+      document.getElementById('modalYearlySavings').textContent = yearly;
+      document.getElementById('modalMonthlyBreakdown').innerHTML = `Você poupará <strong class="text-white">R$ ${monthlyPrice.toFixed(2).replace('.', ',')}/mês</strong> sem multas.`;
+      
+      const img = document.getElementById('modalBrandImg');
+      const tile = document.getElementById('modalBrandTile');
+      tile.className = 'brand-app-tile w-9 h-9 rounded-xl';
+      
+      if (target.key === 'netflix') {
+        img.src = '../assets/logos/netflix.png';
+        tile.classList.add('brand-app-tile-netflix');
+      } else if (target.key === 'disney') {
+        img.src = '../assets/logos/disney.png';
+        tile.classList.add('brand-app-tile-disney');
+      } else if (target.key === 'max') {
+        img.src = '../assets/logos/max.png';
+        tile.classList.add('brand-app-tile-max');
+      } else if (target.key === 'apple') {
+        img.src = '../assets/logos/apple.png';
+        tile.classList.add('brand-app-tile-apple');
+      } else {
+        img.src = '../assets/logos/prime.png';
+      }
+
+      if (isCancel) {
+        badge.textContent = 'Cancelamento Assistido';
+        badge.className = 'text-[9px] font-mono text-red-400 font-bold';
+        assistBlock.classList.remove('hidden');
+        officialLink.href = target.url;
+        officialText.textContent = `Abrir Cancelamento no ${target.name} ↗`;
+        explanation.textContent = `Após cancelar na operadora, toque no botão abaixo para registrar a economia no NeatStream e ver sua nova fatura reduzida.`;
+        confirmBtn.textContent = `Já Cancelei no ${target.name} ✓`;
+        confirmBtn.className = 'w-full py-3 rounded-2xl bg-gradient-to-r from-mint to-mint-dark text-obsidian text-xs font-bold font-mono shadow-[0_0_20px_rgba(0,229,153,0.3)] hover:brightness-110 active:scale-95 transition-all cursor-pointer';
+      } else {
+        badge.textContent = actionType;
+        badge.className = 'text-[9px] font-mono text-warning font-semibold';
+        assistBlock.classList.add('hidden');
+        explanation.textContent = 'Seu acesso permanecerá liberado até a data da renovação. O NeatStream alertará você assim que novas temporadas forem adicionadas.';
+        confirmBtn.textContent = 'Confirmar e Garantir Economia';
+        confirmBtn.className = 'w-full py-3 rounded-2xl bg-gradient-to-r from-mint to-mint-dark text-obsidian text-xs font-bold font-mono shadow-[0_0_20px_rgba(0,229,153,0.3)] hover:brightness-110 active:scale-95 transition-all cursor-pointer';
+      }
+
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+      modal.classList.add('opacity-100');
+      card.classList.remove('translate-y-8');
+      card.classList.add('translate-y-0');
+    }
+
+    function closeConfirmModal() {
+      const modal = document.getElementById('confirmActionModal');
+      const card = document.getElementById('confirmModalCard');
+      if (!modal) return;
+      modal.classList.remove('opacity-100');
+      modal.classList.add('opacity-0', 'pointer-events-none');
+      card.classList.remove('translate-y-0');
+      card.classList.add('translate-y-8');
+      pendingAction = null;
+    }
+
+    function executeSubscriptionAction() {
+      if (!pendingAction) return;
+      const { serviceName, monthlyPrice, actionType } = pendingAction;
+      const isCancel = actionType.toLowerCase().includes('cancelar');
+      const yearly = (monthlyPrice * 12).toFixed(2);
+      
+      closeConfirmModal();
+      
+      if (isCancel) {
+        // Redireciona para a tela de Celebração com parâmetros dinâmicos
+        window.location.href = `celebracao.html?service=${encodeURIComponent(serviceName)}&price=${monthlyPrice}&savings=${yearly}`;
+        return;
+      }
+      
+      // Feedback instantâneo para Pausa
+      showToast(`${actionType} de ${serviceName} confirmada! +R$ ${parseFloat(yearly).toFixed(2).replace('.', ',')}/ano poupados.`);
+      
+      // Se for Disney+, marca o arco do donut e o card
+      if (serviceName.includes('Disney')) {
+        const arc = document.getElementById('donutArcDisney');
+        if (arc) arc.setAttribute('stroke', '#374151');
+        const card = document.getElementById('stream-card-disney');
+        if (card) {
+          card.classList.add('opacity-70');
+          const tag = card.querySelector('.status-tag');
+          if (tag) {
+            tag.className = 'status-tag px-1.5 py-0.2 rounded text-[8px] font-mono bg-mint/20 text-mint border border-mint/30 font-bold';
+            tag.textContent = 'PAUSA AGENDADA';
+          }
+        }
+        document.getElementById('donutCenterTotal').textContent = 'R$ 117,70';
+      }
+    }
+
+    // Slider de Teto Orçamentário da Seção 6.1.3
+    function updateBudgetSlider(val) {
+      const num = parseFloat(val);
+      document.getElementById('sliderDisplayVal').textContent = `R$ ${num.toFixed(2).replace('.', ',')}`;
+      
+      const currentSpend = 161.60;
+      const fb = document.getElementById('budgetFeedback');
+      
+      if (num < currentSpend) {
+        const diff = (currentSpend - num).toFixed(2).replace('.', ',');
+        fb.className = 'flex items-center justify-between text-[10px] font-mono pt-0.5 text-warning';
+        fb.innerHTML = `<span>⚠️ Gasto excede teto em R$ ${diff}</span><span class="text-gray-400">Meta: R$ ${num}</span>`;
+      } else {
+        const margin = (num - currentSpend).toFixed(2).replace('.', ',');
+        fb.className = 'flex items-center justify-between text-[10px] font-mono pt-0.5 text-mint';
+        fb.innerHTML = `<span>✓ Margem de folga: R$ ${margin}</span><span class="text-gray-400">Teto: R$ ${num}</span>`;
+      }
     }
   </script>
 </body>

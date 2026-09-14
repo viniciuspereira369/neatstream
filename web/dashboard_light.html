@@ -71,17 +71,18 @@
     /* Cinematic Poster Card with Spring Scale */
     .poster-card {
       position: relative;
-      background: #111714;
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: #FFFFFF;
+      border: 1px solid #E5E7EB;
       border-radius: 1.25rem;
       overflow: hidden;
       transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease, box-shadow 0.35s ease;
       cursor: pointer;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
     }
     .poster-card:hover {
       transform: translateY(-6px) scale(1.02);
-      border-color: rgba(0, 229, 153, 0.45);
-      box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.8), 0 0 25px rgba(0, 229, 153, 0.18);
+      border-color: #0E7C5B;
+      box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.12), 0 0 20px rgba(14, 124, 91, 0.15);
     }
     .poster-card:hover img {
       transform: scale(1.06);
@@ -303,6 +304,31 @@
       background: #000000;
       border-color: rgba(0, 0, 0, 0.25);
     }
+
+    /* ====== UNIVERSAL SPOTLIGHT SEARCH MODAL (LIGHT) ====== */
+    #universalSearchOverlay {
+      position: fixed; inset: 0; z-index: 250;
+      background: rgba(15, 23, 42, 0.5);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      display: flex; align-items: flex-start; justify-content: center;
+      padding-top: 10vh; padding-inline: 1rem;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    #universalSearchOverlay.active { opacity: 1; pointer-events: auto; }
+    #universalSearchCard {
+      width: 100%; max-width: 680px; max-height: 80vh;
+      background: #FFFFFF;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      border-radius: 1.5rem;
+      overflow: hidden; display: flex; flex-direction: column;
+      box-shadow: 0 35px 80px -15px rgba(0,0,0,0.3), 0 0 40px rgba(14,124,91,0.1);
+      transform: scale(0.95) translateY(-10px);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    #universalSearchOverlay.active #universalSearchCard { transform: scale(1) translateY(0); }
+    #universalSearchResultsWrap::-webkit-scrollbar { width: 4px; }
+    #universalSearchResultsWrap::-webkit-scrollbar-thumb { background: rgba(14,124,91,0.25); border-radius: 4px; }
   </style>
 </head>
 <body class="min-h-screen flex h-screen overflow-hidden antialiased bg-[#FAFBFC] text-[#0E1116]">
@@ -438,6 +464,19 @@
 
       <!-- Right Actions -->
       <div class="flex items-center gap-3">
+        <!-- Universal Spotlight Search Trigger Button -->
+        <button onclick="openUniversalSearch()" 
+                title="Buscar qualquer filme ou série (Ctrl+K)" 
+                aria-label="Buscar qualquer filme ou série"
+                class="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gray-100 hover:bg-gray-200 border border-gray-200 hover:border-[#0E7C5B]/40 text-gray-700 hover:text-gray-900 transition-all text-xs cursor-pointer group shadow-sm">
+          <svg class="w-3.5 h-3.5 text-[#0E7C5B] group-hover:scale-110 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <span class="hidden md:inline font-medium">Buscar filme, série...</span>
+          <kbd class="hidden lg:inline-flex items-center gap-0.5 px-1.5 py-0.5 text-[10px] font-mono text-gray-500 bg-white border border-gray-200 rounded tracking-wider shadow-xs">Ctrl K</kbd>
+        </button>
+
         <!-- Compact HUD Quick Badge -->
         <div onclick="switchDashboardView('financas')" class="hidden 2xl:flex items-center gap-3 bg-gray-50 px-3.5 py-1.5 rounded-full border border-gray-200 cursor-pointer hover:border-[#0E7C5B]/40 transition-all">
           <span class="w-2 h-2 rounded-full bg-mint animate-pulse"></span>
@@ -511,11 +550,16 @@
             </p>
 
             <div class="flex flex-wrap items-center gap-3 pt-2">
-              <button onclick="openWatchModal('dune2')" class="px-6 py-3 rounded-2xl bg-gradient-to-r from-mint to-mint-dark text-obsidian font-display font-bold text-xs flex items-center gap-2 shadow-[0_0_25px_rgba(0,229,153,0.4)] hover:brightness-110 active:scale-95 transition-all cursor-pointer">
+              <a href="https://play.hbomax.com/movie/f0a4f239-0b57-47e2-a39a-54fb96925e61" target="_blank" rel="noopener noreferrer" class="px-6 py-3 rounded-2xl bg-gradient-to-r from-mint to-mint-dark text-obsidian font-display font-bold text-xs flex items-center gap-2 shadow-[0_0_25px_rgba(0,229,153,0.4)] hover:brightness-110 active:scale-95 transition-all cursor-pointer no-underline">
                 <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                Assistir Agora
+                <span>Assistir no Max</span>
+                <svg class="w-3.5 h-3.5 opacity-75 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+              </a>
+              <button onclick="openWatchModal('dune2')" class="px-4 py-3 rounded-2xl bg-gray-100 hover:bg-gray-200 text-gray-900 text-xs font-semibold backdrop-blur-md transition-all flex items-center gap-1.5 cursor-pointer">
+                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                <span>Detalhes &amp; Trailer</span>
               </button>
-              <button onclick="toggleBillboardAudio(true)" class="px-5 py-3 rounded-2xl bg-gray-100 hover:bg-gray-200 text-gray-900 text-xs font-semibold backdrop-blur-md transition-all flex items-center gap-1.5 cursor-pointer">
+              <button onclick="toggleBillboardAudio(true)" class="px-4 py-3 rounded-2xl bg-gray-100 hover:bg-gray-200 text-gray-900 text-xs font-semibold backdrop-blur-md transition-all flex items-center gap-1.5 cursor-pointer">
                 <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
                 <span>Ouvir Teaser</span>
               </button>
@@ -703,122 +747,366 @@
       <!-- ========================================== -->
       <section id="view-financas" class="view-content space-y-8">
 
-        <!-- SLEEK COMPACT FINANCIAL HUD BAR (REPLACES BULKY TEXT TABLES) -->
-        <div class="p-6 rounded-3xl bg-white border border-[#0E7C5B]/25 shadow-xl relative overflow-hidden space-y-6">
-          <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-gray-200">
+        <!-- Header & Open Finance Conexão Bancária (Tela 1 Bridge) -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 p-5 rounded-3xl bg-white border border-gray-200 shadow-sm">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-mono bg-emerald-50 text-[#0E7C5B] border border-[#0E7C5B]/30 font-bold uppercase tracking-wider">Seção 6.1.3 FEA-USP</span>
+              <span class="text-xs text-gray-500 font-mono">Gestão &amp; Econômetro em Tempo Real</span>
+            </div>
+            <h2 class="text-2xl font-bold font-display text-gray-900 tracking-tight mt-1">Dashboard Financeiro &amp; Econômetro</h2>
+            <p class="text-xs text-gray-500 mt-0.5">Visão consolidada de assinaturas, controle de teto de gastos e mitigação de desperdício via Open Finance.</p>
+          </div>
+
+          <!-- Open Finance Bank Pill com Squircle Nubank Oficial -->
+          <div class="flex items-center gap-3 bg-gray-50 px-4 py-2.5 rounded-2xl border border-gray-200 shadow-inner">
+            <div class="w-8 h-8 rounded-xl bg-[#820AD1] border border-black/10 flex items-center justify-center p-1.5 shrink-0 overflow-hidden shadow-sm">
+              <img src="../assets/logos/nubank.png" alt="Nubank" class="w-full h-full object-contain">
+            </div>
             <div>
               <div class="flex items-center gap-2">
-                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-mono bg-emerald-50 text-[#0E7C5B] text-[#0E7C5B] border border-[#0E7C5B]/30 font-bold uppercase">HUD Orçamentário Ativo</span>
-                <span class="text-xs text-gray-500 font-mono">Open Finance Sincronizado</span>
+                <span class="text-xs font-bold text-gray-900 font-display">Nubank · Cartão Principal</span>
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-mono bg-emerald-50 text-[#0E7C5B] border border-[#0E7C5B]/25">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse"></span>
+                  <span>Sincronizado</span>
+                </span>
               </div>
-              <h2 class="text-2xl font-bold font-display text-gray-900 tracking-tight mt-1">Econômetro &amp; Bateria de Streamings</h2>
+              <span class="text-[10px] font-mono text-gray-500 block">Conexão Segura · Open Finance</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD DE ALERTA VERMELHO/ÂMBAR (CANÔNICO SEÇÃO 6.1.3) -->
+        <div class="p-5 rounded-3xl bg-gradient-to-r from-amber-50 via-amber-100/50 to-white border border-amber-300 shadow-sm relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div class="absolute -top-12 -right-12 w-36 h-36 bg-amber-400/10 rounded-full blur-3xl pointer-events-none"></div>
+          <div class="flex items-start gap-3.5">
+            <div class="w-11 h-11 rounded-2xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-700 shrink-0 mt-0.5 shadow-sm">
+              <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                <line x1="12" y1="9" x2="12" y2="13"></line>
+                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+              </svg>
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="px-2.5 py-0.5 rounded text-[9px] font-mono bg-amber-200/60 text-amber-900 border border-amber-400 font-bold uppercase tracking-wider">Alerta de Ociosidade</span>
+                <span class="text-[11px] font-mono text-gray-500">Detecção 48d</span>
+              </div>
+              <p class="text-sm font-semibold text-gray-900 mt-1 leading-snug">
+                Você tem <strong class="text-amber-800 font-bold">1 assinatura inativa há 48 dias</strong> gerando desperdício de <strong class="text-gray-900 font-mono">R$ 34,90/mês</strong>.
+              </p>
+              <p class="text-xs text-gray-500 mt-0.5">Assinatura: Disney+ Standard · Nenhuma atividade nos últimos 48 dias.</p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-3 self-end md:self-center shrink-0">
+            <div class="text-right hidden sm:block">
+              <span class="text-[10px] font-mono text-gray-500 block uppercase">Potencial Poupado</span>
+              <span class="text-sm font-mono font-bold text-[#0E7C5B]">+R$ 418,80/ano</span>
+            </div>
+            <button onclick="openSubscriptionActionModal('Disney+ Standard', 34.90, 'Pausar no Fim do Ciclo', 48)" class="px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold font-mono shadow transition-all cursor-pointer flex items-center gap-2">
+              <span>Pausar no Fim do Ciclo</span>
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- TELA 2: DONUT CHART SVG + CONTROLE DESLIZANTE DE TETO ORÇAMENTÁRIO -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          
+          <!-- Coluna Esquerda (5 cols): Gráfico de Rosca / Donut Chart SVG -->
+          <div class="lg:col-span-5 p-6 rounded-3xl bg-white border border-gray-200 shadow-sm flex flex-col justify-between space-y-6">
+            <div class="flex items-center justify-between pb-4 border-b border-gray-100">
+              <div>
+                <span class="text-[10px] font-mono text-[#0E7C5B] uppercase tracking-widest block font-bold">Gráfico de Rosca (Tela 2)</span>
+                <h3 class="text-lg font-bold font-display text-gray-900 mt-0.5">Distribuição Orçamentária</h3>
+              </div>
+              <span class="px-2.5 py-1 rounded-full text-[10px] font-mono bg-gray-50 text-gray-600 border border-gray-200">
+                Total: <strong class="text-gray-900">4 streamings</strong>
+              </span>
             </div>
 
-            <!-- Mini Radial Gauge & Direct Stat -->
-            <div class="flex items-center gap-6 bg-white px-5 py-3 rounded-2xl border border-gray-200">
-              <div>
-                <span class="text-[10px] font-mono text-gray-500 uppercase tracking-widest block">Gasto Atual vs Teto</span>
-                <span class="text-base font-mono font-bold text-gray-900">R$ 142,60 <span class="text-gray-500">/</span> <span id="budgetHUDVal" class="text-[#0E7C5B]">R$ 140,00</span></span>
+            <!-- Visual Donut Chart SVG -->
+            <div class="flex flex-col items-center justify-center py-2">
+              <div class="relative w-48 h-48 flex items-center justify-center">
+                <svg class="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                  <!-- Base Track -->
+                  <circle cx="50" cy="50" r="36" fill="none" stroke="#F1F5F9" stroke-width="12"></circle>
+                  <!-- Netflix 35% (R$ 55,90) -->
+                  <circle cx="50" cy="50" r="36" fill="none" stroke="#E50914" stroke-width="12" stroke-dasharray="78.3 226.2" stroke-dashoffset="0" class="transition-all duration-700"></circle>
+                  <!-- Disney+ 27% (R$ 43,90) -->
+                  <circle id="webDonutArcDisney" cx="50" cy="50" r="36" fill="none" stroke="#FF9838" stroke-width="12" stroke-dasharray="61.5 226.2" stroke-dashoffset="-78.3" class="transition-all duration-700"></circle>
+                  <!-- Max 25% (R$ 39,90) -->
+                  <circle cx="50" cy="50" r="36" fill="none" stroke="#0022B8" stroke-width="12" stroke-dasharray="55.9 226.2" stroke-dashoffset="-139.8" class="transition-all duration-700"></circle>
+                  <!-- Apple TV+ 13% (R$ 21,90) -->
+                  <circle cx="50" cy="50" r="36" fill="none" stroke="#94A3B8" stroke-width="12" stroke-dasharray="30.5 226.2" stroke-dashoffset="-195.7" class="transition-all duration-700"></circle>
+                </svg>
+                <!-- Centro Informativo da Rosca -->
+                <div class="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
+                  <span class="text-[10px] font-mono text-gray-500 uppercase tracking-wider">Gasto Mensal</span>
+                  <span id="webDonutCenterTotal" class="font-mono text-2xl font-black text-gray-900 tracking-tight">R$ 161,60</span>
+                  <span class="text-[10px] font-mono text-[#0E7C5B] font-bold mt-0.5">4 ativos</span>
+                </div>
               </div>
-              <div class="border-l border-gray-200 pl-5">
-                <span class="text-[10px] font-mono text-gray-500 uppercase tracking-widest block">Economia Anual</span>
-                <span id="savingsHUDVal" class="text-base font-mono font-bold text-[#0E7C5B]">+R$ 526,80</span>
+            </div>
+
+            <!-- Legenda com Brand Squircles Oficiais -->
+            <div class="grid grid-cols-2 gap-2.5 pt-4 border-t border-gray-100 text-xs font-mono">
+              <div class="flex items-center gap-2 text-gray-700 bg-gray-50 p-2 rounded-xl border border-gray-200">
+                <span class="brand-app-tile brand-app-tile-netflix w-5 h-5 rounded-[5px] p-0.5"><img src="../assets/logos/netflix.png" alt="Netflix"></span>
+                <div>
+                  <span class="block text-[11px] text-gray-900 font-bold">Netflix: 35%</span>
+                  <span class="text-[10px] text-gray-500">R$ 55,90</span>
+                </div>
+              </div>
+              <div class="flex items-center gap-2 text-amber-800 bg-amber-50 p-2 rounded-xl border border-amber-200">
+                <span class="brand-app-tile brand-app-tile-disney w-5 h-5 rounded-[5px] p-0.5"><img src="../assets/logos/disney.png" alt="Disney+"></span>
+                <div>
+                  <span class="block text-[11px] text-amber-800 font-bold">Disney+: 27%</span>
+                  <span class="text-[10px] text-amber-700">R$ 43,90 (Ocioso)</span>
+                </div>
+              </div>
+              <div class="flex items-center gap-2 text-gray-700 bg-gray-50 p-2 rounded-xl border border-gray-200">
+                <span class="brand-app-tile brand-app-tile-max w-5 h-5 rounded-[5px] p-0.5"><img src="../assets/logos/max.png" alt="Max"></span>
+                <div>
+                  <span class="block text-[11px] text-gray-900 font-bold">Max: 25%</span>
+                  <span class="text-[10px] text-gray-500">R$ 39,90</span>
+                </div>
+              </div>
+              <div class="flex items-center gap-2 text-gray-700 bg-gray-50 p-2 rounded-xl border border-gray-200">
+                <span class="brand-app-tile brand-app-tile-apple w-5 h-5 rounded-[5px] p-0.5"><img src="../assets/logos/apple.png" alt="Apple TV+"></span>
+                <div>
+                  <span class="block text-[11px] text-gray-900 font-bold">Apple TV+: 13%</span>
+                  <span class="text-[10px] text-gray-500">R$ 21,90 eq.</span>
+                </div>
               </div>
             </div>
           </div>
 
-          <!-- Slider Dinâmico Compacto -->
-          <div class="space-y-2">
-            <div class="flex justify-between text-xs font-mono text-gray-500">
-              <span>Ajustar Teto Mensal Desejado</span>
-              <span id="sliderHUDDisplay" class="text-[#0E7C5B] font-bold">R$ 140,00 / mês</span>
+          <!-- Coluna Direita (7 cols): Econômetro & Slider de Teto de Gastos (Tela 2) -->
+          <div class="lg:col-span-7 p-6 rounded-3xl bg-white border border-gray-200 shadow-sm flex flex-col justify-between space-y-6">
+            <div>
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-gray-100">
+                <div>
+                  <span class="text-[10px] font-mono text-gray-500 uppercase tracking-widest block">Econômetro em Tempo Real</span>
+                  <h3 class="text-lg font-bold font-display text-gray-900 mt-0.5">Teto Orçamentário &amp; ROI</h3>
+                </div>
+                <div class="flex items-center gap-4 bg-gray-50 px-4 py-2.5 rounded-2xl border border-gray-200">
+                  <div>
+                    <span class="text-[9px] font-mono text-gray-500 uppercase tracking-wider block">Gasto Atual</span>
+                    <span class="text-sm font-mono font-bold text-gray-900">R$ 161,60</span>
+                  </div>
+                  <div class="border-l border-gray-200 pl-4">
+                    <span class="text-[9px] font-mono text-gray-500 uppercase tracking-wider block">Teto Desejado</span>
+                    <span id="webBudgetHUDVal" class="text-sm font-mono font-bold text-[#0E7C5B]">R$ 140,00</span>
+                  </div>
+                  <div class="border-l border-gray-200 pl-4">
+                    <span class="text-[9px] font-mono text-[#0E7C5B] uppercase tracking-wider block font-bold">Economia Anual</span>
+                    <span id="webSavingsHUDVal" class="text-sm font-mono font-bold text-[#0E7C5B]">+R$ 526,80</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- CONTROLE DESLIZANTE / SLIDER (SEÇÃO 6.1.3: TETO DE GASTOS MENSAL) -->
+              <div class="space-y-3 pt-6">
+                <div class="flex items-center justify-between text-xs font-mono">
+                  <span class="text-gray-700 flex items-center gap-2">
+                    <svg class="w-4 h-4 text-[#0E7C5B]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
+                    <span>Controle Deslizante: Ajustar Teto Mensal Pretendido:</span>
+                  </span>
+                  <span id="webSliderDisplayVal" class="font-bold text-[#0E7C5B] text-sm">R$ 140,00 / mês</span>
+                </div>
+                <input type="range" min="80" max="250" step="10" value="140" id="webBudgetRangeSlider" oninput="updateWebBudgetSlider(this.value)" class="w-full h-2.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[#0E7C5B]">
+                <div class="flex justify-between text-[10px] font-mono text-gray-500">
+                  <span>R$ 80,00 (Econômico)</span>
+                  <span>R$ 160,00 (Equilibrado)</span>
+                  <span>R$ 250,00 (Ilimitado)</span>
+                </div>
+                <!-- Dynamic feedback banner -->
+                <div id="webBudgetFeedback" class="p-3 rounded-2xl bg-amber-50 border border-amber-300 flex items-center justify-between text-xs font-mono text-amber-900 mt-2">
+                  <div class="flex items-center gap-2">
+                    <span>⚠️</span>
+                    <span id="webBudgetFeedbackMsg">Gasto atual (R$ 161,60) excede seu teto pretendido em <strong>R$ 21,60/mês</strong>.</span>
+                  </div>
+                  <span class="text-[10px] text-gray-500 font-normal">Recomendação: Pausar Disney+</span>
+                </div>
+              </div>
             </div>
-            <input type="range" min="80" max="250" step="10" value="140" oninput="handleHUDSlider(this.value)" class="w-full h-2 bg-gray-800 rounded-lg appearance-none cursor-pointer">
+
+            <!-- Mini HUD Badges Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-4 border-t border-gray-100">
+              <div class="p-3 rounded-2xl bg-gray-50 border border-gray-100 space-y-1">
+                <span class="text-[10px] font-mono text-gray-500 uppercase tracking-wider block">Eficiência do Catálogo</span>
+                <div class="flex items-center justify-between">
+                  <span class="text-base font-mono font-bold text-gray-900">78%</span>
+                  <span class="px-1.5 py-0.5 rounded text-[9px] font-mono bg-emerald-50 text-[#0E7C5B] font-bold">ALTA</span>
+                </div>
+              </div>
+              <div class="p-3 rounded-2xl bg-gray-50 border border-gray-100 space-y-1">
+                <span class="text-[10px] font-mono text-gray-500 uppercase tracking-wider block">Desperdício Ocioso</span>
+                <div class="flex items-center justify-between">
+                  <span class="text-base font-mono font-bold text-amber-800">R$ 43,90</span>
+                  <span class="px-1.5 py-0.5 rounded text-[9px] font-mono bg-amber-100 text-amber-800 font-bold">1 ALERTA</span>
+                </div>
+              </div>
+              <div class="p-3 rounded-2xl bg-gray-50 border border-gray-100 space-y-1">
+                <span class="text-[10px] font-mono text-gray-500 uppercase tracking-wider block">Próxima Renovação</span>
+                <div class="flex items-center justify-between">
+                  <span class="text-sm font-mono font-bold text-gray-800">28 de Set</span>
+                  <span class="text-[10px] font-mono text-gray-500">Disney+</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TELA 3: PAINEL DE GESTÃO E CANCELAMENTO RÁPIDO (AÇÕES DIRETAS) -->
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-mono bg-emerald-50 text-[#0E7C5B] border border-[#0E7C5B]/30 font-bold uppercase">Tela 3 Canônica</span>
+                <h3 class="text-lg font-bold font-display text-gray-900">Painel de Gestão e Cancelamento Rápido</h3>
+              </div>
+              <p class="text-xs text-gray-500 mt-0.5">Ações rápidas sem atrito: pause no fim do ciclo ou cancele com projeção transparente de economia.</p>
+            </div>
+            <span class="text-xs font-mono text-[#0E7C5B] font-bold hidden sm:inline-flex items-center gap-1.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse"></span>
+              <span>Open Finance Ativo</span>
+            </span>
           </div>
 
-          <!-- Bateria Visual de Streamings Ativos (Substitui Tabela Pesada) -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-2">
-            <!-- Disney+ (Em Risco de Ociosidade) -->
-            <div class="p-4 rounded-2xl bg-amber-500/10 border border-warning/40 flex flex-col justify-between">
-              <div>
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center gap-2">
-                    <div class="brand-app-tile brand-app-tile-disney w-6 h-6 rounded-md">
-                      <img src="../assets/logos/disney.png" alt="Disney+" class="w-full h-full object-cover">
-                    </div>
-                    <span class="text-xs font-bold text-blue-500">Disney+ Standard</span>
+          <!-- Grade de Cartões de Assinaturas (Seção 6.1.3) -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+
+            <!-- Card 1: Disney+ Standard (Ocioso há 48 dias) -->
+            <div id="web-stream-card-disney" class="p-5 rounded-3xl bg-white border border-amber-300 shadow-sm flex flex-col justify-between space-y-4">
+              <div class="space-y-3">
+                <div class="flex items-start justify-between">
+                  <div class="brand-app-tile brand-app-tile-disney w-12 h-12 rounded-2xl" title="Disney+">
+                    <img src="../assets/logos/disney.png" alt="Disney+" class="w-full h-full object-cover">
                   </div>
-                  <span class="px-2 py-0.5 rounded text-[9px] font-mono bg-warning/20 text-warning font-bold">OCIOSO HÁ 34D</span>
+                  <span class="px-2 py-0.5 rounded text-[9px] font-mono bg-amber-100 text-amber-800 border border-amber-300 font-bold uppercase tracking-wider">
+                    Inativo 48d
+                  </span>
                 </div>
-                <p class="text-lg font-mono font-bold text-gray-900 mt-2">R$ 43,90<span class="text-xs text-gray-500">/mês</span></p>
-                <div class="w-full bg-black/40 h-1.5 rounded-full mt-2 overflow-hidden">
-                  <div class="bg-warning h-full w-[10%]"></div>
+                <div>
+                  <h4 class="text-sm font-bold font-display text-gray-900">Disney+ Standard</h4>
+                  <p class="text-lg font-mono font-bold text-gray-900 mt-0.5">R$ 43,90<span class="text-xs text-gray-500 font-normal">/mês</span></p>
+                  <span class="text-[11px] font-mono text-gray-500 block mt-1">Fim do Ciclo: <strong class="text-gray-800">28 Set 2026</strong></span>
+                </div>
+                <div class="w-full bg-gray-100 h-1.5 rounded-full overflow-hidden">
+                  <div class="bg-amber-500 h-full w-[10%]"></div>
                 </div>
               </div>
-              <button onclick="openSeasonPauseModal('Disney+', 'O Urso', '18 de Set')" class="mt-4 w-full py-1.5 rounded-xl bg-warning hover:bg-warning/90 text-obsidian text-xs font-bold transition-all cursor-pointer">
-                Agendar Pausa de Temporada
-              </button>
+
+              <!-- Botões de Ação Rápida Seção 6.1.3 -->
+              <div class="grid grid-cols-2 gap-2 pt-2 border-t border-gray-100">
+                <button onclick="openSubscriptionActionModal('Disney+ Standard', 43.90, 'Pausar no Fim do Ciclo', 48)" class="py-2 px-2 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-300 text-[11px] font-bold font-mono transition-all text-center cursor-pointer">
+                  Pausar no Fim do Ciclo
+                </button>
+                <button onclick="openSubscriptionActionModal('Disney+ Standard', 43.90, 'Cancelar Assinatura', 48)" class="py-2 px-2 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 text-[11px] font-bold font-mono transition-all text-center cursor-pointer">
+                  Cancelar Assinatura
+                </button>
+              </div>
             </div>
 
-            <!-- Netflix 4K -->
-            <div class="p-4 rounded-2xl bg-white border border-gray-200 flex flex-col justify-between">
-              <div>
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center gap-2">
-                    <div class="brand-app-tile brand-app-tile-netflix w-6 h-6 rounded-md">
-                      <img src="../assets/logos/netflix.png" alt="Netflix" class="w-full h-full object-cover">
-                    </div>
-                    <span class="text-xs font-bold text-red-500">Netflix Premium 4K</span>
+            <!-- Card 2: Netflix Premium 4K -->
+            <div id="web-stream-card-netflix" class="p-5 rounded-3xl bg-white border border-gray-200 shadow-sm flex flex-col justify-between space-y-4">
+              <div class="space-y-3">
+                <div class="flex items-start justify-between">
+                  <div class="brand-app-tile brand-app-tile-netflix w-12 h-12 rounded-2xl" title="Netflix">
+                    <img src="../assets/logos/netflix.png" alt="Netflix" class="w-full h-full object-cover">
                   </div>
-                  <span class="px-2 py-0.5 rounded text-[9px] font-mono bg-emerald-100 text-[#0E7C5B] font-bold">100% UTILIZADO</span>
+                  <span class="px-2 py-0.5 rounded text-[9px] font-mono bg-emerald-50 text-[#0E7C5B] border border-[#0E7C5B]/30 font-bold uppercase tracking-wider">
+                    Ativo · 100% ROI
+                  </span>
                 </div>
-                <p class="text-lg font-mono font-bold text-gray-900 mt-2">R$ 55,90<span class="text-xs text-gray-500">/mês</span></p>
-                <div class="w-full bg-gray-100 h-1.5 rounded-full mt-2 overflow-hidden">
-                  <div class="bg-mint h-full w-[95%]"></div>
+                <div>
+                  <h4 class="text-sm font-bold font-display text-gray-900">Netflix Premium 4K</h4>
+                  <p class="text-lg font-mono font-bold text-gray-900 mt-0.5">R$ 55,90<span class="text-xs text-gray-500 font-normal">/mês</span></p>
+                  <span class="text-[11px] font-mono text-gray-500 block mt-1">Fim do Ciclo: <strong class="text-gray-800">14 Out 2026</strong></span>
+                </div>
+                <div class="w-full bg-gray-100 h-1.5 rounded-full overflow-hidden">
+                  <div class="bg-emerald-600 h-full w-[95%]"></div>
                 </div>
               </div>
-              <span class="mt-4 text-[11px] font-mono text-gray-500 block text-center">Manter Ativo &middot; Excelente ROI</span>
+
+              <!-- Botões de Ação Rápida Seção 6.1.3 -->
+              <div class="grid grid-cols-2 gap-2 pt-2 border-t border-gray-100">
+                <button onclick="openSubscriptionActionModal('Netflix Premium 4K', 55.90, 'Pausar no Fim do Ciclo')" class="py-2 px-2 rounded-xl bg-gray-50 hover:bg-gray-100 text-gray-700 border border-gray-200 text-[11px] font-bold font-mono transition-all text-center cursor-pointer">
+                  Pausar no Fim do Ciclo
+                </button>
+                <button onclick="openSubscriptionActionModal('Netflix Premium 4K', 55.90, 'Cancelar Assinatura')" class="py-2 px-2 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 text-[11px] font-bold font-mono transition-all text-center cursor-pointer">
+                  Cancelar Assinatura
+                </button>
+              </div>
             </div>
 
-            <!-- Max -->
-            <div class="p-4 rounded-2xl bg-white border border-gray-200 flex flex-col justify-between">
-              <div>
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center gap-2">
-                    <div class="brand-app-tile brand-app-tile-max w-6 h-6 rounded-md">
-                      <img src="../assets/logos/max.png" alt="Max" class="w-full h-full object-cover">
-                    </div>
-                    <span class="text-xs font-bold text-purple-600">Max (HBO)</span>
+            <!-- Card 3: Max HBO -->
+            <div id="web-stream-card-max" class="p-5 rounded-3xl bg-white border border-gray-200 shadow-sm flex flex-col justify-between space-y-4">
+              <div class="space-y-3">
+                <div class="flex items-start justify-between">
+                  <div class="brand-app-tile brand-app-tile-max w-12 h-12 rounded-2xl" title="Max">
+                    <img src="../assets/logos/max.png" alt="Max" class="w-full h-full object-cover">
                   </div>
-                  <span class="px-2 py-0.5 rounded text-[9px] font-mono bg-purple-500/20 text-purple-700 font-bold">MODERADO</span>
+                  <span class="px-2 py-0.5 rounded text-[9px] font-mono bg-purple-50 text-purple-700 border border-purple-200 font-bold uppercase tracking-wider">
+                    Moderado · 65%
+                  </span>
                 </div>
-                <p class="text-lg font-mono font-bold text-gray-900 mt-2">R$ 39,90<span class="text-xs text-gray-500">/mês</span></p>
-                <div class="w-full bg-gray-100 h-1.5 rounded-full mt-2 overflow-hidden">
-                  <div class="bg-purple-500 h-full w-[65%]"></div>
+                <div>
+                  <h4 class="text-sm font-bold font-display text-gray-900">Max (HBO)</h4>
+                  <p class="text-lg font-mono font-bold text-gray-900 mt-0.5">R$ 39,90<span class="text-xs text-gray-500 font-normal">/mês</span></p>
+                  <span class="text-[11px] font-mono text-gray-500 block mt-1">Fim do Ciclo: <strong class="text-gray-800">03 Out 2026</strong></span>
+                </div>
+                <div class="w-full bg-gray-100 h-1.5 rounded-full overflow-hidden">
+                  <div class="bg-purple-600 h-full w-[65%]"></div>
                 </div>
               </div>
-              <span class="mt-4 text-[11px] font-mono text-gray-500 block text-center">Duna 2 assistido &middot; Monitorando</span>
+
+              <!-- Botões de Ação Rápida Seção 6.1.3 -->
+              <div class="grid grid-cols-2 gap-2 pt-2 border-t border-gray-100">
+                <button onclick="openSubscriptionActionModal('Max (HBO)', 39.90, 'Pausar no Fim do Ciclo')" class="py-2 px-2 rounded-xl bg-gray-50 hover:bg-gray-100 text-gray-700 border border-gray-200 text-[11px] font-bold font-mono transition-all text-center cursor-pointer">
+                  Pausar no Fim do Ciclo
+                </button>
+                <button onclick="openSubscriptionActionModal('Max (HBO)', 39.90, 'Cancelar Assinatura')" class="py-2 px-2 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 text-[11px] font-bold font-mono transition-all text-center cursor-pointer">
+                  Cancelar Assinatura
+                </button>
+              </div>
             </div>
 
-            <!-- Apple TV+ -->
-            <div class="p-4 rounded-2xl bg-white border border-gray-200 flex flex-col justify-between">
-              <div>
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center gap-2">
-                    <div class="brand-app-tile brand-app-tile-apple w-6 h-6 rounded-md">
-                      <img src="../assets/logos/apple.png" alt="Apple TV+" class="w-full h-full object-cover">
-                    </div>
-                    <span class="text-xs font-bold text-gray-800">Apple TV+</span>
+            <!-- Card 4: Apple TV+ -->
+            <div id="web-stream-card-apple" class="p-5 rounded-3xl bg-white border border-gray-200 shadow-sm flex flex-col justify-between space-y-4">
+              <div class="space-y-3">
+                <div class="flex items-start justify-between">
+                  <div class="brand-app-tile brand-app-tile-apple w-12 h-12 rounded-2xl" title="Apple TV+">
+                    <img src="../assets/logos/apple.png" alt="Apple TV+" class="w-full h-full object-cover">
                   </div>
-                  <span class="px-2 py-0.5 rounded text-[9px] font-mono bg-gray-100 text-gray-700 font-bold">PLANO ANUAL</span>
+                  <span class="px-2 py-0.5 rounded text-[9px] font-mono bg-gray-100 text-gray-700 border border-gray-200 font-bold uppercase tracking-wider">
+                    Plano Anual
+                  </span>
                 </div>
-                <p class="text-lg font-mono font-bold text-gray-900 mt-2">R$ 21,90<span class="text-xs text-gray-500">/mês eq.</span></p>
-                <div class="w-full bg-gray-100 h-1.5 rounded-full mt-2 overflow-hidden">
+                <div>
+                  <h4 class="text-sm font-bold font-display text-gray-900">Apple TV+</h4>
+                  <p class="text-lg font-mono font-bold text-gray-900 mt-0.5">R$ 21,90<span class="text-xs text-gray-500 font-normal">/mês eq.</span></p>
+                  <span class="text-[11px] font-mono text-gray-500 block mt-1">Renovação: <strong class="text-gray-800">Dez 2026</strong></span>
+                </div>
+                <div class="w-full bg-gray-100 h-1.5 rounded-full overflow-hidden">
                   <div class="bg-gray-400 h-full w-[30%]"></div>
                 </div>
               </div>
-              <span class="mt-4 text-[11px] font-mono text-gray-500 block text-center">Ruptura T2 na fila</span>
+
+              <!-- Botões de Ação Rápida Seção 6.1.3 -->
+              <div class="grid grid-cols-2 gap-2 pt-2 border-t border-gray-100">
+                <button onclick="openSubscriptionActionModal('Apple TV+', 21.90, 'Pausar no Fim do Ciclo')" class="py-2 px-2 rounded-xl bg-gray-50 hover:bg-gray-100 text-gray-700 border border-gray-200 text-[11px] font-bold font-mono transition-all text-center cursor-pointer">
+                  Pausar no Fim do Ciclo
+                </button>
+                <button onclick="openSubscriptionActionModal('Apple TV+', 21.90, 'Cancelar Assinatura')" class="py-2 px-2 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 text-[11px] font-bold font-mono transition-all text-center cursor-pointer">
+                  Cancelar Assinatura
+                </button>
+              </div>
             </div>
+
           </div>
         </div>
 
@@ -863,7 +1151,7 @@
 
           <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <!-- List 1: Clássicos Contemporâneos -->
-            <div class="poster-card p-5 space-y-4">
+            <div class="poster-card bg-white border border-gray-200 shadow-sm p-5 space-y-4">
               <!-- Visual Poster Fan -->
               <div class="poster-fan flex items-center justify-center pt-2">
                 <img src="../assets/posters/dune2.jpg" alt="Duna 2" class="fan-item fan-1 left-8 z-10">
@@ -872,18 +1160,18 @@
               </div>
 
               <div>
-                <span class="text-[10px] font-mono text-purple-300">por @beatriz_cine &middot; Max</span>
+                <span class="text-[10px] font-mono text-purple-700 font-semibold">por @beatriz_cine &middot; Max</span>
                 <h4 class="text-sm font-bold text-gray-900 font-display mt-0.5">Clássicos Contemporâneos na Max</h4>
-                <p class="text-xs text-gray-500 mt-1">18 títulos imperdíveis que fogem dos algoritmos comerciais.</p>
+                <p class="text-xs text-gray-600 mt-1">18 títulos imperdíveis que fogem dos algoritmos comerciais.</p>
               </div>
 
-              <button onclick="cloneCommunityList(this, 'Clássicos Contemporâneos')" class="w-full py-2 rounded-xl bg-gray-50 hover:bg-mint hover:text-obsidian border border-gray-200 hover:border-[#0E7C5B] text-xs font-semibold text-gray-900 transition-all cursor-pointer">
+              <button onclick="cloneCommunityList(this, 'Clássicos Contemporâneos')" class="w-full py-2 rounded-xl bg-emerald-50 hover:bg-[#0E7C5B] hover:text-white border border-[#0E7C5B]/30 text-xs font-semibold text-[#0E7C5B] transition-all cursor-pointer">
                 + Clonar para Minha Fila (18)
               </button>
             </div>
 
             <!-- List 2: Minisséries Fim de Semana -->
-            <div class="poster-card p-5 space-y-4">
+            <div class="poster-card bg-white border border-gray-200 shadow-sm p-5 space-y-4">
               <div class="poster-fan flex items-center justify-center pt-2">
                 <img src="../assets/posters/the_bear.jpg" alt="The Bear" class="fan-item fan-1 left-8 z-10">
                 <img src="../assets/posters/severance.jpg" alt="Severance" class="fan-item fan-2 left-20 z-20">
@@ -891,18 +1179,18 @@
               </div>
 
               <div>
-                <span class="text-[10px] font-mono text-[#0E7C5B]">por @carlos_streaming &middot; Multiplataforma</span>
+                <span class="text-[10px] font-mono text-[#0E7C5B] font-semibold">por @carlos_streaming &middot; Multiplataforma</span>
                 <h4 class="text-sm font-bold text-gray-900 font-display mt-0.5">Minisséries para 1 Fim de Semana</h4>
-                <p class="text-xs text-gray-500 mt-1">Histórias completas com menos de 7 episódios. Sem enrolação.</p>
+                <p class="text-xs text-gray-600 mt-1">Histórias completas com menos de 7 episódios. Sem enrolação.</p>
               </div>
 
-              <button onclick="cloneCommunityList(this, 'Minisséries 1 Fim de Semana')" class="w-full py-2 rounded-xl bg-gray-50 hover:bg-mint hover:text-obsidian border border-gray-200 hover:border-[#0E7C5B] text-xs font-semibold text-gray-900 transition-all cursor-pointer">
+              <button onclick="cloneCommunityList(this, 'Minisséries 1 Fim de Semana')" class="w-full py-2 rounded-xl bg-emerald-50 hover:bg-[#0E7C5B] hover:text-white border border-[#0E7C5B]/30 text-xs font-semibold text-[#0E7C5B] transition-all cursor-pointer">
                 + Clonar para Minha Fila (6)
               </button>
             </div>
 
             <!-- List 3: Ficção Psicológica -->
-            <div class="poster-card p-5 space-y-4">
+            <div class="poster-card bg-white border border-gray-200 shadow-sm p-5 space-y-4">
               <div class="poster-fan flex items-center justify-center pt-2">
                 <img src="../assets/posters/severance.jpg" alt="Ruptura" class="fan-item fan-1 left-8 z-10">
                 <img src="../assets/posters/oppenheimer.jpg" alt="Oppenheimer" class="fan-item fan-2 left-20 z-20">
@@ -910,12 +1198,12 @@
               </div>
 
               <div>
-                <span class="text-[10px] font-mono text-blue-300">por @marcos_sci &middot; Apple &amp; Prime</span>
+                <span class="text-[10px] font-mono text-blue-700 font-semibold">por @marcos_sci &middot; Apple &amp; Prime</span>
                 <h4 class="text-sm font-bold text-gray-900 font-display mt-0.5">Ficção Psicológica &amp; Suspense</h4>
-                <p class="text-xs text-gray-500 mt-1">Reviravoltas que justificam qualquer assinatura mensal.</p>
+                <p class="text-xs text-gray-600 mt-1">Reviravoltas que justificam qualquer assinatura mensal.</p>
               </div>
 
-              <button onclick="cloneCommunityList(this, 'Ficção Psicológica')" class="w-full py-2 rounded-xl bg-gray-50 hover:bg-mint hover:text-obsidian border border-gray-200 hover:border-[#0E7C5B] text-xs font-semibold text-gray-900 transition-all cursor-pointer">
+              <button onclick="cloneCommunityList(this, 'Ficção Psicológica')" class="w-full py-2 rounded-xl bg-emerald-50 hover:bg-[#0E7C5B] hover:text-white border border-[#0E7C5B]/30 text-xs font-semibold text-[#0E7C5B] transition-all cursor-pointer">
                 + Clonar para Minha Fila (12)
               </button>
             </div>
@@ -1019,6 +1307,177 @@
     </div>
   </div>
 
+  <!-- ====== UNIVERSAL SPOTLIGHT SEARCH MODAL (LIGHT) ====== -->
+  <div id="universalSearchOverlay" onclick="if(event.target===this)closeUniversalSearch()">
+    <div id="universalSearchCard">
+      <!-- Search Input Bar -->
+      <div class="p-4 border-b border-gray-200 flex items-center gap-3 bg-gray-50">
+        <div class="w-9 h-9 rounded-xl bg-emerald-100 border border-emerald-300 text-[#0E7C5B] flex items-center justify-center shrink-0">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </div>
+        <input type="text" id="universalSearchInput" 
+               placeholder="Digite qualquer filme, série ou franquia..." 
+               class="flex-1 bg-transparent text-sm text-gray-900 placeholder-gray-400 font-sans focus:outline-none"
+               oninput="handleUniversalSearchInput(this.value)"
+               autocomplete="off" spellcheck="false">
+        <button id="universalSearchClearBtn" onclick="clearUniversalSearch()" class="hidden w-6 h-6 rounded-full bg-gray-200 hover:bg-gray-300 text-gray-600 hover:text-gray-900 flex items-center justify-center text-xs transition-colors cursor-pointer" title="Limpar">
+          &times;
+        </button>
+        <kbd class="hidden sm:inline-block px-2 py-1 text-[10px] font-mono text-gray-500 bg-white border border-gray-200 rounded cursor-pointer shadow-xs" onclick="closeUniversalSearch()">ESC</kbd>
+      </div>
+
+      <!-- Scrollable Search Results & Shortcuts Body -->
+      <div id="universalSearchResultsWrap" class="p-5 overflow-y-auto max-h-[60vh] space-y-5">
+        <!-- Default State: Quick Suggestions -->
+        <div id="searchSuggestionsBlock">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-[11px] font-mono uppercase tracking-wider text-gray-500 font-bold flex items-center gap-1.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-[#0E7C5B]"></span>
+              Sugestões Populares (1 Toque)
+            </span>
+            <span class="text-[10px] font-mono text-gray-400">Testar resolução dinâmica</span>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <button onclick="applySearchQuery('The Boys')" class="px-3 py-1.5 rounded-xl bg-gray-100 hover:bg-emerald-50 border border-gray-200 hover:border-emerald-300 text-xs text-gray-700 hover:text-[#0E7C5B] transition-all flex items-center gap-1.5 cursor-pointer">
+              <span>The Boys</span>
+              <span class="text-[10px] text-gray-400 font-mono">&middot; Prime</span>
+            </button>
+            <button onclick="applySearchQuery('Breaking Bad')" class="px-3 py-1.5 rounded-xl bg-gray-100 hover:bg-emerald-50 border border-gray-200 hover:border-emerald-300 text-xs text-gray-700 hover:text-[#0E7C5B] transition-all flex items-center gap-1.5 cursor-pointer">
+              <span>Breaking Bad</span>
+              <span class="text-[10px] text-gray-400 font-mono">&middot; Netflix</span>
+            </button>
+            <button onclick="applySearchQuery('Game of Thrones')" class="px-3 py-1.5 rounded-xl bg-gray-100 hover:bg-emerald-50 border border-gray-200 hover:border-emerald-300 text-xs text-gray-700 hover:text-[#0E7C5B] transition-all flex items-center gap-1.5 cursor-pointer">
+              <span>Game of Thrones</span>
+              <span class="text-[10px] text-gray-400 font-mono">&middot; Max</span>
+            </button>
+            <button onclick="applySearchQuery('Loki')" class="px-3 py-1.5 rounded-xl bg-gray-100 hover:bg-emerald-50 border border-gray-200 hover:border-emerald-300 text-xs text-gray-700 hover:text-[#0E7C5B] transition-all flex items-center gap-1.5 cursor-pointer">
+              <span>Loki</span>
+              <span class="text-[10px] text-gray-400 font-mono">&middot; Disney+</span>
+            </button>
+            <button onclick="applySearchQuery('Ted Lasso')" class="px-3 py-1.5 rounded-xl bg-gray-100 hover:bg-emerald-50 border border-gray-200 hover:border-emerald-300 text-xs text-gray-700 hover:text-[#0E7C5B] transition-all flex items-center gap-1.5 cursor-pointer">
+              <span>Ted Lasso</span>
+              <span class="text-[10px] text-gray-400 font-mono">&middot; Apple TV+</span>
+            </button>
+            <button onclick="applySearchQuery('Duna: Parte 2')" class="px-3 py-1.5 rounded-xl bg-gray-100 hover:bg-emerald-50 border border-gray-200 hover:border-emerald-300 text-xs text-gray-700 hover:text-[#0E7C5B] transition-all flex items-center gap-1.5 cursor-pointer">
+              <span>Duna 2</span>
+              <span class="text-[10px] text-[#0E7C5B] font-mono font-bold">&middot; Catálogo</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Local Matches Block (Títulos encontrados no Catálogo) -->
+        <div id="searchLocalMatchesBlock" class="hidden">
+          <div class="text-[11px] font-mono uppercase tracking-wider text-[#0E7C5B] font-bold mb-2.5 flex items-center gap-1.5">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+            No Seu Catálogo NeatStream
+          </div>
+          <div id="searchLocalMatchesList" class="space-y-2"></div>
+        </div>
+
+        <!-- Dynamic Streaming Deep Links (Para Qualquer Título Digitado) -->
+        <div id="searchDynamicStreamsBlock" class="hidden pt-1">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-[11px] font-mono uppercase tracking-wider text-gray-800 font-bold flex items-center gap-1.5">
+              <svg class="w-3.5 h-3.5 text-[#0E7C5B]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+              Buscar "<span id="searchCurrentQueryLabel" class="text-[#0E7C5B]"></span>" Direto nos Streamings:
+            </span>
+            <span class="text-[10px] font-mono text-gray-400">Links Nativos</span>
+          </div>
+
+          <!-- Grid of Connected Streaming Deep Links -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5" id="searchStreamingLinksGrid">
+            <!-- Netflix -->
+            <a id="searchLinkNetflix" href="#" target="_blank" rel="noopener noreferrer" class="search-stream-card group p-3 rounded-xl bg-gray-50 hover:bg-white border border-gray-200 hover:border-red-400 flex items-center justify-between transition-all no-underline shadow-xs hover:shadow-sm">
+              <div class="flex items-center gap-2.5">
+                <div class="brand-app-tile brand-app-tile-netflix"><img src="../assets/logos/netflix.png" alt="Netflix"></div>
+                <div>
+                  <span class="text-xs font-bold text-gray-900 block group-hover:text-red-600 transition-colors">Netflix</span>
+                  <span class="text-[10px] font-mono text-gray-500">Abrir busca nativa</span>
+                </div>
+              </div>
+              <svg class="w-3.5 h-3.5 text-gray-400 group-hover:text-gray-900 group-hover:translate-x-0.5 transition-all" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </a>
+
+            <!-- Max -->
+            <a id="searchLinkMax" href="#" target="_blank" rel="noopener noreferrer" class="search-stream-card group p-3 rounded-xl bg-gray-50 hover:bg-white border border-gray-200 hover:border-blue-400 flex items-center justify-between transition-all no-underline shadow-xs hover:shadow-sm">
+              <div class="flex items-center gap-2.5">
+                <div class="brand-app-tile brand-app-tile-max"><img src="../assets/logos/max.png" alt="Max"></div>
+                <div>
+                  <span class="text-xs font-bold text-gray-900 block group-hover:text-blue-600 transition-colors">Max (HBO)</span>
+                  <span class="text-[10px] font-mono text-gray-500">Abrir busca nativa</span>
+                </div>
+              </div>
+              <svg class="w-3.5 h-3.5 text-gray-400 group-hover:text-gray-900 group-hover:translate-x-0.5 transition-all" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </a>
+
+            <!-- Disney+ -->
+            <a id="searchLinkDisney" href="#" target="_blank" rel="noopener noreferrer" class="search-stream-card group p-3 rounded-xl bg-gray-50 hover:bg-white border border-gray-200 hover:border-blue-400 flex items-center justify-between transition-all no-underline shadow-xs hover:shadow-sm">
+              <div class="flex items-center gap-2.5">
+                <div class="brand-app-tile brand-app-tile-disney"><img src="../assets/logos/disney.png" alt="Disney+"></div>
+                <div>
+                  <span class="text-xs font-bold text-gray-900 block group-hover:text-blue-600 transition-colors">Disney+</span>
+                  <span class="text-[10px] font-mono text-gray-500">Abrir busca nativa</span>
+                </div>
+              </div>
+              <svg class="w-3.5 h-3.5 text-gray-400 group-hover:text-gray-900 group-hover:translate-x-0.5 transition-all" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </a>
+
+            <!-- Prime Video -->
+            <a id="searchLinkPrime" href="#" target="_blank" rel="noopener noreferrer" class="search-stream-card group p-3 rounded-xl bg-gray-50 hover:bg-white border border-gray-200 hover:border-cyan-400 flex items-center justify-between transition-all no-underline shadow-xs hover:shadow-sm">
+              <div class="flex items-center gap-2.5">
+                <div class="brand-app-tile brand-app-tile-prime"><img src="../assets/logos/prime.png" alt="Prime Video"></div>
+                <div>
+                  <span class="text-xs font-bold text-gray-900 block group-hover:text-cyan-600 transition-colors">Prime Video</span>
+                  <span class="text-[10px] font-mono text-gray-500">Abrir busca nativa</span>
+                </div>
+              </div>
+              <svg class="w-3.5 h-3.5 text-gray-400 group-hover:text-gray-900 group-hover:translate-x-0.5 transition-all" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </a>
+
+            <!-- Apple TV+ -->
+            <a id="searchLinkApple" href="#" target="_blank" rel="noopener noreferrer" class="search-stream-card group p-3 rounded-xl bg-gray-50 hover:bg-white border border-gray-200 hover:border-gray-400 flex items-center justify-between transition-all no-underline shadow-xs hover:shadow-sm">
+              <div class="flex items-center gap-2.5">
+                <div class="brand-app-tile brand-app-tile-apple"><img src="../assets/logos/apple.png" alt="Apple TV+"></div>
+                <div>
+                  <span class="text-xs font-bold text-gray-900 block group-hover:text-black transition-colors">Apple TV+</span>
+                  <span class="text-[10px] font-mono text-gray-500">Abrir busca nativa</span>
+                </div>
+              </div>
+              <svg class="w-3.5 h-3.5 text-gray-400 group-hover:text-gray-900 group-hover:translate-x-0.5 transition-all" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </a>
+
+            <!-- JustWatch BR Comparator -->
+            <a id="searchLinkJustWatch" href="#" target="_blank" rel="noopener noreferrer" class="search-stream-card group p-3 rounded-xl bg-amber-50/70 hover:bg-amber-100/80 border border-amber-300 hover:border-amber-400 flex items-center justify-between transition-all no-underline shadow-xs hover:shadow-sm">
+              <div class="flex items-center gap-2.5">
+                <div class="w-6 h-6 rounded bg-[#182531] border border-amber-400 flex items-center justify-center font-mono text-[10px] font-bold text-amber-400">JW</div>
+                <div>
+                  <span class="text-xs font-bold text-amber-900 block">JustWatch Brasil</span>
+                  <span class="text-[10px] font-mono text-amber-700">Descobrir onde está passando</span>
+                </div>
+              </div>
+              <svg class="w-3.5 h-3.5 text-amber-700 group-hover:translate-x-0.5 transition-all" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer Bar with Keyboard Shortcuts -->
+      <div class="px-5 py-3 bg-gray-50 border-t border-gray-200 flex items-center justify-between text-[11px] font-mono text-gray-500">
+        <div class="flex items-center gap-3">
+          <span><kbd class="px-1.5 py-0.5 rounded bg-white border border-gray-200 text-gray-600 shadow-xs">ESC</kbd> fechar</span>
+          <span><kbd class="px-1.5 py-0.5 rounded bg-white border border-gray-200 text-gray-600 shadow-xs">&uarr;&darr;</kbd> navegar</span>
+        </div>
+        <span class="text-[#0E7C5B] font-semibold flex items-center gap-1">
+          <span class="w-1.5 h-1.5 rounded-full bg-[#0E7C5B]"></span>
+          Resolução universal de streaming
+        </span>
+      </div>
+    </div>
+  </div>
+
   <!-- ====== MODAL CINEMÁTICO "ONDE ASSISTIR" (TEMA CLARO) ====== -->
   <div id="watchModalOverlay" onclick="if(event.target===this)closeWatchModal()">
     <div id="watchModalCard">
@@ -1099,9 +1558,10 @@
 
         <!-- Ações Principais -->
         <div class="flex flex-col sm:flex-row gap-3 pt-1">
-          <a id="modalWatchBtn" href="#" target="_blank" rel="noopener" class="flex-1 py-3.5 rounded-2xl bg-gradient-to-r from-mint to-mint-dark text-obsidian font-display font-bold text-sm flex items-center justify-center gap-2.5 shadow-[0_0_25px_rgba(0,229,153,0.4)] hover:brightness-110 active:scale-[0.97] transition-all cursor-pointer no-underline text-center">
+          <a id="modalWatchBtn" href="#" target="_blank" rel="noopener noreferrer" class="flex-1 py-3.5 rounded-2xl bg-gradient-to-r from-mint to-mint-dark text-obsidian font-display font-bold text-sm flex items-center justify-center gap-2.5 shadow-[0_0_25px_rgba(0,229,153,0.4)] hover:brightness-110 active:scale-[0.97] transition-all cursor-pointer no-underline text-center">
             <span id="modalWatchLogo" class="inline-flex items-center"></span>
             <span id="modalWatchBtnText">Assistir Agora</span>
+            <svg class="w-4 h-4 opacity-75 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
           </a>
           <button id="modalTrailerBtn" onclick="playModalTrailer()" class="px-5 py-3.5 rounded-2xl bg-gray-100 hover:bg-gray-200 text-gray-800 text-sm font-semibold transition-all flex items-center justify-center gap-2 cursor-pointer border border-gray-200">
             <svg id="modalTrailerBtnIcon" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
@@ -1114,6 +1574,96 @@
             + Minha Fila
           </button>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DE CONFIRMAÇÃO DE AÇÃO & ECONOMIA (CANÔNICO SEÇÃO 6.1.3) -->
+  <div id="subscriptionActionModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-md flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+    <div class="w-full max-w-md bg-white border border-gray-200 rounded-3xl p-6 shadow-2xl transform translate-y-8 transition-transform duration-300 space-y-5" id="subscriptionModalCard">
+      <!-- Topo Modal -->
+      <div class="flex items-center justify-between pb-4 border-b border-gray-100">
+        <div class="flex items-center gap-2.5">
+          <div id="subModalIcon" class="w-9 h-9 rounded-xl bg-amber-50 border border-amber-300 flex items-center justify-center text-amber-800 shrink-0 shadow-sm">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+          </div>
+          <div>
+            <h3 class="text-base font-bold font-display text-gray-900">Confirmar Ação</h3>
+            <span id="subModalActionType" class="text-[10px] font-mono text-amber-800 uppercase font-semibold">Pausar no Fim do Ciclo</span>
+          </div>
+        </div>
+        <button onclick="closeSubscriptionModal()" class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 hover:text-gray-900 flex items-center justify-center transition-all cursor-pointer">
+          ✕
+        </button>
+      </div>
+
+      <!-- Detalhes do Serviço -->
+      <div class="flex items-center gap-3.5 p-3.5 rounded-2xl bg-gray-50 border border-gray-200">
+        <div id="subModalTile" class="brand-app-tile brand-app-tile-disney w-11 h-11 rounded-2xl shrink-0">
+          <img id="subModalLogo" src="../assets/logos/disney.png" alt="Streaming" class="w-full h-full object-cover">
+        </div>
+        <div class="flex-1 min-w-0">
+          <h4 id="subModalTitle" class="text-sm font-bold text-gray-900 font-display truncate">Disney+ Standard</h4>
+          <span class="text-xs font-mono text-gray-500" id="subModalPrice">R$ 43,90/mês</span>
+        </div>
+        <div class="text-right shrink-0">
+          <span class="text-[9px] font-mono text-gray-500 uppercase block">Ciclo Vigente</span>
+          <span class="text-xs font-mono text-gray-800 font-bold">Até 28 Set</span>
+        </div>
+      </div>
+
+      <!-- Destaque Transparente de Economia (Exigência Seção 6.1.3) -->
+      <div class="p-4 rounded-2xl bg-gradient-to-br from-emerald-50 via-emerald-100/50 to-white border border-[#0E7C5B]/30 text-center space-y-1 shadow-inner">
+        <span class="text-[10px] font-mono text-[#0E7C5B] uppercase tracking-wider font-bold">Economia Projetada em 12 Meses</span>
+        <div class="text-2xl font-mono font-black text-[#0E7C5B] tracking-tight" id="subModalProjectedSavings">
+          +R$ 526,80 / ano
+        </div>
+        <p class="text-[11px] text-gray-600 font-mono" id="subModalSavingsDetail">
+          R$ 43,90/mês poupados a partir do próximo ciclo de faturamento
+        </p>
+      </div>
+
+      <!-- Bloco de Cancelamento Assistido com Deep Link Oficial -->
+      <div id="subModalAssistBlock" class="hidden p-4 rounded-2xl bg-red-50 border border-red-200 space-y-3 text-left">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2 text-xs font-bold font-mono text-red-600">
+            <svg class="w-4 h-4 shrink-0 text-red-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <span>Cancelamento Assistido em 3 Etapas</span>
+          </div>
+          <span class="text-[10px] font-mono text-gray-500">Sem burocracia</span>
+        </div>
+        <ol class="text-xs text-gray-700 space-y-1.5 pl-4 list-decimal font-sans leading-relaxed">
+          <li>Clique no botão abaixo para abrir a <strong>página oficial de encerramento de plano</strong> da plataforma.</li>
+          <li>Confirme o cancelamento no site oficial do streaming (sem cobrança de multas).</li>
+          <li>Retorne ao NeatStream e confirme abaixo para registrar sua economia e atualizar seu Econômetro.</li>
+        </ol>
+
+        <!-- Deep Link Direto Oficial -->
+        <a id="subModalOfficialCancelBtn" href="#" target="_blank" rel="noopener noreferrer" class="w-full py-3 px-4 rounded-xl bg-red-600 hover:bg-red-700 text-white text-xs font-bold font-mono flex items-center justify-between transition-all no-underline mt-2 shadow-md group">
+          <div class="flex items-center gap-2.5">
+            <span class="w-2.5 h-2.5 rounded-full bg-white animate-pulse"></span>
+            <span id="subModalOfficialCancelText" class="font-bold">Abrir Página Oficial de Cancelamento</span>
+          </div>
+          <svg class="w-4 h-4 text-white group-hover:translate-x-0.5 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
+      </div>
+
+      <!-- Garantia Transparente -->
+      <div class="flex items-start gap-2.5 p-3 rounded-xl bg-gray-50 border border-gray-200 text-xs text-gray-600">
+        <span class="text-[#0E7C5B] font-bold text-sm">✓</span>
+        <p id="subModalGuaranteeText" class="leading-relaxed text-[11px] text-gray-600">
+          <strong>Acesso garantido:</strong> Seu catálogo permanece ativo até o último dia do ciclo pago. Nenhuma cobrança futura será realizada no seu cartão sincronizado.
+        </p>
+      </div>
+
+      <!-- Botões de Ação do Modal -->
+      <div class="grid grid-cols-2 gap-3 pt-2">
+        <button onclick="closeSubscriptionModal()" class="py-2.5 px-3 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 border border-gray-200 text-xs font-mono font-bold transition-all cursor-pointer">
+          Voltar
+        </button>
+        <button id="subModalConfirmBtn" onclick="confirmSubscriptionAction()" class="py-2.5 px-3 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-mono font-bold transition-all shadow-md cursor-pointer">
+          Confirmar Pausa
+        </button>
       </div>
     </div>
   </div>
@@ -1177,7 +1727,7 @@
         synopsis: 'Paul Atreides se une a Chani e aos Fremen em busca de vingança contra os conspiradores que destruíram sua família. Uma experiência cinematográfica colossal, visual e sonoramente imersiva.',
         resolution: '4K UHD · Dolby Atmos', classification: '14',
         provider: { key: 'max', name: 'Max' },
-        watchUrl: 'https://play.max.com/movie/dune-part-two',
+        watchUrl: 'https://play.hbomax.com/movie/f0a4f239-0b57-47e2-a39a-54fb96925e61',
         subscriptionStatus: 'included', subscriptionNote: 'Incluso no seu plano Max — R$ 39,90/mês',
         poster: '../assets/posters/dune2.jpg', backdrop: '../assets/backdrops/dune2_backdrop.jpg',
         videoTeaser: '../assets/videos/dune2_teaser.mp4'
@@ -1188,7 +1738,7 @@
         synopsis: 'Carmy volta para Chicago para transformar o restaurante da família em uma experiência gastronômica de alto nível, enfrentando trauma, obsessão e pressões emocionais.',
         resolution: '4K HDR · Dolby Vision', classification: '16',
         provider: { key: 'disney', name: 'Disney+' },
-        watchUrl: 'https://www.disneyplus.com/series/the-bear',
+        watchUrl: 'https://www.disneyplus.com/browse/entity-05eb6a8e-90ed-4947-8c0b-e6536cbddd5f',
         subscriptionStatus: 'included', subscriptionNote: 'Incluso no seu Disney+ Standard — R$ 43,90/mês',
         poster: '../assets/posters/the_bear.jpg', backdrop: '../assets/backdrops/the_bear_backdrop.jpg',
         videoTeaser: '../assets/videos/the_bear_teaser.mp4'
@@ -1199,7 +1749,7 @@
         synopsis: 'No Japão feudal de 1600, um náufrago inglês é forçado a navegar a complexa teia política de senhores da guerra e samurais enquanto o país caminha para uma guerra civil.',
         resolution: '4K UHD · Atmos', classification: '16',
         provider: { key: 'disney', name: 'Disney+' },
-        watchUrl: 'https://www.disneyplus.com/series/shogun',
+        watchUrl: 'https://www.disneyplus.com/browse/entity-7bf8d7e6-9739-4fee-86c0-f4afc48b152c',
         subscriptionStatus: 'included', subscriptionNote: 'Incluso no seu Disney+ Standard — R$ 43,90/mês',
         poster: '../assets/posters/shogun.jpg', backdrop: '../assets/backdrops/shogun_backdrop.jpg',
         videoTeaser: null
@@ -1210,7 +1760,7 @@
         synopsis: 'Funcionários de uma corporação misteriosa passam por um procedimento que separa cirurgicamente suas memórias de trabalho das pessoais. Mas a parede entre os dois mundos começa a rachar.',
         resolution: '4K HDR · Dolby Vision', classification: '14',
         provider: { key: 'apple', name: 'Apple TV+' },
-        watchUrl: 'https://tv.apple.com/show/severance',
+        watchUrl: 'https://tv.apple.com/br/show/ruptura/umc.cmc.1srk2goyh2q2zdxcx605w8vtx',
         subscriptionStatus: 'included', subscriptionNote: 'Incluso no seu Apple TV+ Anual — R$ 21,90/mês',
         poster: '../assets/posters/severance.jpg', backdrop: '../assets/backdrops/severance_backdrop.jpg',
         videoTeaser: null
@@ -1221,7 +1771,7 @@
         synopsis: 'A história do físico J. Robert Oppenheimer e seu papel no desenvolvimento da bomba atômica durante a Segunda Guerra Mundial. Um épico biográfico de Christopher Nolan.',
         resolution: '4K IMAX · Dolby Atmos', classification: '14',
         provider: { key: 'prime', name: 'Prime Video' },
-        watchUrl: 'https://www.primevideo.com/detail/Oppenheimer',
+        watchUrl: 'https://www.primevideo.com/detail/gti=amzn1.dv.gti.f60cf07a-7363-411e-9f4a-b93b568ef3d3',
         subscriptionStatus: 'required', subscriptionNote: 'Requer aluguel ou compra digital no Prime Video — a partir de R$ 14,90',
         poster: '../assets/posters/oppenheimer.jpg', backdrop: '../assets/backdrops/oppenheimer_backdrop.jpg',
         videoTeaser: null
@@ -1232,7 +1782,7 @@
         synopsis: 'Em meio à crescente tensão entre as cidades-gêmeas de Piltover e Zaun, duas irmãs lutam em lados opostos de uma guerra ideológica. Animação revolucionária baseada no universo de League of Legends.',
         resolution: '4K HDR10+', classification: '14',
         provider: { key: 'netflix', name: 'Netflix' },
-        watchUrl: 'https://www.netflix.com/title/arcane',
+        watchUrl: 'https://www.netflix.com/title/81436901',
         subscriptionStatus: 'included', subscriptionNote: 'Incluso no seu Netflix Premium 4K — R$ 55,90/mês',
         poster: '../assets/posters/arcane.jpg', backdrop: '../assets/backdrops/arcane_backdrop.jpg',
         videoTeaser: null
@@ -1243,7 +1793,7 @@
         synopsis: 'A família Roy, dona de um dos maiores conglomerados de mídia do mundo, luta pelo controle do império enquanto o patriarca envelhece. Sátira incisiva sobre poder, riqueza e disfunção familiar.',
         resolution: '4K HDR · Atmos', classification: '16',
         provider: { key: 'max', name: 'Max' },
-        watchUrl: 'https://play.max.com/show/succession',
+        watchUrl: 'https://play.hbomax.com/video/watch/e457df99-f817-4646-b64c-8ce7afaeb405',
         subscriptionStatus: 'included', subscriptionNote: 'Incluso no seu plano Max — R$ 39,90/mês',
         poster: '../assets/posters/succession.jpg', backdrop: '../assets/backdrops/succession_backdrop.jpg',
         videoTeaser: null
@@ -1254,7 +1804,7 @@
         synopsis: 'Na cidade de Hawkins, Indiana, um grupo de jovens enfrenta forças sobrenaturais, experimentos governamentais secretos e o misterioso Mundo Invertido.',
         resolution: '4K Dolby Vision · Atmos', classification: '14',
         provider: { key: 'netflix', name: 'Netflix' },
-        watchUrl: 'https://www.netflix.com/title/stranger-things',
+        watchUrl: 'https://www.netflix.com/title/80057281',
         subscriptionStatus: 'included', subscriptionNote: 'Incluso no seu Netflix Premium 4K — R$ 55,90/mês',
         poster: '../assets/posters/stranger_things.jpg', backdrop: '../assets/backdrops/stranger_things_backdrop.jpg',
         videoTeaser: null
@@ -1265,7 +1815,7 @@
         synopsis: 'Num futuro pós-apocalíptico, sobreviventes de bunkers subterrâneos emergem para uma terra arrasada governada por facções rivais, mutantes e tecnologia retrô-futurista.',
         resolution: '4K UHD · Atmos', classification: '16',
         provider: { key: 'prime', name: 'Prime Video' },
-        watchUrl: 'https://www.primevideo.com/detail/Fallout',
+        watchUrl: 'https://www.primevideo.com/detail/gti=amzn1.dv.gti.220a83cb-b9b4-4cad-b8a0-e768bb603fa7',
         subscriptionStatus: 'required', subscriptionNote: 'Requer assinatura Prime Video — R$ 14,90/mês',
         poster: '../assets/posters/fallout.jpg', backdrop: '../assets/backdrops/fallout_backdrop.jpg',
         videoTeaser: null
@@ -1276,7 +1826,7 @@
         synopsis: 'O novo blade runner, Oficial K, descobre um segredo enterrado há muito tempo que tem o potencial de mergulhar o que resta da sociedade no caos.',
         resolution: '4K UHD · Dolby Atmos', classification: '14',
         provider: { key: 'max', name: 'Max' },
-        watchUrl: 'https://play.max.com/movie/blade-runner-2049',
+        watchUrl: 'https://www.hbomax.com/br/pt/movie/3e2754f6-8ee9-48ef-806d-bdf3f64b6243',
         subscriptionStatus: 'included', subscriptionNote: 'Incluso no seu plano Max — R$ 39,90/mês',
         poster: '../assets/posters/blade_runner_2049.jpg', backdrop: '../assets/backdrops/blade_runner_2049_backdrop.jpg',
         videoTeaser: null
@@ -1287,7 +1837,7 @@
         synopsis: 'Vinte anos após a destruição da civilização moderna, Joel é contratado para contrabandear Ellie, uma garota de 14 anos, para fora de uma zona de quarentena opressiva.',
         resolution: '4K HDR · Atmos', classification: '16',
         provider: { key: 'max', name: 'Max' },
-        watchUrl: 'https://play.max.com/show/the-last-of-us',
+        watchUrl: 'https://play.hbomax.com/video/watch/c07ae042-082e-4b53-ba86-b6ac5e3004db',
         subscriptionStatus: 'included', subscriptionNote: 'Incluso no seu plano Max — R$ 39,90/mês',
         poster: '../assets/posters/the_last_of_us.jpg', backdrop: '../assets/backdrops/the_last_of_us_backdrop.jpg',
         videoTeaser: null
@@ -1298,7 +1848,7 @@
         synopsis: 'Sandra é suspeita da morte do marido. A investigação e o julgamento que se seguem revelam as tensões ocultas e as feridas profundas do casal, dissecando uma relação complexa sob o escrutínio público.',
         resolution: 'Full HD 1080p', classification: '14',
         provider: { key: 'prime', name: 'Prime Video' },
-        watchUrl: 'https://www.primevideo.com/detail/Anatomy-of-a-Fall',
+        watchUrl: 'https://www.primevideo.com/detail/gti=amzn1.dv.gti.3ef33c1e-9349-421c-8446-a4a050799bff',
         subscriptionStatus: 'required', subscriptionNote: 'Aluguel digital no Prime Video — R$ 14,90',
         poster: '../assets/posters/anatomy_of_a_fall.jpg', backdrop: '../assets/backdrops/anatomy_of_a_fall_backdrop.jpg',
         videoTeaser: null
@@ -1645,34 +2195,193 @@
       showToast('Visualização: ' + viewNames[viewKey]);
     }
 
-    function handleHUDSlider(val) {
-      const display = document.getElementById('sliderHUDDisplay');
-      const hudVal = document.getElementById('budgetHUDVal');
-      const savingsVal = document.getElementById('savingsHUDVal');
+    // ====== GESTÃO FINANCEIRA & ECONÔMETRO SEÇÃO 6.1.3 ======
+    let currentSubAction = {
+      title: 'Disney+ Standard',
+      price: 43.90,
+      action: 'Pausar no Fim do Ciclo',
+      days: 48
+    };
+
+    function updateWebBudgetSlider(val) {
+      const display = document.getElementById('webSliderDisplayVal');
+      const hudVal = document.getElementById('webBudgetHUDVal');
+      const feedback = document.getElementById('webBudgetFeedback');
+      const feedbackMsg = document.getElementById('webBudgetFeedbackMsg');
+      const savingsVal = document.getElementById('webSavingsHUDVal');
+      
       const n = parseInt(val, 10);
       if (display) display.textContent = 'R$ ' + n + ',00 / mês';
       if (hudVal) hudVal.textContent = 'R$ ' + n + ',00';
-      if (n < 120) {
-        if (savingsVal) savingsVal.textContent = '+R$ 765,60';
+
+      const totalMonthlySpend = 161.60;
+      const diff = totalMonthlySpend - n;
+
+      if (diff > 0) {
+        if (feedback) {
+          feedback.className = 'p-3 rounded-2xl bg-amber-50 border border-amber-300 flex items-center justify-between text-xs font-mono text-amber-900 mt-2';
+        }
+        if (feedbackMsg) {
+          feedbackMsg.innerHTML = `⚠️ Gasto atual (R$ 161,60) excede o teto pretendido em <strong>R$ ${diff.toFixed(2).replace('.', ',')}/mês</strong>.`;
+        }
       } else {
-        if (savingsVal) savingsVal.textContent = '+R$ 526,80';
+        if (feedback) {
+          feedback.className = 'p-3 rounded-2xl bg-emerald-50 border border-emerald-300 flex items-center justify-between text-xs font-mono text-[#0E7C5B] mt-2';
+        }
+        if (feedbackMsg) {
+          feedbackMsg.innerHTML = `✓ Orçamento equilibrado! Folga de <strong>R$ ${Math.abs(diff).toFixed(2).replace('.', ',')}/mês</strong> sob o teto.`;
+        }
+      }
+
+      if (savingsVal) {
+        savingsVal.textContent = n < 120 ? '+R$ 765,60' : '+R$ 526,80';
       }
     }
 
-    let activePauseData = {};
-    function openSeasonPauseModal(service, series, date) {
-      activePauseData = { service, series, date };
-      document.getElementById('modalServiceName').textContent = service;
-      document.getElementById('modalSeriesName').textContent = series;
-      document.getElementById('modalTargetDate').textContent = date;
-      document.getElementById('seasonPauseModal').classList.remove('hidden');
+    // Mapeamento Oficial de Deep Links de Cancelamento
+    function getOfficialCancelInfo(serviceName) {
+      const s = (serviceName || '').toLowerCase();
+      if (s.includes('netflix')) return { key: 'netflix', name: 'Netflix', url: 'https://www.netflix.com/cancelplan' };
+      if (s.includes('disney')) return { key: 'disney', name: 'Disney+', url: 'https://www.disneyplus.com/account/billing' };
+      if (s.includes('max') || s.includes('hbo')) return { key: 'max', name: 'Max', url: 'https://auth.max.com/subscription' };
+      if (s.includes('apple')) return { key: 'apple', name: 'Apple TV+', url: 'https://tv.apple.com/settings' };
+      if (s.includes('prime') || s.includes('amazon')) return { key: 'prime', name: 'Prime Video', url: 'https://www.amazon.com.br/gp/video/settings' };
+      return { key: 'streaming', name: serviceName, url: 'https://www.google.com/search?q=' + encodeURIComponent('cancelar assinatura ' + serviceName) };
     }
-    function closeSeasonPauseModal() {
-      document.getElementById('seasonPauseModal').classList.add('hidden');
+
+    function openSubscriptionActionModal(title, price, action, days = 0) {
+      currentSubAction = { title, price, action, days };
+      
+      const modal = document.getElementById('subscriptionActionModal');
+      const card = document.getElementById('subscriptionModalCard');
+      const actionType = document.getElementById('subModalActionType');
+      const subTitle = document.getElementById('subModalTitle');
+      const subPrice = document.getElementById('subModalPrice');
+      const projected = document.getElementById('subModalProjectedSavings');
+      const savingsDetail = document.getElementById('subModalSavingsDetail');
+      const confirmBtn = document.getElementById('subModalConfirmBtn');
+      const subLogo = document.getElementById('subModalLogo');
+      const subTile = document.getElementById('subModalTile');
+      const subIcon = document.getElementById('subModalIcon');
+      const assistBlock = document.getElementById('subModalAssistBlock');
+      const officialCancelBtn = document.getElementById('subModalOfficialCancelBtn');
+      const officialCancelText = document.getElementById('subModalOfficialCancelText');
+      const guaranteeText = document.getElementById('subModalGuaranteeText');
+
+      const isCancel = action.toLowerCase().includes('cancelar');
+      const target = getOfficialCancelInfo(title);
+      const yearly = (price * 12).toFixed(2).replace('.', ',');
+
+      if (subTitle) subTitle.textContent = title;
+      if (subPrice) subPrice.textContent = 'R$ ' + price.toFixed(2).replace('.', ',') + '/mês';
+      if (projected) projected.textContent = '+R$ ' + yearly + ' / ano';
+      if (savingsDetail) savingsDetail.textContent = 'R$ ' + price.toFixed(2).replace('.', ',') + '/mês poupados a partir do término do ciclo';
+
+      // Provider Logo & Theme
+      let logoKey = target.key === 'streaming' ? 'disney' : target.key;
+      if (subLogo) subLogo.src = '../assets/logos/' + logoKey + '.png';
+      if (subTile) subTile.className = 'brand-app-tile brand-app-tile-' + logoKey + ' w-11 h-11 rounded-2xl shrink-0';
+
+      if (isCancel) {
+        if (actionType) {
+          actionType.textContent = 'Cancelamento Assistido';
+          actionType.className = 'text-[10px] font-mono text-red-600 uppercase font-bold';
+        }
+        if (assistBlock) assistBlock.classList.remove('hidden');
+        if (officialCancelBtn) officialCancelBtn.href = target.url;
+        if (officialCancelText) officialCancelText.textContent = 'Abrir Página Oficial de Cancelamento (' + target.name + ') ↗';
+        if (confirmBtn) {
+          confirmBtn.textContent = `Já Cancelei no ${target.name} ✓`;
+          confirmBtn.className = 'py-2.5 px-3 rounded-xl bg-red-600 hover:bg-red-700 text-white text-xs font-mono font-bold transition-all shadow-md cursor-pointer';
+        }
+        if (subIcon) {
+          subIcon.className = 'w-9 h-9 rounded-xl bg-red-50 border border-red-300 flex items-center justify-center text-red-600 shrink-0 shadow-sm';
+          subIcon.innerHTML = `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/></svg>`;
+        }
+        if (guaranteeText) {
+          guaranteeText.innerHTML = '<strong>Orientação transparente:</strong> Após concluir o cancelamento no site oficial da plataforma, confirme aqui para sincronizar o Econômetro e registrar sua economia.';
+        }
+      } else {
+        if (actionType) {
+          actionType.textContent = action;
+          actionType.className = 'text-[10px] font-mono text-amber-800 uppercase font-semibold';
+        }
+        if (assistBlock) assistBlock.classList.add('hidden');
+        if (confirmBtn) {
+          confirmBtn.textContent = 'Confirmar Pausa';
+          confirmBtn.className = 'py-2.5 px-3 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-mono font-bold transition-all shadow-md cursor-pointer';
+        }
+        if (subIcon) {
+          subIcon.className = 'w-9 h-9 rounded-xl bg-amber-50 border border-amber-300 flex items-center justify-center text-amber-800 shrink-0 shadow-sm';
+          subIcon.innerHTML = `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>`;
+        }
+        if (guaranteeText) {
+          guaranteeText.innerHTML = '<strong>Acesso garantido:</strong> Seu catálogo permanece ativo até o último dia do ciclo pago. Nenhuma cobrança futura será realizada no seu cartão sincronizado.';
+        }
+      }
+
+      if (modal && card) {
+        modal.classList.remove('opacity-0', 'pointer-events-none');
+        modal.classList.add('opacity-100');
+        card.classList.remove('translate-y-8');
+        card.classList.add('translate-y-0');
+      }
     }
-    function confirmSeasonPause() {
-      closeSeasonPauseModal();
-      showToast('Pausa agendada para ' + activePauseData.service + ' em ' + activePauseData.date);
+
+    function closeSubscriptionModal() {
+      const modal = document.getElementById('subscriptionActionModal');
+      const card = document.getElementById('subscriptionModalCard');
+      if (modal && card) {
+        modal.classList.add('opacity-0', 'pointer-events-none');
+        modal.classList.remove('opacity-100');
+        card.classList.add('translate-y-8');
+        card.classList.remove('translate-y-0');
+      }
+    }
+
+    function confirmSubscriptionAction() {
+      const { title, action, price } = currentSubAction;
+      const isCancel = action.toLowerCase().includes('cancelar');
+      closeSubscriptionModal();
+
+      const yearly = (price * 12).toFixed(2).replace('.', ',');
+
+      // Localizar card pelo título do provedor
+      let cardId = null;
+      if (title.toLowerCase().includes('disney')) cardId = 'web-stream-card-disney';
+      else if (title.toLowerCase().includes('netflix')) cardId = 'web-stream-card-netflix';
+      else if (title.toLowerCase().includes('max')) cardId = 'web-stream-card-max';
+      else if (title.toLowerCase().includes('apple')) cardId = 'web-stream-card-apple';
+
+      if (cardId) {
+        const card = document.getElementById(cardId);
+        if (card) {
+          card.classList.add('opacity-60', 'grayscale-[35%]');
+          const badge = card.querySelector('span.uppercase');
+          if (badge) {
+            if (isCancel) {
+              badge.textContent = 'CANCELADO (FIM DO CICLO)';
+              badge.className = 'px-2 py-0.5 rounded text-[9px] font-mono bg-red-100 text-red-600 border border-red-200 font-bold uppercase tracking-wider';
+            } else {
+              badge.textContent = 'PAUSA AGENDADA';
+              badge.className = 'px-2 py-0.5 rounded text-[9px] font-mono bg-emerald-100 text-[#0E7C5B] border border-[#0E7C5B]/30 font-bold uppercase tracking-wider';
+            }
+          }
+        }
+      }
+
+      if (title.toLowerCase().includes('disney')) {
+        const donutArc = document.getElementById('webDonutArcDisney');
+        const donutTotal = document.getElementById('webDonutCenterTotal');
+        if (donutArc) donutArc.setAttribute('stroke-dasharray', '0 226.2');
+        if (donutTotal) donutTotal.textContent = 'R$ 117,70';
+      }
+
+      if (isCancel) {
+        showToast(`Cancelamento confirmado! +R$ ${yearly}/ano retidos no seu bolso com sucesso.`);
+      } else {
+        showToast(`Ação confirmada: ${action} para ${title}. Economia: +R$ ${yearly}/ano!`);
+      }
     }
 
     function setFastChoiceTime(btn, timeVal) {
@@ -1766,6 +2475,133 @@
         showToast('Teaser pausado');
       }
     }
+    // ====== UNIVERSAL SPOTLIGHT SEARCH LOGIC ======
+    function openUniversalSearch() {
+      const overlay = document.getElementById('universalSearchOverlay');
+      const input = document.getElementById('universalSearchInput');
+      overlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      setTimeout(() => input.focus(), 50);
+    }
+
+    function closeUniversalSearch() {
+      const overlay = document.getElementById('universalSearchOverlay');
+      overlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    function clearUniversalSearch() {
+      const input = document.getElementById('universalSearchInput');
+      input.value = '';
+      handleUniversalSearchInput('');
+      input.focus();
+    }
+
+    function applySearchQuery(term) {
+      const input = document.getElementById('universalSearchInput');
+      input.value = term;
+      handleUniversalSearchInput(term);
+      input.focus();
+    }
+
+    function getStreamingSearchEndpoints(query) {
+      const q = encodeURIComponent(query.trim());
+      return {
+        netflix: `https://www.netflix.com/search?q=${q}`,
+        max: `https://play.hbomax.com/search?q=${q}`,
+        disney: `https://www.disneyplus.com/search?q=${q}`,
+        prime: `https://www.primevideo.com/search/ref=atv_nb_sr?phrase=${q}`,
+        apple: `https://tv.apple.com/br/search?term=${q}`,
+        justwatch: `https://www.justwatch.com/br/busca?q=${q}`
+      };
+    }
+
+    function handleUniversalSearchInput(query) {
+      const q = query.trim().toLowerCase();
+      const clearBtn = document.getElementById('universalSearchClearBtn');
+      const localMatchesBlock = document.getElementById('searchLocalMatchesBlock');
+      const localMatchesList = document.getElementById('searchLocalMatchesList');
+      const dynamicStreamsBlock = document.getElementById('searchDynamicStreamsBlock');
+      const queryLabel = document.getElementById('searchCurrentQueryLabel');
+
+      clearBtn.classList.toggle('hidden', q.length === 0);
+
+      if (!q) {
+        localMatchesBlock.classList.add('hidden');
+        dynamicStreamsBlock.classList.add('hidden');
+        return;
+      }
+
+      // Update dynamic streaming links
+      const endpoints = getStreamingSearchEndpoints(query);
+      document.getElementById('searchLinkNetflix').href = endpoints.netflix;
+      document.getElementById('searchLinkMax').href = endpoints.max;
+      document.getElementById('searchLinkDisney').href = endpoints.disney;
+      document.getElementById('searchLinkPrime').href = endpoints.prime;
+      document.getElementById('searchLinkApple').href = endpoints.apple;
+      document.getElementById('searchLinkJustWatch').href = endpoints.justwatch;
+      queryLabel.textContent = query.trim();
+      dynamicStreamsBlock.classList.remove('hidden');
+
+      // Check local catalog matches
+      const matches = [];
+      for (const [key, item] of Object.entries(TITLES_CATALOG)) {
+        if (item.title.toLowerCase().includes(q) || item.originalTitle.toLowerCase().includes(q) || item.genre.toLowerCase().includes(q)) {
+          matches.push({ key, ...item });
+        }
+      }
+
+      if (matches.length > 0) {
+        localMatchesList.innerHTML = matches.map(m => `
+          <div class="p-3 rounded-xl bg-gray-50 border border-gray-200 hover:border-[#0E7C5B]/40 flex items-center justify-between gap-3 transition-colors shadow-xs">
+            <div class="flex items-center gap-3 min-w-0">
+              <img src="${m.poster}" alt="${m.title}" class="w-10 h-14 object-cover rounded-lg shrink-0 border border-gray-200">
+              <div class="min-w-0">
+                <div class="flex items-center gap-2">
+                  <span class="text-xs font-bold text-gray-900 truncate">${m.title}</span>
+                  <span class="px-1.5 py-0.5 rounded text-[9px] font-mono bg-emerald-100 text-[#0E7C5B] border border-emerald-300 font-bold">${m.rating}</span>
+                </div>
+                <p class="text-[11px] text-gray-500 font-mono truncate">${m.originalTitle}</p>
+                <div class="flex items-center gap-2 mt-1">
+                  <span class="text-[10px] text-gray-500">${m.genre}</span>
+                  <span class="text-[10px] text-[#0E7C5B] font-mono font-bold">&middot; ${m.provider.name}</span>
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center gap-2 shrink-0">
+              <button onclick="closeUniversalSearch(); openWatchModal('${m.key}')" class="px-3 py-1.5 rounded-xl bg-gray-200 hover:bg-gray-300 text-gray-900 text-xs font-semibold transition-all cursor-pointer">
+                Detalhes
+              </button>
+              <a href="${m.watchUrl}" target="_blank" rel="noopener noreferrer" class="px-3.5 py-1.5 rounded-xl bg-mint hover:bg-mint-dark text-obsidian text-xs font-bold transition-all flex items-center gap-1.5 shadow-sm no-underline">
+                <span>Assistir</span>
+                <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              </a>
+            </div>
+          </div>
+        `).join('');
+        localMatchesBlock.classList.remove('hidden');
+      } else {
+        localMatchesBlock.classList.add('hidden');
+      }
+    }
+
+    // Global keyboard shortcut: Ctrl+K / Cmd+K and Escape
+    document.addEventListener('keydown', function(e) {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        const overlay = document.getElementById('universalSearchOverlay');
+        if (overlay && overlay.classList.contains('active')) {
+          closeUniversalSearch();
+        } else {
+          openUniversalSearch();
+        }
+      } else if (e.key === 'Escape') {
+        const overlay = document.getElementById('universalSearchOverlay');
+        if (overlay && overlay.classList.contains('active')) {
+          closeUniversalSearch();
+        }
+      }
+    });
   </script>
 </body>
 </html>

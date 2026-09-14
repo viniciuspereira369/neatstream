@@ -101,6 +101,28 @@
     }
     #mobileWatchSheetOverlay.active + #mobileWatchSheetCard,
     #mobileWatchSheetCard.active { transform: translateY(0); }
+
+    /* ====== MOBILE SEARCH SHEET ====== */
+    #mobileSearchSheetOverlay {
+      position: fixed; inset: 0; z-index: 120;
+      background: rgba(4, 6, 5, 0.78);
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    #mobileSearchSheetOverlay.active { opacity: 1; pointer-events: auto; }
+    #mobileSearchSheetCard {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 121;
+      max-height: 88vh;
+      background: #111714;
+      border-top-left-radius: 1.75rem; border-top-right-radius: 1.75rem;
+      border-top: 1px solid rgba(255,255,255,0.14);
+      display: flex; flex-direction: column;
+      box-shadow: 0 -20px 60px rgba(0,0,0,0.85);
+      transform: translateY(100%);
+      transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    #mobileSearchSheetCard.active { transform: translateY(0); }
     .sheet-drag-pill {
       width: 36px; height: 4px; border-radius: 2px;
       background: rgba(255,255,255,0.25); margin: 10px auto 0;
@@ -228,6 +250,9 @@
 
     <!-- Quick Pill Action -->
     <div class="flex items-center gap-2">
+      <button onclick="openMobileSearchSheet()" title="Buscar qualquer filme ou série" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 active:scale-95 border border-white/10 text-gray-300 hover:text-white flex items-center justify-center text-xs transition-all">
+        <svg class="w-4 h-4 text-mint" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </button>
       <a href="carteira_dark.html" class="px-2.5 py-1 rounded-full bg-mint/15 border border-mint/30 text-mint font-mono text-[11px] font-bold flex items-center gap-1.5">
         <span class="w-1.5 h-1.5 rounded-full bg-mint animate-pulse"></span>
         <span>R$ 142,60</span>
@@ -281,11 +306,14 @@
         </div>
         <h2 class="text-2xl font-black font-display text-white tracking-tight leading-tight">O Urso (The Bear)</h2>
         <div class="flex items-center gap-2 pt-1">
-          <button onclick="openMobileWatchSheet('the_bear')" class="flex-1 py-2.5 rounded-full bg-mint text-obsidian font-display font-bold text-xs flex items-center justify-center gap-1.5 shadow-[0_0_20px_rgba(0,229,153,0.4)] hover:brightness-110 active:scale-95 transition-all">
-            <span>Assistir Agora</span>
-            <span>▶</span>
+          <a href="https://www.disneyplus.com/browse/entity-05eb6a8e-90ed-4947-8c0b-e6536cbddd5f" target="_blank" rel="noopener noreferrer" class="flex-1 py-2.5 rounded-full bg-mint text-obsidian font-display font-bold text-xs flex items-center justify-center gap-1.5 shadow-[0_0_20px_rgba(0,229,153,0.4)] hover:brightness-110 active:scale-95 transition-all no-underline">
+            <span>Assistir no Disney+</span>
+            <svg class="w-3.5 h-3.5 opacity-80 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+          </a>
+          <button onclick="openMobileWatchSheet('the_bear')" class="px-3.5 py-2.5 rounded-full bg-white/15 backdrop-blur-md border border-white/20 text-white flex items-center justify-center text-xs active:scale-95 transition-all font-mono" title="Ver Detalhes">
+            Info
           </button>
-          <button onclick="toggleWatchlistMobile(this, 'O Urso')" class="w-10 h-10 rounded-full bg-white/15 backdrop-blur-md border border-white/20 text-white flex items-center justify-center text-xs active:scale-95 transition-all">
+          <button onclick="toggleWatchlistMobile(this, 'O Urso')" class="w-10 h-10 rounded-full bg-white/15 backdrop-blur-md border border-white/20 text-white flex items-center justify-center text-xs active:scale-95 transition-all shrink-0">
             ✓
           </button>
         </div>
@@ -530,9 +558,10 @@
 
       <!-- Ações -->
       <div class="space-y-2.5 pt-1">
-        <a id="sheetWatchBtn" href="#" target="_blank" rel="noopener" class="w-full py-3.5 rounded-2xl bg-gradient-to-r from-mint to-mint-dark text-obsidian font-display font-bold text-sm flex items-center justify-center gap-2.5 shadow-[0_0_25px_rgba(0,229,153,0.4)] active:scale-[0.97] transition-all no-underline">
+        <a id="sheetWatchBtn" href="#" target="_blank" rel="noopener noreferrer" class="w-full py-3.5 rounded-2xl bg-gradient-to-r from-mint to-mint-dark text-obsidian font-display font-bold text-sm flex items-center justify-center gap-2.5 shadow-[0_0_25px_rgba(0,229,153,0.4)] active:scale-[0.97] transition-all no-underline">
           <span id="sheetWatchLogo" class="inline-flex items-center"></span>
           <span id="sheetWatchBtnText">Assistir Agora</span>
+          <svg class="w-4 h-4 opacity-75 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
         </a>
         <div class="flex gap-2">
           <button id="sheetTrailerBtn" onclick="playSheetTrailer()" class="flex-1 py-3 rounded-2xl bg-white/10 text-white text-xs font-semibold flex items-center justify-center gap-1.5 active:scale-95 transition-all border border-white/10">
@@ -555,6 +584,78 @@
     <div class="bg-[#111714] border border-mint text-white px-4 py-2.5 rounded-full shadow-2xl text-xs font-mono flex items-center gap-2">
       <span class="w-2 h-2 rounded-full bg-mint animate-pulse"></span>
       <span id="toastMessage">Ação realizada</span>
+    </div>
+  </div>
+
+  <!-- ====== BOTTOM SHEET BUSCA UNIVERSAL ====== -->
+  <div id="mobileSearchSheetOverlay" onclick="if(event.target===this)closeMobileSearchSheet()"></div>
+  <div id="mobileSearchSheetCard">
+    <div class="sheet-drag-pill"></div>
+
+    <div class="p-4 border-b border-white/10 shrink-0">
+      <div class="flex items-center justify-between mb-3">
+        <div class="flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-mint animate-pulse"></span>
+          <h3 class="text-sm font-bold font-display text-white">Buscar Título ou Streaming</h3>
+        </div>
+        <button onclick="closeMobileSearchSheet()" class="w-7 h-7 rounded-full bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white flex items-center justify-center">
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+
+      <!-- Search Input -->
+      <div class="relative flex items-center">
+        <svg class="w-4 h-4 text-mint absolute left-3.5 pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input id="mobileSearchInput" type="text" placeholder="Ex: Breaking Bad, The Boys, Duna..." oninput="handleMobileSearchInput(this.value)" class="w-full pl-10 pr-10 py-3 bg-black/40 border border-white/15 focus:border-mint focus:outline-none rounded-2xl text-white text-xs placeholder-gray-500 font-medium transition-all shadow-inner">
+        <button id="mobileSearchClearBtn" onclick="clearMobileSearch()" class="hidden absolute right-3 w-6 h-6 rounded-full bg-white/10 text-gray-400 hover:text-white flex items-center justify-center text-xs">✕</button>
+      </div>
+
+      <!-- Quick Suggestion Chips -->
+      <div class="flex items-center gap-1.5 overflow-x-auto pt-3 pb-1 no-scrollbar text-[10px] font-mono">
+        <span class="text-gray-500 shrink-0 mr-1">Sugestões:</span>
+        <button onclick="applyMobileSearchSuggestion('The Boys')" class="px-2.5 py-1 rounded-full bg-white/5 hover:bg-mint/15 hover:border-mint/40 border border-white/10 text-gray-300 hover:text-mint whitespace-nowrap active:scale-95 transition-all">The Boys</button>
+        <button onclick="applyMobileSearchSuggestion('Breaking Bad')" class="px-2.5 py-1 rounded-full bg-white/5 hover:bg-mint/15 hover:border-mint/40 border border-white/10 text-gray-300 hover:text-mint whitespace-nowrap active:scale-95 transition-all">Breaking Bad</button>
+        <button onclick="applyMobileSearchSuggestion('Game of Thrones')" class="px-2.5 py-1 rounded-full bg-white/5 hover:bg-mint/15 hover:border-mint/40 border border-white/10 text-gray-300 hover:text-mint whitespace-nowrap active:scale-95 transition-all">Game of Thrones</button>
+        <button onclick="applyMobileSearchSuggestion('Loki')" class="px-2.5 py-1 rounded-full bg-white/5 hover:bg-mint/15 hover:border-mint/40 border border-white/10 text-gray-300 hover:text-mint whitespace-nowrap active:scale-95 transition-all">Loki</button>
+        <button onclick="applyMobileSearchSuggestion('Ted Lasso')" class="px-2.5 py-1 rounded-full bg-white/5 hover:bg-mint/15 hover:border-mint/40 border border-white/10 text-gray-300 hover:text-mint whitespace-nowrap active:scale-95 transition-all">Ted Lasso</button>
+        <button onclick="applyMobileSearchSuggestion('Duna: Parte 2')" class="px-2.5 py-1 rounded-full bg-white/5 hover:bg-mint/15 hover:border-mint/40 border border-white/10 text-gray-300 hover:text-mint whitespace-nowrap active:scale-95 transition-all">Duna: Parte 2</button>
+      </div>
+    </div>
+
+    <!-- Scrollable Results Container -->
+    <div id="mobileSearchResultsWrap" class="p-4 overflow-y-auto space-y-4 max-h-[60vh]">
+      <!-- 1. Catálogo Local (Matches do App) -->
+      <div id="mobileLocalResultsBox" class="space-y-2">
+        <div class="text-[10px] font-mono text-gray-400 uppercase tracking-wider flex items-center justify-between">
+          <span class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-mint"></span> No Catálogo NeatStream</span>
+          <span id="mobileLocalMatchCount" class="text-mint font-bold">12 títulos</span>
+        </div>
+        <div id="mobileLocalResultsList" class="space-y-2"></div>
+      </div>
+
+      <!-- 2. Dynamic Deep Link Resolver -->
+      <div id="mobileDynamicResolverBox" class="pt-2 border-t border-white/10 space-y-2.5">
+        <div class="flex items-center justify-between">
+          <span class="text-[10px] font-mono text-gray-400 uppercase tracking-wider flex items-center gap-1.5">
+            <svg class="w-3 h-3 text-cyan-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="12 8 8 12 12 16 12 8"/><polygon points="16 12 12 8 12 16 16 12"/></svg>
+            Abrir Busca Direta nos Streamings
+          </span>
+          <span id="mobileDynamicQueryBadge" class="text-[9px] font-mono text-cyan-400 bg-cyan-400/10 px-2 py-0.5 rounded-full border border-cyan-400/25">Qualquer Título</span>
+        </div>
+        <p class="text-[11px] text-gray-400 leading-tight">Toque em qualquer plataforma abaixo para abrir instantaneamente os resultados da busca direto no aplicativo ou web oficial:</p>
+
+        <!-- Grid de Streamings -->
+        <div id="mobileDynamicStreamingGrid" class="grid grid-cols-2 gap-2"></div>
+
+        <!-- JustWatch Aggregator Comparison Link -->
+        <a id="mobileJustWatchBtn" href="https://www.justwatch.com/br" target="_blank" rel="noopener noreferrer" class="w-full py-2.5 px-3 rounded-xl bg-amber-400/10 border border-amber-400/25 hover:bg-amber-400/20 text-amber-300 font-mono text-[11px] font-bold flex items-center justify-between transition-all no-underline">
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+            <span>Ver onde está passando no JustWatch BR</span>
+          </div>
+          <svg class="w-3.5 h-3.5 text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+        </a>
+      </div>
     </div>
   </div>
 
@@ -609,7 +710,7 @@
         synopsis: 'Paul Atreides se une a Chani e aos Fremen numa jornada épica de vingança e destino. Experiência cinematográfica imersiva.',
         resolution: '4K UHD · Dolby Atmos', classification: '14',
         provider: { key: 'max', name: 'Max' },
-        watchUrl: 'https://play.max.com/movie/dune-part-two',
+        watchUrl: 'https://play.hbomax.com/movie/f0a4f239-0b57-47e2-a39a-54fb96925e61',
         subscriptionStatus: 'included', subscriptionNote: 'Incluso no seu Max — R$ 39,90/mês',
         backdrop: '../assets/backdrops/dune2_backdrop.jpg', videoTeaser: '../assets/videos/dune2_teaser.mp4'
       },
@@ -619,7 +720,7 @@
         synopsis: 'Carmy transforma o restaurante da família em alta gastronomia, enfrentando trauma e obsessão pela perfeição.',
         resolution: '4K HDR · Dolby Vision', classification: '16',
         provider: { key: 'disney', name: 'Disney+' },
-        watchUrl: 'https://www.disneyplus.com/series/the-bear',
+        watchUrl: 'https://www.disneyplus.com/browse/entity-05eb6a8e-90ed-4947-8c0b-e6536cbddd5f',
         subscriptionStatus: 'included', subscriptionNote: 'Incluso no Disney+ — R$ 43,90/mês',
         backdrop: '../assets/backdrops/the_bear_backdrop.jpg', videoTeaser: '../assets/videos/the_bear_teaser.mp4'
       },
@@ -629,7 +730,7 @@
         synopsis: 'Funcionários de uma corporação separam cirurgicamente suas memórias de trabalho e pessoais. Mas a parede entre os dois mundos está rachando.',
         resolution: '4K HDR · Dolby Vision', classification: '14',
         provider: { key: 'apple', name: 'Apple TV+' },
-        watchUrl: 'https://tv.apple.com/show/severance',
+        watchUrl: 'https://tv.apple.com/br/show/ruptura/umc.cmc.1srk2goyh2q2zdxcx605w8vtx',
         subscriptionStatus: 'included', subscriptionNote: 'Incluso no Apple TV+ — R$ 21,90/mês',
         backdrop: '../assets/backdrops/severance_backdrop.jpg', videoTeaser: null
       },
@@ -639,7 +740,7 @@
         synopsis: 'No Japão feudal de 1600, um náufrago inglês navega a teia política de senhores da guerra e samurais numa guerra civil iminente.',
         resolution: '4K UHD · Atmos', classification: '16',
         provider: { key: 'disney', name: 'Disney+' },
-        watchUrl: 'https://www.disneyplus.com/series/shogun',
+        watchUrl: 'https://www.disneyplus.com/browse/entity-7bf8d7e6-9739-4fee-86c0-f4afc48b152c',
         subscriptionStatus: 'included', subscriptionNote: 'Incluso no Disney+ — R$ 43,90/mês',
         backdrop: '../assets/backdrops/shogun_backdrop.jpg', videoTeaser: null
       },
@@ -649,7 +750,7 @@
         synopsis: 'A história de J. Robert Oppenheimer e o desenvolvimento da bomba atômica. Um épico biográfico de Christopher Nolan.',
         resolution: '4K IMAX · Dolby Atmos', classification: '14',
         provider: { key: 'prime', name: 'Prime Video' },
-        watchUrl: 'https://www.primevideo.com/detail/Oppenheimer',
+        watchUrl: 'https://www.primevideo.com/detail/gti=amzn1.dv.gti.f60cf07a-7363-411e-9f4a-b93b568ef3d3',
         subscriptionStatus: 'required', subscriptionNote: 'Aluguel no Prime Video — R$ 14,90',
         backdrop: '../assets/backdrops/oppenheimer_backdrop.jpg', videoTeaser: null
       },
@@ -659,7 +760,7 @@
         synopsis: 'Duas irmãs lutam em lados opostos de uma guerra entre Piltover e Zaun. Animação revolucionária do universo League of Legends.',
         resolution: '4K HDR10+', classification: '14',
         provider: { key: 'netflix', name: 'Netflix' },
-        watchUrl: 'https://www.netflix.com/title/arcane',
+        watchUrl: 'https://www.netflix.com/title/81436901',
         subscriptionStatus: 'included', subscriptionNote: 'Incluso no Netflix 4K — R$ 55,90/mês',
         backdrop: '../assets/backdrops/arcane_backdrop.jpg', videoTeaser: null
       },
@@ -669,9 +770,59 @@
         synopsis: 'A família Roy luta pelo controle de um império de mídia enquanto o patriarca envelhece. Sátira sobre poder e disfunção.',
         resolution: '4K HDR · Atmos', classification: '16',
         provider: { key: 'max', name: 'Max' },
-        watchUrl: 'https://play.max.com/show/succession',
+        watchUrl: 'https://play.hbomax.com/video/watch/e457df99-f817-4646-b64c-8ce7afaeb405',
         subscriptionStatus: 'included', subscriptionNote: 'Incluso no Max — R$ 39,90/mês',
         backdrop: '../assets/backdrops/succession_backdrop.jpg', videoTeaser: null
+      },
+      stranger_things: {
+        title: 'Stranger Things', originalTitle: 'Stranger Things — T4 (2022)', type: 'Série',
+        duration: 'T4 · 9 eps · ~75 min', rating: '8.7', criticScore: 'Metacritic 71', genre: 'Ficção Científica · Terror',
+        synopsis: 'Na cidade de Hawkins, um grupo de jovens enfrenta forças sobrenaturais, experimentos governamentais e o Mundo Invertido.',
+        resolution: '4K Dolby Vision · Atmos', classification: '14',
+        provider: { key: 'netflix', name: 'Netflix' },
+        watchUrl: 'https://www.netflix.com/title/80057281',
+        subscriptionStatus: 'included', subscriptionNote: 'Incluso no Netflix 4K — R$ 55,90/mês',
+        backdrop: '../assets/backdrops/stranger_things_backdrop.jpg', videoTeaser: null
+      },
+      fallout: {
+        title: 'Fallout', originalTitle: 'Fallout — T1 (2024)', type: 'Série',
+        duration: 'T1 · 8 eps · ~55 min', rating: '8.5', criticScore: 'Metacritic 73', genre: 'Ficção Científica · Aventura',
+        synopsis: 'Num futuro pós-apocalíptico, sobreviventes de bunkers subterrâneos emergem para uma terra arrasada repleta de mistérios e perigos.',
+        resolution: '4K UHD · Atmos', classification: '16',
+        provider: { key: 'prime', name: 'Prime Video' },
+        watchUrl: 'https://www.primevideo.com/detail/gti=amzn1.dv.gti.220a83cb-b9b4-4cad-b8a0-e768bb603fa7',
+        subscriptionStatus: 'required', subscriptionNote: 'Requer Prime Video — R$ 14,90/mês',
+        backdrop: '../assets/backdrops/fallout_backdrop.jpg', videoTeaser: null
+      },
+      blade_runner_2049: {
+        title: 'Blade Runner 2049', originalTitle: 'Blade Runner 2049 (2017)', type: 'Filme',
+        duration: '2h 44m', rating: '8.0', criticScore: 'Metacritic 81', genre: 'Ficção Científica · Neo-Noir',
+        synopsis: 'O novo blade runner, Oficial K, descobre um segredo enterrado há muito tempo que tem o potencial de mergulhar a sociedade no caos.',
+        resolution: '4K UHD · Dolby Atmos', classification: '14',
+        provider: { key: 'max', name: 'Max' },
+        watchUrl: 'https://www.hbomax.com/br/pt/movie/3e2754f6-8ee9-48ef-806d-bdf3f64b6243',
+        subscriptionStatus: 'included', subscriptionNote: 'Incluso no Max — R$ 39,90/mês',
+        backdrop: '../assets/backdrops/blade_runner_2049_backdrop.jpg', videoTeaser: null
+      },
+      the_last_of_us: {
+        title: 'The Last of Us', originalTitle: 'The Last of Us — T1 (2023)', type: 'Série',
+        duration: 'T1 · 9 eps · ~55 min', rating: '8.8', criticScore: 'Metacritic 84', genre: 'Drama · Pós-Apocalíptico',
+        synopsis: 'Vinte anos após a destruição da civilização, Joel é contratado para contrabandear Ellie para fora de uma zona de quarentena militarizada.',
+        resolution: '4K HDR · Atmos', classification: '16',
+        provider: { key: 'max', name: 'Max' },
+        watchUrl: 'https://play.hbomax.com/video/watch/c07ae042-082e-4b53-ba86-b6ac5e3004db',
+        subscriptionStatus: 'included', subscriptionNote: 'Incluso no Max — R$ 39,90/mês',
+        backdrop: '../assets/backdrops/the_last_of_us_backdrop.jpg', videoTeaser: null
+      },
+      anatomy_of_a_fall: {
+        title: 'Anatomia de uma Queda', originalTitle: 'Anatomie d\'une chute (2023)', type: 'Filme',
+        duration: '2h 32m', rating: '7.8', criticScore: 'Metacritic 87', genre: 'Drama · Suspense Jurídico',
+        synopsis: 'Sandra é suspeita da morte do marido. O julgamento disseca a intimidade de uma relação complexa sob escrutínio público.',
+        resolution: 'Full HD 1080p', classification: '14',
+        provider: { key: 'prime', name: 'Prime Video' },
+        watchUrl: 'https://www.primevideo.com/detail/gti=amzn1.dv.gti.3ef33c1e-9349-421c-8446-a4a050799bff',
+        subscriptionStatus: 'required', subscriptionNote: 'Aluguel no Prime Video — R$ 14,90',
+        backdrop: '../assets/backdrops/anatomy_of_a_fall_backdrop.jpg', videoTeaser: null
       }
     };
 
@@ -935,6 +1086,159 @@
         t.classList.remove('translate-y-0', 'opacity-100');
         t.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
       }, 2500);
+    }
+
+    // ====== MOBILE UNIVERSAL SEARCH & DYNAMIC DEEP LINK RESOLVER ======
+    function openMobileSearchSheet() {
+      const overlay = document.getElementById('mobileSearchSheetOverlay');
+      const card = document.getElementById('mobileSearchSheetCard');
+      const input = document.getElementById('mobileSearchInput');
+      if (!overlay || !card) return;
+      overlay.classList.add('active');
+      card.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      setTimeout(() => {
+        if (input) {
+          input.focus();
+          handleMobileSearchInput(input.value);
+        }
+      }, 50);
+    }
+
+    function closeMobileSearchSheet() {
+      const overlay = document.getElementById('mobileSearchSheetOverlay');
+      const card = document.getElementById('mobileSearchSheetCard');
+      if (overlay) overlay.classList.remove('active');
+      if (card) card.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    function clearMobileSearch() {
+      const input = document.getElementById('mobileSearchInput');
+      if (!input) return;
+      input.value = '';
+      handleMobileSearchInput('');
+      input.focus();
+    }
+
+    function applyMobileSearchSuggestion(term) {
+      const input = document.getElementById('mobileSearchInput');
+      if (!input) return;
+      input.value = term;
+      handleMobileSearchInput(term);
+      input.focus();
+    }
+
+    function getStreamingSearchEndpoints(query) {
+      const q = encodeURIComponent((query || '').trim());
+      return {
+        netflix: `https://www.netflix.com/search?q=${q}`,
+        max: `https://play.hbomax.com/search?q=${q}`,
+        disney: `https://www.disneyplus.com/search?q=${q}`,
+        prime: `https://www.primevideo.com/search/ref=atv_nb_sr?phrase=${q}`,
+        apple: `https://tv.apple.com/br/search?term=${q}`,
+        justwatch: `https://www.justwatch.com/br/busca?q=${q}`
+      };
+    }
+
+    function handleMobileSearchInput(rawQuery) {
+      const query = (rawQuery || '').trim();
+      const q = query.toLowerCase();
+      const clearBtn = document.getElementById('mobileSearchClearBtn');
+      const localList = document.getElementById('mobileLocalResultsList');
+      const localCount = document.getElementById('mobileLocalMatchCount');
+      const streamingGrid = document.getElementById('mobileDynamicStreamingGrid');
+      const queryBadge = document.getElementById('mobileDynamicQueryBadge');
+      const justWatchBtn = document.getElementById('mobileJustWatchBtn');
+
+      if (clearBtn) {
+        clearBtn.classList.toggle('hidden', query.length === 0);
+      }
+
+      // 1. Dynamic Deep Link Resolver
+      const displayQuery = query || 'Qualquer Título';
+      if (queryBadge) {
+        queryBadge.textContent = displayQuery.length > 22 ? displayQuery.slice(0, 20) + '...' : displayQuery;
+      }
+
+      const endpoints = getStreamingSearchEndpoints(query || 'filmes e series');
+      if (justWatchBtn) {
+        justWatchBtn.href = query ? endpoints.justwatch : 'https://www.justwatch.com/br';
+      }
+
+      const platforms = [
+        { key: 'netflix', name: 'Netflix', url: endpoints.netflix, bg: 'bg-red-950/20 border-red-500/30 text-red-300' },
+        { key: 'max', name: 'Max', url: endpoints.max, bg: 'bg-blue-950/20 border-blue-500/30 text-blue-300' },
+        { key: 'disney', name: 'Disney+', url: endpoints.disney, bg: 'bg-sky-950/20 border-sky-500/30 text-sky-300' },
+        { key: 'prime', name: 'Prime Video', url: endpoints.prime, bg: 'bg-cyan-950/20 border-cyan-500/30 text-cyan-300' },
+        { key: 'apple', name: 'Apple TV+', url: endpoints.apple, bg: 'bg-zinc-900 border-zinc-700 text-gray-200' }
+      ];
+
+      if (streamingGrid) {
+        streamingGrid.innerHTML = platforms.map(p => `
+          <a href="${p.url}" target="_blank" rel="noopener noreferrer" class="p-2.5 rounded-xl border ${p.bg} hover:brightness-125 flex items-center justify-between gap-2 transition-all no-underline active:scale-95">
+            <div class="flex items-center gap-2 min-w-0">
+              ${getBrandAppTileHtml(p.key, 'w-6 h-6 rounded-lg shrink-0')}
+              <div class="min-w-0">
+                <span class="text-[11px] font-bold font-display block truncate">${p.name}</span>
+                <span class="text-[9px] font-mono text-gray-400 block truncate">Buscar nativo</span>
+              </div>
+            </div>
+            <svg class="w-3.5 h-3.5 opacity-60 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+          </a>
+        `).join('');
+      }
+
+      // 2. Local Catalog Matches
+      if (localList) {
+        const matches = [];
+        for (const [key, item] of Object.entries(TITLES_CATALOG)) {
+          if (!query || 
+              item.title.toLowerCase().includes(q) || 
+              item.originalTitle.toLowerCase().includes(q) || 
+              item.genre.toLowerCase().includes(q) ||
+              item.provider.name.toLowerCase().includes(q)) {
+            matches.push({ key, ...item });
+          }
+        }
+
+        if (localCount) {
+          localCount.textContent = `${matches.length} título${matches.length === 1 ? '' : 's'}`;
+        }
+
+        if (matches.length > 0) {
+          localList.innerHTML = matches.map(m => `
+            <div class="p-2.5 rounded-2xl bg-white/5 border border-white/10 hover:border-mint/30 flex items-center justify-between gap-2 transition-colors">
+              <div class="flex items-center gap-2.5 min-w-0">
+                <img src="${m.backdrop}" alt="${m.title}" class="w-14 h-10 object-cover rounded-xl shrink-0 border border-white/10">
+                <div class="min-w-0">
+                  <div class="flex items-center gap-1.5">
+                    <span class="text-xs font-bold text-white truncate">${m.title}</span>
+                    <span class="px-1 py-0.2 rounded text-[8px] font-mono bg-mint/15 text-mint border border-mint/30 font-bold">${m.rating}</span>
+                  </div>
+                  <p class="text-[10px] font-mono text-gray-400 truncate">${m.genre} · ${m.provider.name}</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-1.5 shrink-0">
+                <button onclick="closeMobileSearchSheet(); openMobileWatchSheet('${m.key}')" class="px-2.5 py-1.5 rounded-xl bg-white/10 text-white text-[11px] font-semibold active:scale-95 transition-all">
+                  Ficha
+                </button>
+                <a href="${m.watchUrl}" target="_blank" rel="noopener noreferrer" class="px-2.5 py-1.5 rounded-xl bg-mint text-obsidian text-[11px] font-bold flex items-center gap-1 active:scale-95 shadow-[0_0_10px_rgba(0,229,153,0.3)] no-underline">
+                  <span>Play</span>
+                  <svg class="w-2.5 h-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                </a>
+              </div>
+            </div>
+          `).join('');
+        } else {
+          localList.innerHTML = `
+            <div class="p-4 rounded-2xl bg-white/5 border border-white/10 text-center space-y-1">
+              <p class="text-xs text-gray-300">Nenhum título local correspondente a "<strong class="text-white">${query}</strong>"</p>
+              <p class="text-[10px] text-gray-400">Use os botões de busca direta acima para abrir instantaneamente nos streamings oficiais.</p>
+            </div>
+          `;
+        }
+      }
     }
   </script>
 </body>

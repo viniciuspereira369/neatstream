@@ -91,7 +91,7 @@
       </div>
 
       <div class="space-y-1">
-        <h1 class="text-xl font-bold text-white tracking-tight font-headline">Assinatura Disney+ Cancelada</h1>
+        <h1 id="celebTitle" class="text-xl font-bold text-white tracking-tight font-headline">Assinatura Disney+ Cancelada</h1>
         <p class="text-xs text-gray-400">Sua assinatura foi cancelada. Não haverá novas cobranças no seu cartão.</p>
       </div>
 
@@ -99,10 +99,10 @@
       <div class="bg-[#111714] rounded-2xl p-5 border border-white/8 shadow-xl">
         <span class="text-[11px] uppercase tracking-wider text-gray-400 font-medium">Sua Economia Estimada</span>
         <div class="font-mono text-3xl font-bold text-mint tracking-tight mt-1 flex items-baseline justify-center gap-1.5">
-          <span>R$ 526,80</span>
+          <span id="celebYearlySavings">R$ 526,80</span>
           <span class="text-xs font-sans font-medium text-gray-400">/ ano</span>
         </div>
-        <p class="text-[11px] text-gray-400 mt-1">Menos R$ 43,90 na sua fatura todo mês</p>
+        <p id="celebMonthlyBreakdown" class="text-[11px] text-gray-400 mt-1">Menos R$ 43,90 na sua fatura todo mês</p>
       </div>
     </div>
 
@@ -113,7 +113,7 @@
           <span class="material-symbols-outlined text-mint text-base">analytics</span>
           Seu Novo Gasto Mensal
         </h2>
-        <span class="text-xs font-mono text-mint font-semibold">-R$ 43,90/mês</span>
+        <span id="celebMonthlyDiff" class="text-xs font-mono text-mint font-semibold">-R$ 43,90/mês</span>
       </div>
 
       <div class="grid grid-cols-2 gap-3">
@@ -130,9 +130,9 @@
         <!-- Depois -->
         <div class="bg-[#080C0A] rounded-xl p-3 border border-mint/20 space-y-1">
           <span class="text-[10px] text-mint uppercase font-mono">Novo Total</span>
-          <p class="font-mono text-sm font-bold text-mint">R$ 98,70<span class="text-[10px] text-gray-400 font-normal">/mês</span></p>
+          <p class="font-mono text-sm font-bold text-mint"><span id="celebNewTotal">R$ 98,70</span><span class="text-[10px] text-gray-400 font-normal">/mês</span></p>
           <div class="w-full h-1.5 bg-[#161F1B] rounded-full overflow-hidden">
-            <div class="h-full bg-mint rounded-full" style="width: 54%;"></div>
+            <div id="celebNewProgressBar" class="h-full bg-mint rounded-full" style="width: 54%;"></div>
           </div>
           <span class="text-[10px] text-mint font-mono">3 assinaturas</span>
         </div>
@@ -145,7 +145,7 @@
         <span class="material-symbols-outlined text-mint text-base">event_available</span>
         <span>Acesso Garantido</span>
       </div>
-      <p class="text-xs text-gray-400 leading-relaxed">
+      <p id="celebAccessGuaranteed" class="text-xs text-gray-400 leading-relaxed">
         Você ainda pode assistir ao Disney+ até <strong class="text-white">12 de Outubro de 2026</strong> sem custos adicionais. Nenhuma cobrança futura será realizada.
       </p>
     </section>
@@ -165,12 +165,46 @@
   </footer>
 
   <script>
-    // Simulação de resposta háptica de celebração (Mobile)
+    // Simulação de resposta háptica e personalização dinâmica via parâmetros
     window.addEventListener('DOMContentLoaded', () => {
       if ('vibrate' in navigator) {
         try {
           navigator.vibrate([20, 30, 20]);
         } catch(e) {}
+      }
+
+      const params = new URLSearchParams(window.location.search);
+      const service = params.get('service');
+      const price = parseFloat(params.get('price'));
+
+      if (service && !isNaN(price)) {
+        const cleanName = service.replace(/\s*Standard|\s*Premium|\s*4K/gi, '').trim();
+        const yearly = (price * 12).toFixed(2).replace('.', ',');
+        const monthlyStr = price.toFixed(2).replace('.', ',');
+        const baseTotal = 142.60;
+        const newTotal = Math.max(0, baseTotal - price).toFixed(2).replace('.', ',');
+        const progressPct = Math.max(20, Math.round((Math.max(0, baseTotal - price) / baseTotal) * 79));
+
+        const titleEl = document.getElementById('celebTitle');
+        if (titleEl) titleEl.textContent = `Assinatura ${cleanName} Cancelada`;
+
+        const yearlyEl = document.getElementById('celebYearlySavings');
+        if (yearlyEl) yearlyEl.textContent = `R$ ${yearly}`;
+
+        const breakdownEl = document.getElementById('celebMonthlyBreakdown');
+        if (breakdownEl) breakdownEl.textContent = `Menos R$ ${monthlyStr} na sua fatura todo mês`;
+
+        const diffEl = document.getElementById('celebMonthlyDiff');
+        if (diffEl) diffEl.textContent = `-R$ ${monthlyStr}/mês`;
+
+        const newTotalEl = document.getElementById('celebNewTotal');
+        if (newTotalEl) newTotalEl.textContent = `R$ ${newTotal}`;
+
+        const barEl = document.getElementById('celebNewProgressBar');
+        if (barEl) barEl.style.width = `${progressPct}%`;
+
+        const accessEl = document.getElementById('celebAccessGuaranteed');
+        if (accessEl) accessEl.innerHTML = `Você ainda pode assistir ao <strong class="text-white">${cleanName}</strong> até o fim do ciclo sem custos adicionais. Nenhuma cobrança futura será realizada.`;
       }
     });
 

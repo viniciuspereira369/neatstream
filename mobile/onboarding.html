@@ -68,6 +68,85 @@
       border: 1px solid rgba(255, 255, 255, 0.08);
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
     }
+
+    /* ====== SQUIRCLES DE BANCOS EMISSORES (44x44 DARK MODE MINIMALISTA) ====== */
+    .brand-app-tile {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 13px;
+      background: #141C18;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
+      flex-shrink: 0;
+      user-select: none;
+      overflow: hidden;
+      position: relative;
+      padding: 5px;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .brand-app-tile img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.35));
+    }
+    .brand-app-tile-nubank:hover {
+      border-color: rgba(168, 85, 247, 0.6);
+      box-shadow: 0 0 16px rgba(130, 10, 209, 0.25);
+    }
+    .brand-app-tile-itau:hover {
+      border-color: rgba(249, 115, 22, 0.6);
+      box-shadow: 0 0 16px rgba(236, 112, 0, 0.25);
+    }
+    .brand-app-tile-bradesco:hover {
+      border-color: rgba(239, 68, 68, 0.6);
+      box-shadow: 0 0 16px rgba(204, 9, 47, 0.25);
+    }
+    .brand-app-tile-inter:hover {
+      border-color: rgba(251, 146, 60, 0.6);
+      box-shadow: 0 0 16px rgba(255, 122, 0, 0.25);
+    }
+    .brand-app-tile-bb:hover {
+      border-color: rgba(250, 204, 21, 0.6);
+      box-shadow: 0 0 16px rgba(253, 225, 0, 0.25);
+    }
+
+    /* Interactive Bank Card Selection */
+    .bank-card-item {
+      position: relative;
+      background: #111714;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 1.25rem;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+      cursor: pointer;
+      user-select: none;
+    }
+    .bank-card-item:hover {
+      border-color: rgba(0, 229, 153, 0.3);
+      background: #151F1B;
+      transform: translateY(-1px);
+    }
+    .bank-card-item:active {
+      transform: scale(0.98);
+    }
+    .bank-card-item.selected {
+      border-color: #00E599;
+      background: rgba(0, 229, 153, 0.08);
+      box-shadow: 0 0 20px rgba(0, 229, 153, 0.18), inset 0 0 0 1px rgba(0, 229, 153, 0.3);
+    }
+    .bank-card-item.selected .select-radio {
+      border-color: #00E599;
+      background: #00E599;
+      color: #080C0A;
+    }
   </style>
 </head>
 
@@ -126,87 +205,224 @@
       </div>
     </div>
 
-    <!-- Hero Card -->
-    <section class="card-sheen rounded-3xl p-5 shadow-2xl relative overflow-hidden space-y-4">
-      <div class="flex items-center justify-between">
-        <div class="w-12 h-12 rounded-2xl bg-mint/10 border border-mint/30 flex items-center justify-center text-mint shadow-[0_0_20px_rgba(0,229,153,0.3)]">
-          <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">shield_lock</span>
+    <!-- Intro Header & Open Finance Trust Badge -->
+    <div class="space-y-1 pt-1">
+      <div class="flex items-center gap-2">
+        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-mono bg-mint/15 text-mint border border-mint/30 font-bold uppercase">
+          Conexão Segura · Open Finance
+        </span>
+      </div>
+      <h1 class="text-xl font-extrabold text-white tracking-tight leading-snug font-headline">
+        Qual cartão você usa nos seus streamings?
+      </h1>
+      <p class="text-xs text-gray-400 leading-relaxed">
+        Identificamos automaticamente faturas da Netflix, Max, Disney+, Apple TV+ e Prime Video sem acessar seu saldo bancário.
+      </p>
+    </div>
+
+    <!-- Bank Card Issuer Selection (Tela 1 - Requisito 6.1.3) -->
+    <section class="space-y-2.5">
+      <div class="flex items-center justify-between px-1">
+        <span class="text-[10px] font-mono text-gray-400 uppercase tracking-wider font-semibold">Emissor do Cartão Principal</span>
+        <span class="text-[10px] font-mono text-mint">1 Toque para Selecionar</span>
+      </div>
+
+      <!-- 5 Bank Cards Grid with Official PNGs -->
+      <div class="space-y-2" id="bankCardsContainer">
+        <!-- 1. Nubank (Selected by default) -->
+        <div class="bank-card-item selected" onclick="selectBankCard(this, 'Nubank', '#820AD1')" data-bank="Nubank">
+          <div class="flex items-center gap-3">
+            <div class="brand-app-tile brand-app-tile-nubank">
+              <img src="../assets/logos/nubank.png" alt="Nubank">
+            </div>
+            <div>
+              <h3 class="text-xs font-bold text-white">Nubank</h3>
+              <p class="text-[10px] text-gray-400 font-mono">Cartão de Crédito · Roxinho</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-[10px] font-mono text-mint font-semibold bank-tag">Principal</span>
+            <div class="select-radio w-5 h-5 rounded-full border border-white/20 flex items-center justify-center text-xs">
+              <span class="material-symbols-outlined text-[13px] font-bold">check</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Itaú -->
+        <div class="bank-card-item" onclick="selectBankCard(this, 'Itaú', '#EC7000')" data-bank="Itaú">
+          <div class="flex items-center gap-3">
+            <div class="brand-app-tile brand-app-tile-itau">
+              <img src="../assets/logos/itau.png" alt="Itaú">
+            </div>
+            <div>
+              <h3 class="text-xs font-bold text-white">Itaú</h3>
+              <p class="text-[10px] text-gray-400 font-mono">Itaucard / Click / Personnalité</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="select-radio w-5 h-5 rounded-full border border-white/20 flex items-center justify-center text-xs text-transparent">
+              <span class="material-symbols-outlined text-[13px] font-bold">check</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Bradesco -->
+        <div class="bank-card-item" onclick="selectBankCard(this, 'Bradesco', '#CC092F')" data-bank="Bradesco">
+          <div class="flex items-center gap-3">
+            <div class="brand-app-tile brand-app-tile-bradesco">
+              <img src="../assets/logos/bradesco.png" alt="Bradesco">
+            </div>
+            <div>
+              <h3 class="text-xs font-bold text-white">Bradesco</h3>
+              <p class="text-[10px] text-gray-400 font-mono">Bradesco Cartões Elo / Visa</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="select-radio w-5 h-5 rounded-full border border-white/20 flex items-center justify-center text-xs text-transparent">
+              <span class="material-symbols-outlined text-[13px] font-bold">check</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. Inter -->
+        <div class="bank-card-item" onclick="selectBankCard(this, 'Inter', '#FF7A00')" data-bank="Inter">
+          <div class="flex items-center gap-3">
+            <div class="brand-app-tile brand-app-tile-inter">
+              <img src="../assets/logos/inter.png" alt="Inter">
+            </div>
+            <div>
+              <h3 class="text-xs font-bold text-white">Banco Inter</h3>
+              <p class="text-[10px] text-gray-400 font-mono">Mastercard Gold / Black</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="select-radio w-5 h-5 rounded-full border border-white/20 flex items-center justify-center text-xs text-transparent">
+              <span class="material-symbols-outlined text-[13px] font-bold">check</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. Banco do Brasil -->
+        <div class="bank-card-item" onclick="selectBankCard(this, 'Banco do Brasil', '#FFE600')" data-bank="Banco do Brasil">
+          <div class="flex items-center gap-3">
+            <div class="brand-app-tile brand-app-tile-bb">
+              <img src="../assets/logos/bb.png" alt="Banco do Brasil">
+            </div>
+            <div>
+              <h3 class="text-xs font-bold text-white">Banco do Brasil</h3>
+              <p class="text-[10px] text-gray-400 font-mono">Ourocard Visa / Elo</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="select-radio w-5 h-5 rounded-full border border-white/20 flex items-center justify-center text-xs text-transparent">
+              <span class="material-symbols-outlined text-[13px] font-bold">check</span>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div>
-        <h1 class="text-xl font-bold text-white tracking-tight leading-snug font-headline">
-          Conecte suas contas e comece a economizar
-        </h1>
-        <p class="text-xs text-gray-400 mt-1.5 leading-relaxed">
-          O NeatStream identifica automaticamente seus streamings ativos e calcula onde você pode economizar todo mês.
-        </p>
-      </div>
-
-      <!-- Granular Permissions (Clear Transparency) -->
-      <div class="space-y-2.5 pt-2 border-t border-white/5">
-        <!-- Permission 1: Faturas de Streaming -->
-        <div class="flex items-start gap-3">
-          <div class="w-5 h-5 rounded-full bg-mint/20 flex items-center justify-center text-mint shrink-0 mt-0.5">
-            <span class="material-symbols-outlined text-[14px]">check</span>
-          </div>
-          <div>
-            <h2 class="text-xs font-bold text-white">Identificação automática de streamings</h2>
-            <p class="text-[11px] text-gray-400">Reconhece Netflix, Max, Disney+, Apple TV+ e Prime Video.</p>
-          </div>
+      <!-- Tactical Feedback Banner (Alinhado com /grill-me) -->
+      <div id="tacticalSecurityFeedback" class="p-3.5 rounded-2xl bg-mint/10 border border-mint/30 flex items-center gap-3 transition-all duration-300 shadow-sm">
+        <div class="w-8 h-8 rounded-xl bg-mint/20 flex items-center justify-center text-mint shrink-0">
+          <span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">verified_user</span>
         </div>
-
-        <!-- Permission 2: Análise de Economia -->
-        <div class="flex items-start gap-3">
-          <div class="w-5 h-5 rounded-full bg-mint/20 flex items-center justify-center text-mint shrink-0 mt-0.5">
-            <span class="material-symbols-outlined text-[14px]">check</span>
-          </div>
-          <div>
-            <h2 class="text-xs font-bold text-white">Cálculo de economia inteligente</h2>
-            <p class="text-[11px] text-gray-400">Mostra quanto você economiza cancelando o que não usa.</p>
-          </div>
-        </div>
-
-        <!-- Permission 3: Privacidade Total -->
-        <div class="flex items-start gap-3">
-          <div class="w-5 h-5 rounded-full bg-mint/20 flex items-center justify-center text-mint shrink-0 mt-0.5">
-            <span class="material-symbols-outlined text-[14px]">verified</span>
-          </div>
-          <div>
-            <h2 class="text-xs font-bold text-white">Privacidade garantida</h2>
-            <p class="text-[11px] text-gray-400">Apenas leitura de mensalidades. Zero acesso a dados bancários ou saldos.</p>
-          </div>
+        <div class="text-xs">
+          <p class="font-bold text-white font-mono" id="feedbackTitle">Cartão Nubank Selecionado</p>
+          <p class="text-[11px] text-gray-300">Ambiente Protegido · Leitura Restrita a Cobranças de Streaming</p>
         </div>
       </div>
     </section>
 
-    <!-- Security & Encryption Guarantee Card -->
-    <div class="bg-[#111714] rounded-2xl p-4 border border-white/8 space-y-2">
+    <!-- Granular Transparency & Security Guarantee Card -->
+    <div class="bg-[#111714] rounded-2xl p-4 border border-white/8 space-y-2.5">
       <div class="flex items-center justify-between text-[11px] text-gray-400 font-mono">
         <span class="flex items-center gap-1.5 text-white font-semibold">
           <span class="material-symbols-outlined text-mint text-sm">account_balance</span>
-          Rede Open Finance
+          Rede Open Finance Oficial
         </span>
         <span class="text-mint font-bold">+45.000 Bancos</span>
       </div>
-      <p class="text-[11px] text-gray-400 leading-relaxed">
-        Criptografia AES-256 de ponta a ponta. Você pode desconectar suas contas a qualquer momento em 1 toque.
-      </p>
+      
+      <div class="space-y-1.5 text-[11px] text-gray-400 pt-1 border-t border-white/5">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-mint text-xs">check_circle</span>
+          <span>Apenas leitura de mensalidades de streaming (MCC 4899)</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-mint text-xs">check_circle</span>
+          <span>Zero acesso a saldos, extratos gerais ou transferências</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-mint text-xs">check_circle</span>
+          <span>Revogação de acesso a qualquer momento em 1 toque</span>
+        </div>
+      </div>
     </div>
 
   </main>
 
   <!-- Bottom CTA Footer -->
   <footer class="relative z-20 px-5 py-3 max-w-[390px] mx-auto w-full space-y-2.5 pb-6">
-    <button onclick="window.location.href='hoje.html'" class="w-full bg-gradient-to-r from-mint to-mint-dark text-obsidian font-bold text-sm py-3.5 px-6 rounded-2xl flex items-center justify-center gap-2 shadow-[0_0_24px_rgba(0,229,153,0.35)] hover:brightness-110 active:scale-98 transition-all cursor-pointer font-headline">
+    <button id="ctaConnectBtn" onclick="connectAndRedirect()" class="w-full bg-gradient-to-r from-mint to-mint-dark text-obsidian font-bold text-sm py-3.5 px-6 rounded-2xl flex items-center justify-center gap-2 shadow-[0_0_24px_rgba(0,229,153,0.35)] hover:brightness-110 active:scale-98 transition-all cursor-pointer font-headline">
       <span class="material-symbols-outlined text-[18px]">lock_open</span>
-      Conectar com Segurança
+      <span id="ctaBtnLabel">Conectar Cartão Nubank com Segurança</span>
     </button>
     <div class="flex items-center justify-center gap-1.5 text-[10px] text-gray-400 font-mono">
       <span class="material-symbols-outlined text-[13px] text-mint">shield</span>
-      <span>Criptografia Bancária · Privacidade Total</span>
+      <span>Conexão Protegida · Privacidade Total</span>
     </div>
   </footer>
 
+  <!-- Dynamic Interaction Script -->
+  <script>
+    let currentBank = 'Nubank';
+
+    function selectBankCard(cardElem, bankName, brandColor) {
+      if (navigator.vibrate) {
+        navigator.vibrate(12);
+      }
+
+      currentBank = bankName;
+
+      // Deselect all
+      document.querySelectorAll('.bank-card-item').forEach(card => {
+        card.classList.remove('selected');
+        const tag = card.querySelector('.bank-tag');
+        if (tag) tag.remove();
+        const radio = card.querySelector('.select-radio');
+        if (radio) radio.classList.add('text-transparent');
+      });
+
+      // Select clicked
+      cardElem.classList.add('selected');
+      const radio = cardElem.querySelector('.select-radio');
+      if (radio) radio.classList.remove('text-transparent');
+
+      // Add selected badge
+      const flexDiv = cardElem.querySelector('.flex.items-center.gap-2');
+      if (flexDiv && !flexDiv.querySelector('.bank-tag')) {
+        const tag = document.createElement('span');
+        tag.className = 'text-[10px] font-mono text-mint font-semibold bank-tag';
+        tag.textContent = 'Selecionado';
+        flexDiv.insertBefore(tag, radio);
+      }
+
+      // Update feedback title
+      const feedbackTitle = document.getElementById('feedbackTitle');
+      if (feedbackTitle) {
+        feedbackTitle.textContent = 'Cartão ' + bankName + ' Selecionado';
+      }
+
+      // Update CTA button label
+      const ctaBtnLabel = document.getElementById('ctaBtnLabel');
+      if (ctaBtnLabel) {
+        ctaBtnLabel.textContent = 'Conectar Cartão ' + bankName + ' com Segurança';
+      }
+    }
+
+    function connectAndRedirect() {
+      window.location.href = 'hoje.html';
+    }
+  </script>
 </body>
 </html>
